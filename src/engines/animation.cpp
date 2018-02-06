@@ -1,0 +1,88 @@
+#include "animation.h"
+
+using namespace std;
+using namespace neo;
+
+AnimationFrame::AnimationFrame(){
+    _texture = ImgManager->GetImage("block");
+}
+
+AnimationFrame::AnimationFrame(Image* img, int duration){
+
+    _texture = img;
+    _duration = duration;
+}
+
+AnimationFrame::~AnimationFrame(){
+
+}
+
+
+
+
+Animation::Animation(){
+
+    _loop_count = 0;
+    _frame_count = 0;
+    _frame_total = 0;
+    _times_played = 0;
+    _times_to_play = 0;
+    _is_finished = false;
+    _is_playing = false;
+    _current_frame = NULL;
+    _is_initialized = false;
+}
+
+
+Animation::~Animation(){
+    for(vector<AnimationFrame*>::iterator it = _frames.begin(); it != _frames.end(); ++it)
+        delete (*it);
+}
+
+
+
+void Animation::PushFrame(Image* img, int duration){
+
+    AnimationFrame* frame = new AnimationFrame(img, duration);
+    _frames.push_back(frame);
+    _frame_total++;
+    if(_current_frame == NULL) _current_frame = _frames.back();
+    _is_initialized = true;
+}
+
+void Animation::Update(int update_time){
+
+    if(_frame_count >= (int)_frames.size()) return;
+    if(_frames.size() <= 1) return;
+
+    _current_frame = _frames.at(_frame_count);
+
+
+    if(_is_playing){
+        _loop_count += update_time;
+
+        if(_loop_count > _current_frame->_duration){
+            _loop_count = 0;
+            _frame_count++;
+        }
+        if(_frame_count > _frame_total - 1){
+            _frame_count = 0;
+            _times_played++;
+        }
+        if(_times_played >= _times_to_play){
+            _times_played = 0;
+            if(_times_to_play > 0){
+                _is_playing = false;
+                _is_finished = true;
+            }
+        }
+    }
+
+}//Update()
+
+
+Image* Animation::GetCurrentFrameTexture(){
+
+    if(_is_initialized == false || _current_frame == NULL) return NULL;
+    else return _current_frame->_texture;
+}
