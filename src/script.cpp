@@ -139,7 +139,7 @@ void paradigm::map_texture(){
         std::string name = s_text;
         std::string animname = s_text;
         Animation* anim = s_animation(s_get(name));
-        tex->AddAnimation(animname, *anim);
+        tex->AddAnimation(animname, anim);
     }
     else{
 

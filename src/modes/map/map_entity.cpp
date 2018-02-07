@@ -71,7 +71,6 @@ StaticEntity::~StaticEntity(){
 
 void StaticEntity::Update(int update_time){
 
-    _texture->Play("DEFAULT");
 }
 
 
@@ -93,8 +92,6 @@ ObjectEntity::~ObjectEntity(){
 
 void ObjectEntity::Update(int update_time){
 
-    if(_texture->CurrentAnimationIsFinished())
-        _texture->Play("DEFAULT");
 }
 
 

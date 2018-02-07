@@ -26,13 +26,13 @@
 .Overall - Access to different attributes (in Entity for example) is too easy
 .Mesh - Add a Mesh class and rename Mesh MeshData (reduce memory usage -> MeshDatas are now like 3D models and Meshes hold only position and velocity)
 .ActorEntity - change ActorEntity::Update()
+.Entity - Maybe initialize the MapTexture and the Mesh in the Entity constructor, so that it never points to NULL and some attributes (like _is_static) are already set
+.Script - Maybe create different types of ScriptManager (MapScript for example) and place them with their respective gamemodes (modes/map/map_script)
 ***/
 
 /**TODO NOW :
 
-    Events and Entities - Rename ObjectEntitys and ActorEntitys
-                        - Link Events to Entities
-                        - Link to ScriptEngine
+    Events and Entities - Link to ScriptEngine
                         - Recreate test map
 **/
 

@@ -9,7 +9,6 @@
 
 #include "../../defs.h"
 
-//#include "../../engines/video.h"
 #include "../../engines/animation.h"
 
 namespace neo{
@@ -30,9 +29,9 @@ public:
 
     coor2i GetCurrentFrameSize();
     Animation* GetCurrentAnimation(){return _current_animation;}
-    Image* GetCurrentAnimationFrameTexture();
+    Image* GetCurrentFrame();
 
-    void AddAnimation(std::string, Animation);
+    void AddAnimation(std::string, Animation*);
 
     void Update(int);
 
@@ -45,10 +44,9 @@ protected:
 private:
 
     Animation* _current_animation;
-    std::map<std::string, Animation> _animations;
+    Image* _current_frame;
+    std::map<std::string, Animation*> _animations;
 
-    coor2i _pos;
-    coor2i _size;
     bool _is_visible;
 
 

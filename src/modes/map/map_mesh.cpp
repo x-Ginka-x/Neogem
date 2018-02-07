@@ -414,7 +414,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
 
         float k = _kinetic_energy.at(DOWN);
         mesh->ApplyForce(DOWN, ENERGY_TYPE_JOULE, k/2);
-        ApplyForce(UP, ENERGY_TYPE_JOULE, _bounce*k/2);
+        ApplyForce(UP, ENERGY_TYPE_JOULE, /*_bounce**/k/2);
         _kinetic_energy.at(DOWN) -= k;
     }
 

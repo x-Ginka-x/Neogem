@@ -82,13 +82,12 @@ public:
     StaticEntity* CreateStaticEntity(std::string);
     ObjectEntity* CreateObjectEntity(std::string);
     ObjectEntity* GetObjectEntity(std::string);
-    ObjectEntity* obj;
 
 private:
 
     std::string _script_file;
     std::map<std::string, StaticEntity*> _static_entities;
-    std::map<std::string, ObjectEntity*> _objects;
+    std::map<std::string, ObjectEntity*> _object_entities;
 //    std::map<std::string, ActorEntity*> _actors;
 
 
@@ -114,6 +113,8 @@ private:
 //    std::string _edMode;
 //    int _edCount;
 //    Entity* _edTarget;
+    Image* img;
+    Animation* anim;
 
 
 };//class MapMode

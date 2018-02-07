@@ -27,7 +27,7 @@ Animation::Animation(){
     _frame_total = 0;
     _times_played = 0;
     _times_to_play = 0;
-    _is_finished = false;
+    _is_finished = true;
     _is_playing = false;
     _current_frame = NULL;
     _is_initialized = false;
@@ -54,7 +54,7 @@ void Animation::Update(int update_time){
 
     if(_frame_count >= (int)_frames.size()) return;
     if(_frames.size() <= 1) return;
-
+    _is_finished = false;
     _current_frame = _frames.at(_frame_count);
 
 

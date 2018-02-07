@@ -236,7 +236,6 @@ void Image::Draw(IMAGE_DRAW_FLAG flag){
 
     if(flag == IMAGE_DRAW_CENTERED){
         Video->Blit(_oglvaoid, _surface_id);
-        cout<<_size.x<<endl;
     }
     else if(flag == IMAGE_DRAW_FROM_TOPLEFT){
         Video->TranslateCursor(_size.x/2, _size.y/2, 0.0);

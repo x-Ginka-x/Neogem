@@ -15,7 +15,22 @@ MapMode::MapMode(){
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
 
-    Script->_executescript("src/modes/map/texte.txt");
+    Script->_executescript("texte.txt");
+
+
+    ObjectEntity* obj = CreateObjectEntity("object");
+    MapTexture* tex = _view_manager->CreateMapTexture();
+    anim = new Animation();
+    anim->PushFrame(ImgManager->GetImage("block"), 1000);
+    tex->AddAnimation("DEFAULT", anim);
+    obj->LinkMapTexture(tex);
+    Mesh* mesh = _physics_manager->CreateMesh();
+    mesh->SetPos(32,120,0);
+    mesh->SetSize(16,32,16);
+    mesh->SetStatic(true);
+    obj->LinkMesh(mesh);
+    _object_entities.insert(make_pair("object", obj));
+
 
     _state = NO_CHANGE;
 
@@ -35,15 +50,16 @@ MapMode::~MapMode(){
 
     if(MAP_DEBUG) LOG(".MAP_DEBUG: destroy map mode");
     Clear(_static_entities);
+    Clear(_object_entities);
     delete _view_manager;
     delete _physics_manager;
+    delete _event_manager;
 }
 
 void MapMode::Draw(){
 
     _view_manager->Follow(coor3f(0,0,0));
     _view_manager->Draw();
-
 
 }
 
@@ -56,15 +72,27 @@ void MapMode::Update(){
         Reset();
 
     _view_manager->Update();
-    _physics_manager->Update(Time->GetUpdateTime());
-    _physics_manager->ManageCollisions();
-    _event_manager->Update();
+//    _physics_manager->Update(Time->GetUpdateTime());
+//    _physics_manager->ManageCollisions();
+//    _event_manager->Update();
 
     for(auto it = _static_entities.begin(); it != _static_entities.end(); ++it){
 
         it->second->Update(Time->GetUpdateTime());
         if(it->second->IsVisible()){
-            Image* img = it->second->GetTexture()->GetCurrentAnimationFrameTexture();
+            Image* img = it->second->GetTexture()->GetCurrentFrame();
+            coor3f pos = it->second->GetMesh()->GetPos();
+            coor3f size = it->second->GetMesh()->GetSize();
+
+            _view_manager->RegisterTextureForSorting(img, pos, size);
+        }
+    }
+
+    for(auto it = _object_entities.begin(); it != _object_entities.end(); ++it){
+
+        it->second->Update(Time->GetUpdateTime());
+        if(it->second->IsVisible()){
+            Image* img = it->second->GetTexture()->GetCurrentFrame();
             coor3f pos = it->second->GetMesh()->GetPos();
             coor3f size = it->second->GetMesh()->GetSize();
 
@@ -101,20 +129,20 @@ StaticEntity* MapMode::CreateStaticEntity(std::string name){
 
 ObjectEntity* MapMode::CreateObjectEntity(std::string name){
 
-    if(_objects.find(name) == _objects.end()){
+    if(_object_entities.find(name) == _object_entities.end()){
 
         ObjectEntity* obj = new ObjectEntity(name);
-        _objects.insert(make_pair(name, obj));
+        _object_entities.insert(make_pair(name, obj));
     }
 
-    return _objects.at(name);
+    return _object_entities.at(name);
 }
 
 
 ObjectEntity* MapMode::GetObjectEntity(string name){
 
-    if(_objects.find(name) != _objects.end())
-        return _objects.at(name);
+    if(_object_entities.find(name) != _object_entities.end())
+        return _object_entities.at(name);
     else
         return NULL;
 }

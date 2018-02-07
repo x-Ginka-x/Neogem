@@ -14,16 +14,14 @@ MapTexture::MapTexture(){
 MapTexture::~MapTexture(){
 
     if(MAP_DEBUG) LOG(".MAP_DEBUG : destroy MapTexture");
-//    for(auto it = _animations.begin(); it != _animations.end(); ++it){
-//        delete (*it).second;
-//    }
+    Clear(_animations);
 }
 
 
-void MapTexture::AddAnimation(std::string name, Animation anim){
+void MapTexture::AddAnimation(std::string name, Animation* anim){
 
     _animations.insert(std::make_pair(name, anim));
-    if(_current_animation == NULL) _current_animation = &_animations[name];
+    if(_current_animation == NULL) _current_animation = _animations[name];
 }
 
 
@@ -41,9 +39,9 @@ void MapTexture::Play(std::string animation_name){
 
     if(_animations.find(animation_name) == _animations.end()) return;
 
-    if(_current_animation != &_animations[animation_name]){
+    if(_current_animation != _animations[animation_name]){
 
-        _current_animation = &_animations[animation_name];
+        _current_animation = _animations[animation_name];
         _current_animation->Reset();
 
     }
@@ -61,7 +59,7 @@ bool MapTexture::IsPlaying(string name){
     if(_animations.find(name) == _animations.end())
         return false;
     else{
-        if(_current_animation == &_animations[name] && _current_animation->IsPlaying() == true)
+        if(_current_animation == _animations[name] && _current_animation->IsPlaying() == true)
             return true;
         else return false;
     }
@@ -73,6 +71,7 @@ void MapTexture::Update(int update_time){
     else
         _current_animation->Update(update_time);
 
+    _current_frame = _current_animation->GetCurrentFrameTexture();
 }
 
 
@@ -81,7 +80,7 @@ coor2i MapTexture::GetCurrentFrameSize(){
     return _current_animation->GetCurrentFrameTexture()->GetSize();
 }
 
-Image* MapTexture::GetCurrentAnimationFrameTexture(){
+Image* MapTexture::GetCurrentFrame(){
 
-    return _current_animation->GetCurrentFrameTexture();
+    return _current_frame;
 }
