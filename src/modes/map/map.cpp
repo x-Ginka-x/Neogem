@@ -16,31 +16,7 @@ MapMode::MapMode(){
     _event_manager = new EventManager();
 
     Script->_executescript("src/modes/map/texte.txt");
-    obj = CreateObjectEntity("object");
-    Animation anim = Animation();
-    MapTexture* tex = _view_manager->CreateMapTexture();
-    anim.PushFrame(ImgManager->GetImage("crate<f<0,0,37,37"), 100);
-    tex->AddAnimation("DEFAULT", anim);
-    obj->LinkMapTexture(tex);
-    Mesh* mesh = _physics_manager->CreateMesh();
-    mesh->SetPos(32.0,300.0,0.0);
-    mesh->SetSize(16.0,32.0,16.0);
-    mesh->SetMass(10);
 
-    obj->LinkMesh(mesh);
-
-    _event_manager->AddVar("switch", 0);
-
-    event::HideEntity* ev = new event::HideEntity("object");
-    _event_manager->RegisterEvent("ev", ev);
-
-    ev->AddCondition(event::VARIABLE_EQUALS, "switch", 1);
-
-    MapEventString* ev_str = new MapEventString();
-    ev_str->PushEvent(ev);
-    _event_manager->RegisterEventString("ev_str", ev_str);
-
-    obj->AddPassiveEvent(ev_str);
     _state = NO_CHANGE;
 
 }
@@ -78,18 +54,11 @@ void MapMode::Update(){
 
     if(_state == CHANGE)
         Reset();
-    if(Input->DownPress()){
-        _event_manager->SetVar("switch", 1);
-    }
-    if(Input->RightPress()){
-        obj->GetMesh()->SetPos(32,300,0);
-    }
 
     _view_manager->Update();
     _physics_manager->Update(Time->GetUpdateTime());
     _physics_manager->ManageCollisions();
     _event_manager->Update();
-    obj->PlayPassive();
 
     for(auto it = _static_entities.begin(); it != _static_entities.end(); ++it){
 
@@ -102,10 +71,6 @@ void MapMode::Update(){
             _view_manager->RegisterTextureForSorting(img, pos, size);
         }
     }
-    if(obj->IsVisible()){
-        _view_manager->RegisterTextureForSorting(obj->GetTexture()->GetCurrentAnimationFrameTexture(), obj->GetPos(), obj->GetSize());
-    }
-
 
 }
 
