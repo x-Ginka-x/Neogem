@@ -15,7 +15,7 @@ MapMode::MapMode(){
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
 
-    Script->_executescript("texte.txt");
+    Script->_executescript("src/modes/map/testmap.nsl");
 
 
     ObjectEntity* obj = CreateObjectEntity("object");
