@@ -75,53 +75,72 @@ mesh
         pos 18 0 18
         size 8 32 16
 
+    new mesh12
+        pos 132 0 50
+        size 16 32 16
+
+    new mesh13
+        pos 0 -32 0
+        size 500 32 500
+
 end
 
-entity
+staticentity
 
-    new staticentity wallw2
+    new wallw2
         texture tex_crate
         mesh mesh1
 
-    new staticentity walln1
+    new walln1
         texture tex_crate
         mesh mesh2
 
-    new staticentity walln2
+    new walln2
         texture tex_crate
         mesh mesh3
 
-    new staticentity walls1
+    new walls1
         texture tex_crate
         mesh mesh7
 
-    new staticentity walls2
+    new walls2
         texture tex_crate
         mesh mesh6
 
-    new staticentity walls3
+    new walls3
         texture tex_crate
         mesh mesh8
 
-    new staticentity walle1
+    new walle1
         texture tex_crate
         mesh mesh9
 
-    new staticentity table
+    new table
         texture tex_table
         mesh mesh10
 
-    new staticentity panel
+    new panel
         texture tex_panel
         mesh mesh11
 
-    new staticentity walln3
+    new walln3
         texture tex_crate
         mesh mesh4
 
-    new staticentity wallw1
+    new wallw1
         texture tex_crate
         mesh mesh5
+
+    new ground1
+        mesh mesh13
+
+end
+
+objectentity
+
+    new object1
+        texture tex_panel
+        mesh mesh12
 
 end
 
