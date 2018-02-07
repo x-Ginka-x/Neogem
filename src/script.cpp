@@ -23,6 +23,7 @@
 #define s_mesh static_cast<Mesh*>
 #define s_texture static_cast<MapTexture*>
 #define s_staticentity static_cast<StaticEntity*>
+#define s_objectentity static_cast<ObjectEntity*>
 
 
 using namespace neo;
@@ -153,14 +154,8 @@ void paradigm::map_entity_static(){
 
     if(instruction == "new"){
         std::string name = s_text;
-        if(name == "staticentity"){
-            name = s_text;
-            StaticEntity* obj = neo_map::_current_map->CreateStaticEntity(name);
-            s_register(name, obj);
-        }
-        else{
-
-        }
+        StaticEntity* obj = neo_map::_current_map->CreateStaticEntity(name);
+        s_register(name, obj);
     }
     else if(instruction == "end"){
         s_par("global");
@@ -176,7 +171,36 @@ void paradigm::map_entity_static(){
         StaticEntity* obj = s_staticentity(s_active);
         obj->LinkMesh(mesh);
         mesh->SetStatic(true);
-        std::cout<<mesh->GetPos().x<<std::endl;
+    }
+    else{
+
+    }
+}
+
+
+void paradigm::map_entity_object(){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        ObjectEntity* obj = neo_map::_current_map->CreateObjectEntity(name);
+        s_register(name, obj);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "texture"){
+        MapTexture* tex = s_texture(s_get(s_text));
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->LinkMapTexture(tex);
+    }
+
+    else if(instruction == "mesh"){
+        Mesh* mesh = (Mesh*)s_get(s_text);
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->LinkMesh(mesh);
+        mesh->SetStatic(false);
     }
     else{
 
@@ -190,7 +214,8 @@ ScriptManager::ScriptManager(){
     _paradigms.insert(std::make_pair<std::string,voidfunction>("animation",(voidfunction)&paradigm::animation));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("mesh",(voidfunction)&paradigm::map_mesh));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("map_texture",(voidfunction)&paradigm::map_texture));
-    _paradigms.insert(std::make_pair<std::string,voidfunction>("entity",(voidfunction)&paradigm::map_entity_static));
+    _paradigms.insert(std::make_pair<std::string,voidfunction>("staticentity",(voidfunction)&paradigm::map_entity_static));
+    _paradigms.insert(std::make_pair<std::string,voidfunction>("objectentity",(voidfunction)&paradigm::map_entity_object));
 
 }
 

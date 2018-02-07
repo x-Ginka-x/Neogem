@@ -75,6 +75,7 @@ void animation();
 void map_texture();
 void map_mesh();
 void map_entity_static();
+void map_entity_object();
 
 }//paradigm
 }//namespace
