@@ -34,7 +34,7 @@
 
 /**TODO NOW :
 
-    Events and Entities - Link to ScriptEngine
+    Events and Entities - Integrate Actor + Link to ScriptEngine
                         - Recreate test map
 **/
 

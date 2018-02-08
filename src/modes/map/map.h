@@ -79,7 +79,10 @@ public:
 
     StaticEntity* CreateStaticEntity(std::string);
     ObjectEntity* CreateObjectEntity(std::string);
+    ActorEntity* CreateActorEntity(std::string);
+
     ObjectEntity* GetObjectEntity(std::string);
+    ActorEntity* GetActorEntity(std::string);
 
 
 private:
@@ -87,7 +90,7 @@ private:
     std::string _script_file;
     std::map<std::string, StaticEntity*> _static_entities;
     std::map<std::string, ObjectEntity*> _object_entities;
-//    std::map<std::string, ActorEntity*> _actors;
+    std::map<std::string, ActorEntity*> _actor_entities;
 
     MAP_STATE _state;
 

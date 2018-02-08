@@ -25,7 +25,7 @@
 #define s_texture static_cast<MapTexture*>
 #define s_staticentity static_cast<StaticEntity*>
 #define s_objectentity static_cast<ObjectEntity*>
-
+#define s_actorentity static_cast<ActorEntity*>
 #define s_eventstring static_cast<MapEventString*>
 
 
@@ -110,10 +110,6 @@ void paradigm::map_mesh(){
         float y = s_float;
         float z = s_float;
         mesh->SetPos(x, y, z);
-        LOG(to_string(mesh->GetPos().x));
-        Mesh* meshptr = s_mesh(s_active);
-        LOG(to_string(meshptr->GetPos().x));
-
     }
     else if(instruction == "size"){
         Mesh* mesh = s_mesh(s_active);
@@ -121,6 +117,11 @@ void paradigm::map_mesh(){
         float y = s_float;
         float z = s_float;
         mesh->SetSize(x, y, z);
+    }
+    else if(instruction == "mass"){
+        Mesh* mesh = s_mesh(s_active);
+        int i = s_int;
+        mesh->SetMass(i);
     }
     else{
 
@@ -215,9 +216,44 @@ void paradigm::map_entity_object(){
     }
 }
 
+void paradigm::map_entity_actor(){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        ActorEntity* act = neo_map::_current_map->CreateActorEntity(name);
+        s_register(name, act);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "texture"){
+        MapTexture* tex = s_texture(s_get(s_text));
+        ActorEntity* act = s_actorentity(s_active);
+        act->LinkMapTexture(tex);
+    }
+
+    else if(instruction == "mesh"){
+        Mesh* mesh = (Mesh*)s_get(s_text);
+        ActorEntity* act = s_actorentity(s_active);
+        act->LinkMesh(mesh);
+        mesh->SetStatic(false);
+    }
+    else{
+
+    }
+}
+
 void paradigm::map_event(){
 
     std::string instruction = s_text;
+
+    if(instruction == "setvar"){
+        std::string name = s_text;
+        int value = s_int;
+        event::current_event_manager->SetVar(name, value);
+    }
 
     if(instruction == "new"){
         std::string name = s_text;
@@ -251,6 +287,13 @@ void paradigm::map_event(){
 
         }
     }
+    else if(instruction == "condition"){
+        int type = s_int;
+        std::string str = s_text;
+        int value = s_int;
+        MapEventString* ev_str = s_eventstring(s_active);
+        ev_str->SetCondition(type, str, value);
+    }
     else if(instruction == "end"){
         s_par("global");
     }
@@ -270,6 +313,7 @@ ScriptManager::ScriptManager(){
     _paradigms.insert(std::make_pair<std::string,voidfunction>("staticentity",(voidfunction)&paradigm::map_entity_static));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("objectentity",(voidfunction)&paradigm::map_entity_object));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("event",(voidfunction)&paradigm::map_event));
+    _paradigms.insert(std::make_pair<std::string,voidfunction>("actorentity",(voidfunction)&paradigm::map_entity_actor));
 
 }
 
@@ -372,5 +416,6 @@ void ScriptManager::_executescript(std::string name){
 
 void ScriptManager::_executeline(){
 
-    _paradigms[_paradigm]();
+    if(_paradigms.find(_paradigm) != _paradigms.end())
+        _paradigms[_paradigm]();
 }

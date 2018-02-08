@@ -17,11 +17,7 @@ MapMode::MapMode(){
     _event_manager = new EventManager();
 
     Script->_executescript("src/modes/map/testmap.nsl");
-
-
-//    MapEventString* ev_str = _event_manager->CreateEventString();
-//    ev_str->PushEvent(new event::HideRevealEntity("object2", EVENT_TOGGLE_PHANTOM));
-//    GetObjectEntity("object2")->AddPassiveEvent(ev_str);
+    _physics_manager->SetUpdateZone(-1000,-500,2000,1000);
 
     _state = NO_CHANGE;
 
@@ -42,6 +38,7 @@ MapMode::~MapMode(){
     if(MAP_DEBUG) LOG(".MAP_DEBUG: destroy map mode");
     Clear(_static_entities);
     Clear(_object_entities);
+    Clear(_actor_entities);
     delete _view_manager;
     delete _physics_manager;
     delete _event_manager;
@@ -66,13 +63,27 @@ void MapMode::Update(){
         if(GetObjectEntity("object2") != NULL)
             GetObjectEntity("object2")->PlayPassive();
     }
-    if(Input->DownPress()){
-        Mode->Push(new TestMode());
+
+
+
+    if(Input->RightState()){
+
+        GetActorEntity("ginka")->Walk(EAST);
     }
-    if(Input->UpPress()){
-        _event_manager->SetVar("var", 1);
+    else if(Input->LeftState()){
+
+        GetActorEntity("ginka")->Walk(WEST);
+    }
+    else if(Input->UpState()){
+
+        GetActorEntity("ginka")->Walk(NORTH);
+    }
+    else if(Input->DownState()){
+
+        GetActorEntity("ginka")->Walk(SOUTH);
     }
 
+    _view_manager->Follow(GetActorEntity("ginka")->GetCenter());
     _view_manager->Update();
     _physics_manager->Update(Time->GetUpdateTime());
     _physics_manager->ManageCollisions();
@@ -81,6 +92,7 @@ void MapMode::Update(){
 
     _UpdateEntities(_static_entities);
     _UpdateEntities(_object_entities);
+    _UpdateEntities(_actor_entities);
 
 }
 
@@ -120,11 +132,31 @@ ObjectEntity* MapMode::CreateObjectEntity(std::string name){
     return _object_entities.at(name);
 }
 
+ActorEntity* MapMode::CreateActorEntity(std::string name){
+
+    if(_actor_entities.find(name) == _actor_entities.end()){
+
+        ActorEntity* act = new ActorEntity(name);
+        _actor_entities.insert(make_pair(name, act));
+    }
+
+    return _actor_entities.at(name);
+}
+
 
 ObjectEntity* MapMode::GetObjectEntity(string name){
 
     if(_object_entities.find(name) != _object_entities.end())
         return _object_entities.at(name);
+    else
+        return NULL;
+}
+
+
+ActorEntity* MapMode::GetActorEntity(string name){
+
+    if(_actor_entities.find(name) != _actor_entities.end())
+        return _actor_entities.at(name);
     else
         return NULL;
 }

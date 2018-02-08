@@ -18,6 +18,45 @@ animation
         frame block 100
         times 1
 
+-------GINKA ANIMATIONS
+
+    new anim_g1 --STANDING_SOUTH
+        frame Marche[1]<f<69,76,19,32 5
+        times 0
+    new anim_g2 --STANDING_EAST
+        frame Marche[1]<f<69,34,19,32 5
+        times 0
+    new anim_g3 --STANDING_WEST
+        frame Marche[1]<f<69,180,19,32 5
+        times 0
+    new anim_g4 --STANDING_NORTH
+        frame Marche[1]<f<69,130,19,32 5
+        times 0
+    new anim_g5 --WALKING_EAST
+        frame Marche[1]<f<50,34,19,32 100
+        frame Marche[1]<f<69,34,19,32 100
+        frame Marche[1]<f<88,34,19,32 100
+        frame Marche[1]<f<69,34,19,32 100
+        times 1
+    new anim_g6 --WALKING_SOUTH
+        frame Marche[1]<f<50,76,19,32 100
+        frame Marche[1]<f<69,76,19,32 100
+        frame Marche[1]<f<88,76,19,32 100
+        frame Marche[1]<f<69,76,19,32 100
+        times 0
+    new anim_g7 --WALKING_WEST
+        frame Marche[1]<f<50,180,19,32 100
+        frame Marche[1]<f<69,180,19,32 100
+        frame Marche[1]<f<88,180,19,32 100
+        frame Marche[1]<f<69,180,19,32 100
+        times 0
+    new anim_g8 --WALKING_NORTH
+        frame Marche[1]<f<50,130,19,32 100
+        frame Marche[1]<f<69,130,19,32 100
+        frame Marche[1]<f<88,130,19,32 100
+        frame Marche[1]<f<69,130,19,32 100
+        times 0
+
 end
 
 map_texture
@@ -33,6 +72,17 @@ map_texture
 
     new tex_block
         animation anim_block DEFAULT
+
+    new tex_ginka
+        animation anim_g1 STANDING_SOUTH
+        animation anim_g2 STANDING_EAST
+        animation anim_g3 STANDING_WEST
+        animation anim_g4 STANDING_NORTH
+        animation anim_g5 WALKING_EAST
+        animation anim_g6 WALKING_SOUTH
+        animation anim_g7 WALKING_WEST
+        animation anim_g8 WALKING_NORTH
+        animation anim_g1 DEFAULT
 
 end
 
@@ -85,14 +135,25 @@ mesh
     new mesh12
         pos 132 0 50
         size 16 32 16
+        mass 1000
 
     new mesh13
-        pos 0 -32 0
-        size 500 32 500
+        pos -100 -8 -10
+        size 300 8 300
+    new mesh131
+        pos 200 -8 150
+        size 100 8 50
+    new mesh132
+        pos 300 -8 -100
+        size 100 8 300
 
     new mesh14
         pos 32 120 0
         size 16 16 16
+
+    new mesh_ginka
+        pos 180 0 64
+        size 8 16 8
 
 end
 
@@ -144,6 +205,10 @@ staticentity
 
     new ground1
         mesh mesh13
+    new ground2
+        mesh mesh131
+    new ground3
+        mesh mesh132
 
 end
 
@@ -166,6 +231,14 @@ objectentity
         texture tex_block
         mesh mesh14
         eventstring ev_str
+end
+
+actorentity
+
+    new ginka
+        texture tex_ginka
+        mesh mesh_ginka
+
 end
 
 end

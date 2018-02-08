@@ -79,6 +79,7 @@ void map_texture();
 void map_mesh();
 void map_entity_static();
 void map_entity_object();
+void map_entity_actor();
 void map_event();
 
 }//paradigm

@@ -140,8 +140,6 @@ private:
     bool _is_falling;
     DIRECTION _direction;
 
-    virtual void _SpecialUpdate();
-
 };//class ActorEntity
 
 }//namespace
