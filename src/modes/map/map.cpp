@@ -59,11 +59,8 @@ void MapMode::Update(){
     if(_state == CHANGE)
         Reset();
 
-    if(Input->ActionPress()){
-        if(GetObjectEntity("object2") != NULL)
-            GetObjectEntity("object2")->PlayPassive();
-    }
-
+    if(GetObjectEntity("object_rock") != NULL)
+        GetObjectEntity("object_rock")->PlayPassive();
 
 
     if(Input->RightState()){
@@ -166,7 +163,7 @@ template<class A> void MapMode::_UpdateEntities(A& entities){
     for(auto it = entities.begin(); it != entities.end(); ++it){
 
         it->second->Update(Time->GetUpdateTime());
-        if(it->second->IsVisible()){
+        if(it->second->IsVisible() && it->second->GetTexture() != NULL){
             Image* img = it->second->GetTexture()->GetCurrentFrame();
             coor3f pos = it->second->GetMesh()->GetPos();
             coor3f size = it->second->GetMesh()->GetSize();

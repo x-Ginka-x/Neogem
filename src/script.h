@@ -60,7 +60,6 @@ public:
     std::map<std::string, voidfunction> _paradigms;
 
 
-    /**Paradigms definitions**/
 
 
 
@@ -68,6 +67,11 @@ public:
 };//ScriptManager
 
 extern ScriptManager* Script;
+
+
+    /**Paradigms definitions**/
+
+
 namespace paradigm{
 
 void image();

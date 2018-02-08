@@ -10,8 +10,8 @@ animation
         frame table 100
         times 1
 
-    new anim_panel
-        frame panel 100
+    new anim_rock
+        frame rock 100
         times 1
 
     new anim_block
@@ -64,8 +64,8 @@ map_texture
     new tex_crate
         animation anim_crate DEFAULT
 
-    new tex_panel
-        animation anim_panel DEFAULT
+    new tex_rock
+        animation anim_rock DEFAULT
 
     new tex_table
         animation anim_table DEFAULT
@@ -134,8 +134,8 @@ mesh
 
     new mesh12
         pos 132 0 50
-        size 16 32 16
-        mass 1000
+        size 16 16 16
+        mass 100
 
     new mesh13
         pos -100 -8 -10
@@ -148,8 +148,8 @@ mesh
         size 100 8 300
 
     new mesh14
-        pos 32 120 0
-        size 16 16 16
+        pos 64 0 32
+        size 16 32 16
 
     new mesh_ginka
         pos 32 150 0
@@ -191,8 +191,8 @@ staticentity
         texture tex_table
         mesh mesh10
 
-    new panel
-        texture tex_panel
+    new static_rock
+        texture tex_rock
         mesh mesh11
 
     new walln3
@@ -214,22 +214,33 @@ end
 
 event
 
-    setvar var 0
+    setvar block_x 0
+    setvar block_y 0
+    setvar block_z 0
 
     new ev_str
-        push hidereveal object2 3
-        condition 1 var 1
+        push hidereveal object_rock 4
+        condition 3 block_x 135
+        condition 2 block_x 140
+        condition 3 block_z 55
+        condition 2 block_z 60
+
+    new ev_str2
+        push listenposition object_block block_x block_y block_z
+
+
 end
 
 objectentity
 
-    new object1
-        texture tex_panel
+    new object_block
+        texture tex_block
         mesh mesh12
 
-    new object2
-        texture tex_block
+    new object_rock
+        texture tex_rock
         mesh mesh14
+        eventstring ev_str2
         eventstring ev_str
 end
 

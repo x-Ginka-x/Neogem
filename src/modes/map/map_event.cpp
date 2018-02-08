@@ -40,11 +40,9 @@ void MapEventString::Play(){
 void MapEventString::Update(){
 
     if(_events.empty() == true) return;
-
     _current_event = _events.at(_event_counter);
 
     if(_is_playing == true){
-
         if(_current_event == NULL){
             ERR("-map_event.cpp : Trying to play an empty event in MapEventString::Update()");
             return;
@@ -113,7 +111,6 @@ void MapEvent::Update(){
     if(_is_playing){
 
         _is_done = false;
-
         if(_AssertConditions() == false){
             _is_done = true;
             return;
@@ -152,11 +149,14 @@ bool MapEvent::_AssertCondition(event::Condition condition){
 bool MapEvent::_AssertConditions(){
 
     bool assertion = false;
+    if(_conditions.empty() == true)
+        return true;
 
     for(auto it = _conditions.begin(); it != _conditions.end(); it++){
         assertion = _AssertCondition(*it);
-        if(assertion == false)
+        if(assertion == false){
             return false;
+        }
     }
     return true;
 }
@@ -415,5 +415,22 @@ void PlayAnimation::_Update(){
         return;
     }
     _entity->GetTexture()->Play(_state);
+    _is_done = true;
+}
+
+
+void ListenPosition::_Update(){
+    Entity* _entity = GetEntity(_target);
+    if(_entity == NULL) return;
+
+    float x,y,z;
+    x = _entity->GetPos().x;
+    y = _entity->GetPos().y;
+    z = _entity->GetPos().z;
+
+    event::current_event_manager->SetVar(xvar, x);
+    event::current_event_manager->SetVar(yvar, y);
+    event::current_event_manager->SetVar(zvar, z);
+
     _is_done = true;
 }

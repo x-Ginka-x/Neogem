@@ -276,14 +276,22 @@ void paradigm::map_event(){
             MapEventString* ev_str = s_eventstring(s_active);
             ev_str->PushEvent(new event::Teleport(coor3f(x,y,z), dir, map_name));
         }
-        else if(instruction == "playanimation"){
+        else if(mapevent_type == "playanimation"){
 
         }
-        else if(instruction == "activateswitch"){
+        else if(mapevent_type == "activateswitch"){
 
         }
-        else if(instruction == "modifyvariable"){
+        else if(mapevent_type == "modifyvariable"){
 
+        }
+        else if(mapevent_type == "listenposition"){
+            MapEventString* ev_str = s_eventstring(s_active);
+            std::string name = s_text;
+            std::string x = s_text;
+            std::string y = s_text;
+            std::string z = s_text;
+            ev_str->PushEvent(new event::ListenPosition(name,x,y,z));
         }
     }
     else if(instruction == "condition"){

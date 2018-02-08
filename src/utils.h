@@ -90,6 +90,18 @@ public:
     void placeat(float a, float b, float c){x = a; y = b; z = c;}
 };
 
+class coor4f{
+
+public:
+    coor4f(){x = 0; y = 0; w = 0; h = 0;}
+    coor4f(float one, float two, float three,float four){x = one; y = two; w = three; h = four;}
+    ~coor4f(){}
+    float x;
+    float y;
+    float w;
+    float h;
+};
+
 class coor4i{
 
 public:

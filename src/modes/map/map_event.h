@@ -250,6 +250,18 @@ public:
 
 };//PlayAnimation
 
+class ListenPosition : public MapEvent{
+
+private:
+
+    std::string _target;
+    std::string xvar, yvar, zvar;
+    void _Update();
+
+public:
+    ListenPosition(std::string target, std::string x, std::string y, std::string z){_target = target; xvar = x; yvar = y; zvar = z;}
+    ~ListenPosition(){}
+};
 
 }//namespace event
 }//namespace

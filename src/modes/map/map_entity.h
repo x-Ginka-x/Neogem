@@ -45,8 +45,8 @@ public:
 
     MapTexture* GetTexture() {return _texture;}
     void LinkMapTexture(MapTexture* tex) {_texture = tex;_texture->SetVisible(true);}
-    void SetVisible(bool visible){_texture->SetVisible(visible);}
-    bool IsVisible();
+    void SetVisible(bool visible){_is_visible = visible;}
+    bool IsVisible(){return _is_visible;}
 
 
     void PlayPassive();
@@ -64,6 +64,7 @@ protected:
     virtual ~Entity();
 
     std::string _name;
+    bool _is_visible;
 
     Mesh* _mesh;
     MapTexture* _texture;

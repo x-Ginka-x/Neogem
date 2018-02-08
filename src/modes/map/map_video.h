@@ -35,7 +35,7 @@ public:
     coor3f tocamera(coor3f);
     coor3f tocameraf(coor3f);
 
-    coor4i GetOffset() {return _camera_offset;}
+    coor4f GetOffset() {return _camera_offset;}
 
     void RegisterTextureForSorting(Image*, coor3f, coor3f);
 
@@ -46,7 +46,7 @@ protected:
 private:
 
     coor3f _camera_target;
-    coor4i _camera_offset;
+    coor4f _camera_offset;
 
     std::multimap<d_int, Image*> _ordered_textures;
     std::vector<MapTexture*> _texture_objects;

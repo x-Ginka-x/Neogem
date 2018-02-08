@@ -9,6 +9,7 @@ Entity::Entity(){
     _aabb_visible = false;
     _mesh = NULL;
     _texture = NULL;
+    _is_visible = true;
 }
 
 Entity::~Entity(){
@@ -58,13 +59,6 @@ bool Entity::IsColliding(Entity* E){
 }
 
 
-bool Entity::IsVisible(){
-
-    if(_texture == NULL)
-        return false;
-    else
-        return _texture->IsVisible();
-}
 
 void Entity::Update(int update_time){
 

@@ -21,7 +21,6 @@ void MapVideoEngine::Update(){
 
     _camera_offset.x = toscreen(_camera_target).x - SCREEN_WIDTH / 2;
     _camera_offset.y = toscreen(_camera_target).y - SCREEN_HEIGHT / 2;
-
     for(auto it = _texture_objects.begin(); it != _texture_objects.end(); ++it){
         (*it)->Update(Time->GetUpdateTime());
     }
