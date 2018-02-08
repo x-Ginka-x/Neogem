@@ -154,7 +154,7 @@ public:
 
 namespace event{
 
-
+/** All possible MapEvents are defined here **/
 
 class Teleport : public MapEvent {
 
@@ -176,7 +176,6 @@ public:
 
 };//TeleportEvent
 
-
 class ModifyVariable : public MapEvent{
 
 private:
@@ -195,7 +194,6 @@ public:
 
 };//ModifyVariableEvent
 
-
 class ActivateSwitch : public MapEvent{
 
 private:
@@ -213,99 +211,28 @@ public:
 
 };//ActivateSwitch
 
-class HideEntity : public MapEvent{
+#define EVENT_HIDE 1
+#define EVENT_REVEAL 2
+#define EVENT_TOGGLE_HIDE 3
+#define EVENT_PHANTOM 4
+#define EVENT_UNPHANTOM 5
+#define EVENT_TOGGLE_PHANTOM 6
+
+class HideRevealEntity : public MapEvent{
 
 private:
 
     std::string _name;
+    int _mode;
 
     void _Update();
 
 public:
 
-    HideEntity(std::string name){_name = name;}
-    ~HideEntity(){}
+    HideRevealEntity(std::string name, int mode){_name = name; _mode = mode;}
+    ~HideRevealEntity(){}
 
-};//HideEntity
-
-
-class RevealEntity : public MapEvent{
-
-private:
-
-    std::string _name;
-
-    void _Update();
-
-public:
-
-    RevealEntity(std::string name){_name = name;}
-    ~RevealEntity(){}
-
-};//RevealEntity
-
-
-class PhantomEntity : public MapEvent{
-
-private:
-
-    std::string _name;
-
-    void _Update();
-
-public:
-
-    PhantomEntity(std::string name){_name = name;}
-    ~PhantomEntity(){}
-
-};//PhantomEntity
-
-
-class UnphantomEntity : public MapEvent{
-
-private:
-
-    std::string _name;
-
-    void _Update();
-
-public:
-
-    UnphantomEntity(std::string name){_name = name;}
-    ~UnphantomEntity(){}
-
-};//UnphantomEntity
-
-class TogglePhantomEntity : public MapEvent{
-
-private:
-
-    std::string _name;
-
-    void _Update();
-
-public:
-
-    TogglePhantomEntity(std::string name){_name = name;}
-    ~TogglePhantomEntity(){}
-
-};//TogglePhantomEntity
-
-
-class ToggleVisibleEntity : public MapEvent{
-
-private:
-
-    std::string _name;
-
-    void _Update();
-
-public:
-
-    ToggleVisibleEntity(std::string name){_name = name;}
-    ~ToggleVisibleEntity(){}
-
-};//ToggleVisibleEntity
+};//HideRevealEntity
 
 class PlayAnimation : public MapEvent{
 

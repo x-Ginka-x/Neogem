@@ -1,4 +1,5 @@
 #include "map.h"
+#include "../test/test.h"
 
 using namespace std;
 using namespace neo;
@@ -18,24 +19,9 @@ MapMode::MapMode(){
     Script->_executescript("src/modes/map/testmap.nsl");
 
 
-    ObjectEntity* obj = CreateObjectEntity("object");
-    MapTexture* tex = _view_manager->CreateMapTexture();
-    anim = new Animation();
-    anim->PushFrame(ImgManager->GetImage("block"), 1000);
-    tex->AddAnimation("DEFAULT", anim);
-    obj->LinkMapTexture(tex);
-    Mesh* mesh = _physics_manager->CreateMesh();
-    mesh->SetPos(32,120,0);
-    mesh->SetSize(16,32,16);
-    mesh->SetStatic(false);
-    obj->LinkMesh(mesh);
-    _object_entities.insert(make_pair("object", obj));
-
-    event::ToggleVisibleEntity* ev = new event::ToggleVisibleEntity("object");
-    _event_manager->RegisterEvent(ev);
-    MapEventString* ev_str = _event_manager->CreateEventString();
-    ev_str->PushEvent(ev);
-    obj->AddPassiveEvent(ev_str);
+//    MapEventString* ev_str = _event_manager->CreateEventString();
+//    ev_str->PushEvent(new event::HideRevealEntity("object2", EVENT_TOGGLE_PHANTOM));
+//    GetObjectEntity("object2")->AddPassiveEvent(ev_str);
 
     _state = NO_CHANGE;
 
@@ -77,38 +63,21 @@ void MapMode::Update(){
         Reset();
 
     if(Input->ActionPress()){
-        GetObjectEntity("object")->PlayPassive();
+        if(GetObjectEntity("object2") != NULL)
+            GetObjectEntity("object2")->PlayPassive();
     }
-
+    if(Input->DownPress()){
+        Mode->Push(new TestMode());
+    }
 
     _view_manager->Update();
     _physics_manager->Update(Time->GetUpdateTime());
     _physics_manager->ManageCollisions();
     _event_manager->Update();
 
-    for(auto it = _static_entities.begin(); it != _static_entities.end(); ++it){
 
-        it->second->Update(Time->GetUpdateTime());
-        if(it->second->IsVisible()){
-            Image* img = it->second->GetTexture()->GetCurrentFrame();
-            coor3f pos = it->second->GetMesh()->GetPos();
-            coor3f size = it->second->GetMesh()->GetSize();
-
-            _view_manager->RegisterTextureForSorting(img, pos, size);
-        }
-    }
-
-    for(auto it = _object_entities.begin(); it != _object_entities.end(); ++it){
-
-        it->second->Update(Time->GetUpdateTime());
-        if(it->second->IsVisible()){
-            Image* img = it->second->GetTexture()->GetCurrentFrame();
-            coor3f pos = it->second->GetMesh()->GetPos();
-            coor3f size = it->second->GetMesh()->GetSize();
-
-            _view_manager->RegisterTextureForSorting(img, pos, size);
-        }
-    }
+    _UpdateEntities(_static_entities);
+    _UpdateEntities(_object_entities);
 
 }
 
@@ -155,4 +124,19 @@ ObjectEntity* MapMode::GetObjectEntity(string name){
         return _object_entities.at(name);
     else
         return NULL;
+}
+
+template<class A> void MapMode::_UpdateEntities(A& entities){
+
+    for(auto it = entities.begin(); it != entities.end(); ++it){
+
+        it->second->Update(Time->GetUpdateTime());
+        if(it->second->IsVisible()){
+            Image* img = it->second->GetTexture()->GetCurrentFrame();
+            coor3f pos = it->second->GetMesh()->GetPos();
+            coor3f size = it->second->GetMesh()->GetSize();
+
+            _view_manager->RegisterTextureForSorting(img, pos, size);
+        }
+    }
 }

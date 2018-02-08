@@ -6,6 +6,7 @@
 #include "kaguya/kaguya.hpp"
 
 #include "utils.h"
+#include "defs.h"
 
 typedef void (*voidfunction)();
 
@@ -50,6 +51,8 @@ public:
     int readint();
     float readfloat();
     void _jumpline();
+//    bool readspecialchar(const char*);
+    DIRECTION readdirection();
 
     void _executeparagraph();
     void _executescript(std::string);
@@ -76,6 +79,7 @@ void map_texture();
 void map_mesh();
 void map_entity_static();
 void map_entity_object();
+void map_event();
 
 }//paradigm
 }//namespace

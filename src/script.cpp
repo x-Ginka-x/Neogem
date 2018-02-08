@@ -14,6 +14,7 @@
 #define s_text Script->readtext()
 #define s_int Script->readint()
 #define s_float Script->readfloat()
+#define s_enum_DIRECTION Script->readdirection()
 #define s_active Script->getactiveobject()
 #define s_get Script->getobject
 #define s_register Script->registerobject
@@ -24,6 +25,8 @@
 #define s_texture static_cast<MapTexture*>
 #define s_staticentity static_cast<StaticEntity*>
 #define s_objectentity static_cast<ObjectEntity*>
+
+#define s_eventstring static_cast<MapEventString*>
 
 
 using namespace neo;
@@ -202,11 +205,59 @@ void paradigm::map_entity_object(){
         obj->LinkMesh(mesh);
         mesh->SetStatic(false);
     }
+    else if(instruction == "eventstring"){
+        MapEventString* ev = s_eventstring(s_get(s_text));
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->AddPassiveEvent(ev);
+    }
     else{
 
     }
 }
 
+void paradigm::map_event(){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        MapEventString* ev_str = event::current_event_manager->CreateEventString();
+        s_register(name, ev_str);
+    }
+    else if(instruction == "push"){
+        std::string mapevent_type = s_text;
+        if(mapevent_type == "hidereveal"){
+            std::string name = s_text;
+            int mode = s_int;
+            MapEventString* ev_str = s_eventstring(s_active);
+            ev_str->PushEvent(new event::HideRevealEntity(name, mode));
+        }
+        else if(mapevent_type == "teleport"){
+            float x = s_float;
+            float y = s_float;
+            float z = s_float;
+            DIRECTION dir = s_enum_DIRECTION;
+            std::string map_name = s_text;
+            MapEventString* ev_str = s_eventstring(s_active);
+            ev_str->PushEvent(new event::Teleport(coor3f(x,y,z), dir, map_name));
+        }
+        else if(instruction == "playanimation"){
+
+        }
+        else if(instruction == "activateswitch"){
+
+        }
+        else if(instruction == "modifyvariable"){
+
+        }
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else{
+
+    }
+}
 
 
 ScriptManager::ScriptManager(){
@@ -218,6 +269,7 @@ ScriptManager::ScriptManager(){
     _paradigms.insert(std::make_pair<std::string,voidfunction>("map_texture",(voidfunction)&paradigm::map_texture));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("staticentity",(voidfunction)&paradigm::map_entity_static));
     _paradigms.insert(std::make_pair<std::string,voidfunction>("objectentity",(voidfunction)&paradigm::map_entity_object));
+    _paradigms.insert(std::make_pair<std::string,voidfunction>("event",(voidfunction)&paradigm::map_event));
 
 }
 
@@ -269,6 +321,32 @@ float ScriptManager::readfloat(){
     f = atof(str.c_str());
     return f;
 }
+
+DIRECTION ScriptManager::readdirection(){
+
+    std::string direction;
+    DIRECTION dir = SOUTH;
+
+    if(direction == "NORTH") dir = NORTH;
+    else if(direction == "NORTH_EAST") dir = NORTH_EAST;
+    else if(direction == "EAST") dir = EAST;
+    else if(direction == "SOUTH_EAST") dir = SOUTH_EAST;
+    else if(direction == "SOUTH") dir = SOUTH;
+    else if(direction == "SOUTH_WEST") dir = SOUTH_WEST;
+    else if(direction == "WEST") dir = WEST;
+    else if(direction == "NORTH_WEST") dir = NORTH_WEST;
+    return dir;
+}
+
+//bool ScriptManager::readspecialchar(const char* value){
+//
+//    const char* str = (_file.substr(_cursor, 2)).c_str();
+//    std::cout << str << std::endl;
+//    if(str == value)
+//        return true;
+//    else
+//        return false;
+//}
 
 void ScriptManager::_jumpline(){
 

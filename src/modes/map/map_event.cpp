@@ -27,6 +27,7 @@ bool MapEventString::PushEvent(MapEvent* event){
 
     else{
         _events.push_back(event);
+        event::current_event_manager->RegisterEvent(event);
     }
 
     return true;
@@ -37,6 +38,8 @@ void MapEventString::Play(){
 }
 
 void MapEventString::Update(){
+
+    if(_events.empty() == true) return;
 
     _current_event = _events.at(_event_counter);
 
@@ -353,64 +356,46 @@ void ActivateSwitch::_Update(){
 
 /**---------------------------------------**/
 
-void HideEntity::_Update(){
+void HideRevealEntity::_Update(){
 
     Entity* _entity = GetEntity(_name);
-    _entity->SetVisible(false);
-    _is_done = true;
-    LOG("hide");
-}
-
-
-void PhantomEntity::_Update(){
-
-    Entity* _entity = GetEntity(_name);
-    _entity->SetVisible(false);
-    _entity->GetMesh()->SetSolid(false);
-    _is_done = true;
-    LOG("hide");
-}
-
-
-void RevealEntity::_Update(){
-
-    Entity* _entity = GetEntity(_name);
-    _entity->SetVisible(true);
-    _is_done = true;
-    LOG("reveal");
-}
-
-
-void UnphantomEntity::_Update(){
-
-    Entity* _entity = GetEntity(_name);
-    _entity->SetVisible(true);
-    _entity->GetMesh()->SetSolid(true);
-    _is_done = true;
-    LOG("reveal");
-}
-
-void ToggleVisibleEntity::_Update(){
-
-    Entity* _entity = GetEntity(_name);
-    if(_entity->IsVisible())
+    switch(_mode){
+    case EVENT_HIDE:
         _entity->SetVisible(false);
-    else
+        break;
+    case EVENT_REVEAL:
         _entity->SetVisible(true);
-    _is_done = true;
-}
-
-void TogglePhantomEntity::_Update(){
-
-    Entity* _entity = GetEntity(_name);
-    if(_entity->IsVisible())
+        break;
+    case EVENT_TOGGLE_HIDE:{
+        if(_entity->IsVisible())
+            _entity->SetVisible(false);
+        else
+            _entity->SetVisible(true);
+        break;
+    }
+    case EVENT_PHANTOM:{
         _entity->SetVisible(false);
-    else
-        _entity->SetVisible(true);
-    if(_entity->GetMesh()->IsSolid())
         _entity->GetMesh()->SetSolid(false);
-    else
+        break;
+    }
+    case EVENT_UNPHANTOM:{
+        _entity->SetVisible(true);
         _entity->GetMesh()->SetSolid(true);
+        break;
+    }
+    case EVENT_TOGGLE_PHANTOM:{
+        if(_entity->IsVisible())
+            _entity->SetVisible(false);
+        else
+            _entity->SetVisible(true);
+        if(_entity->GetMesh()->IsSolid())
+            _entity->GetMesh()->SetSolid(false);
+        else
+            _entity->GetMesh()->SetSolid(true);
+        break;
+    }
+
+    }
     _is_done = true;
 }
 

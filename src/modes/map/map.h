@@ -95,6 +95,9 @@ private:
     MapVideoEngine* _view_manager;
     PhysicsEngine* _physics_manager;
     EventManager* _event_manager;
+
+
+    template<class A> void _UpdateEntities(A&);
 //
 //    int _update_time;
 //
@@ -111,8 +114,6 @@ private:
 //    std::string _edMode;
 //    int _edCount;
 //    Entity* _edTarget;
-    Image* img;
-    Animation* anim;
 
 
 };//class MapMode

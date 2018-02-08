@@ -14,6 +14,10 @@ animation
         frame panel 100
         times 1
 
+    new anim_block
+        frame block 100
+        times 1
+
 end
 
 map_texture
@@ -26,6 +30,9 @@ map_texture
 
     new tex_table
         animation anim_table DEFAULT
+
+    new tex_block
+        animation anim_block DEFAULT
 
 end
 
@@ -83,6 +90,10 @@ mesh
         pos 0 -32 0
         size 500 32 500
 
+    new mesh14
+        pos 32 120 0
+        size 16 16 16
+
 end
 
 staticentity
@@ -136,12 +147,23 @@ staticentity
 
 end
 
+event
+
+    new ev_str
+        push hidereveal object2 3
+
+end
+
 objectentity
 
     new object1
         texture tex_panel
         mesh mesh12
 
+    new object2
+        texture tex_block
+        mesh mesh14
+        eventstring ev_str
 end
 
 end
