@@ -69,6 +69,9 @@ void MapMode::Update(){
     if(Input->DownPress()){
         Mode->Push(new TestMode());
     }
+    if(Input->UpPress()){
+        _event_manager->SetVar("var", 1);
+    }
 
     _view_manager->Update();
     _physics_manager->Update(Time->GetUpdateTime());

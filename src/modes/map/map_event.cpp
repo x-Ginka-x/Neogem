@@ -70,6 +70,11 @@ void MapEventString::Update(){
     }
 }
 
+void MapEventString::SetCondition(int type, std::string var, int value){
+
+    _events.back()->AddCondition(type, var, value);
+}
+
 MapEvent::MapEvent(){
 
     _event_manager = event::current_event_manager;
@@ -94,7 +99,7 @@ Entity* MapEvent::GetEntity(string name){
 
 
 
-void MapEvent::AddCondition(event::CONDITION_TYPE type, string variable, int value){
+void MapEvent::AddCondition(int type, string variable, int value){
 
     event::Condition condition = event::Condition();
     condition._type = type;
@@ -122,19 +127,19 @@ void MapEvent::Update(){
 
 bool MapEvent::_AssertCondition(event::Condition condition){
 
-    event::CONDITION_TYPE type = condition._type;
+    int type = condition._type;
     string var = condition._variable;
     int value = condition._value;
 
-    if(type == event::NO_CONDITION)
+    if(type == NO_CONDITION)
         return true;
-    else if(type == event::VARIABLE_EQUALS)
+    else if(type == VARIABLE_EQUALS)
         return (_event_manager->GetVar(var) == value);
-    else if(type == event::VARIABLE_IS_LESSER_THAN)
+    else if(type == VARIABLE_IS_LESSER_THAN)
         return (_event_manager->GetVar(var) <= value);
-    else if(type == event::VARIABLE_IS_GREATER_THAN)
+    else if(type == VARIABLE_IS_GREATER_THAN)
         return (_event_manager->GetVar(var) >= value);
-    else if(type == event::SWITCH_IS_ON)
+    else if(type == SWITCH_IS_ON)
         return (_event_manager->GetSwitch(var) == (value == 1 ? true : false));
     else{
         ERR("-map_event.cpp : Called AssertCondition() with unknown type !");
@@ -237,7 +242,7 @@ void EventManager::SetVar(string name, int value){
     else{
         ERR("-map_events.cpp : Attempted to call SetVar() on non-existing variable named " + name);
         ERR("  > variable created");
-        _variables.insert(make_pair(name, value));
+        AddVar(name, value);
     }
 }
 

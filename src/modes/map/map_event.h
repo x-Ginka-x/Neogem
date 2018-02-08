@@ -9,6 +9,12 @@
 #include "../../defs.h"
 
 
+#define NO_CONDITION 0
+#define VARIABLE_EQUALS 1
+#define VARIABLE_IS_LESSER_THAN 2
+#define VARIABLE_IS_GREATER_THAN 3
+#define SWITCH_IS_ON 4
+
 namespace neo{
 
 class EventManager;
@@ -18,14 +24,7 @@ namespace event{
 
 extern EventManager* current_event_manager;
 
-enum CONDITION_TYPE{
 
-    NO_CONDITION = 0,
-    VARIABLE_EQUALS,
-    VARIABLE_IS_LESSER_THAN,
-    VARIABLE_IS_GREATER_THAN,
-    SWITCH_IS_ON
-};
 
 class Condition{
 
@@ -33,7 +32,7 @@ public:
     Condition(){_type = NO_CONDITION; _variable = ""; _value = 0;}
     ~Condition(){}
 
-    CONDITION_TYPE _type;
+    int _type;
     std::string _variable;
     int _value;
 
@@ -61,6 +60,7 @@ public:
 
     bool PushEvent(MapEvent* event);
     void PopEvent(){_events.pop_back();}
+    void SetCondition(int, std::string, int);
 
     void Update();
     void Play();
@@ -99,7 +99,7 @@ public:
     virtual ~MapEvent();
 
     std::string GetName() const {return _name;}
-    void AddCondition(event::CONDITION_TYPE, std::string, int);
+    void AddCondition(int, std::string, int);
 
     void Play() {_is_playing = true; _is_done = false;}
     void Stop() {_is_playing = false;}

@@ -149,9 +149,11 @@ end
 
 event
 
+    setvar var 0
+
     new ev_str
         push hidereveal object2 3
-
+        condition 1 var 1
 end
 
 objectentity
