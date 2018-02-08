@@ -62,7 +62,7 @@ protected:
 
     float _mass;
     float _resistance;
-    int _bounce;
+    float _bounce;
 
 
     ///*** Private function used to calculate 'key positions'

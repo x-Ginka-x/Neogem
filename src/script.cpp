@@ -207,6 +207,8 @@ void paradigm::map_entity_object(){
     }
 }
 
+
+
 ScriptManager::ScriptManager(){
     _cursor = 0;
     _paradigms.insert(std::make_pair<std::string,voidfunction>("image",(voidfunction)&paradigm::image));

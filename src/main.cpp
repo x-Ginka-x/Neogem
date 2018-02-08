@@ -28,6 +28,8 @@
 .ActorEntity - change ActorEntity::Update()
 .Entity - Maybe initialize the MapTexture and the Mesh in the Entity constructor, so that it never points to NULL and some attributes (like _is_static) are already set
 .Script - Maybe create different types of ScriptManager (MapScript for example) and place them with their respective gamemodes (modes/map/map_script)
+        - Add one ScriptManager per MapMode and a ScriptEngine that acts on _current_script_manager (otherwise there are conflicts in ScriptEngine::_memory
+.Event - Possible memory leak ? ~EventManager() calls MapEvent destructor on MapEvent child classes
 ***/
 
 /**TODO NOW :

@@ -27,10 +27,15 @@ MapMode::MapMode(){
     Mesh* mesh = _physics_manager->CreateMesh();
     mesh->SetPos(32,120,0);
     mesh->SetSize(16,32,16);
-    mesh->SetStatic(true);
+    mesh->SetStatic(false);
     obj->LinkMesh(mesh);
     _object_entities.insert(make_pair("object", obj));
 
+    event::ToggleVisibleEntity* ev = new event::ToggleVisibleEntity("object");
+    _event_manager->RegisterEvent(ev);
+    MapEventString* ev_str = _event_manager->CreateEventString();
+    ev_str->PushEvent(ev);
+    obj->AddPassiveEvent(ev_str);
 
     _state = NO_CHANGE;
 
@@ -71,10 +76,15 @@ void MapMode::Update(){
     if(_state == CHANGE)
         Reset();
 
+    if(Input->ActionPress()){
+        GetObjectEntity("object")->PlayPassive();
+    }
+
+
     _view_manager->Update();
-//    _physics_manager->Update(Time->GetUpdateTime());
-//    _physics_manager->ManageCollisions();
-//    _event_manager->Update();
+    _physics_manager->Update(Time->GetUpdateTime());
+    _physics_manager->ManageCollisions();
+    _event_manager->Update();
 
     for(auto it = _static_entities.begin(); it != _static_entities.end(); ++it){
 
@@ -104,7 +114,7 @@ void MapMode::Update(){
 
 void MapMode::Reset(){
 
-
+    neo_map::_current_map = this;
 }
 
 

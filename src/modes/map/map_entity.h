@@ -25,7 +25,7 @@ public:
     void SetName(std::string name){_name = name;}
 
 
-    virtual void Update(int){}
+    void Update(int);
 
     /*** Mesh management ***/
 
@@ -46,7 +46,7 @@ public:
     MapTexture* GetTexture() {return _texture;}
     void LinkMapTexture(MapTexture* tex) {_texture = tex;_texture->SetVisible(true);}
     void SetVisible(bool visible){_texture->SetVisible(visible);}
-    bool IsVisible(){return _texture->IsVisible();}
+    bool IsVisible();
 
 
     void PlayPassive();
@@ -71,8 +71,7 @@ protected:
     std::vector<MapEventString*> _passive_events;
     std::vector<MapEventString*> _active_events;
 
-    bool _visible;
-
+    virtual void _Update(int){}
 
 private:
 
@@ -86,7 +85,7 @@ public:
     StaticEntity();
     ~StaticEntity();
 
-    void Update(int);
+    void _Update(int);
     void Initialize(){_mesh->Initialize();}
 
 private:
@@ -102,7 +101,7 @@ public:
     ObjectEntity(std::string);
     ~ObjectEntity();
 
-    void Update(int);
+    void _Update(int);
 
 private:
 
@@ -118,7 +117,7 @@ public:
     ActorEntity(std::string);
     ~ActorEntity();
 
-    void Update(int);
+    void _Update(int);
 
     virtual void Initialize();
 

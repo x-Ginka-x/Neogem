@@ -120,8 +120,8 @@ class EventManager{
 
 private:
 
-    std::map<std::string, MapEvent*> _events;
-    std::map<std::string, MapEventString*> _event_strings;
+    std::vector<MapEvent*> _events;
+    std::vector<MapEventString*> _event_strings;
     std::map<std::string, bool> _switches;
     std::map<std::string, int> _variables;
 
@@ -132,21 +132,8 @@ public:
     EventManager();
     ~EventManager();
 
-    void RegisterEvent(std::string name, MapEvent* event){_events.insert(std::make_pair(name, event));}
-    void DeleteEvent(std::string);
-
-    MapEvent* GetEvent(std::string);
-
-
-///TEST WITH EVENT STRINGS///
-
-    void RegisterEventString(std::string name, MapEventString* event_string){_event_strings.insert(std::make_pair(name, event_string));}
-    void DeleteEventString(std::string);
-
-    MapEventString* GetEventString(std::string);
-
-///--------------///
-
+    void RegisterEvent(MapEvent*);
+    MapEventString* CreateEventString();
 
     bool AddSwitch(std::string);
     bool DeleteSwitch(std::string);
@@ -255,7 +242,70 @@ public:
     RevealEntity(std::string name){_name = name;}
     ~RevealEntity(){}
 
-};//HideEntity
+};//RevealEntity
+
+
+class PhantomEntity : public MapEvent{
+
+private:
+
+    std::string _name;
+
+    void _Update();
+
+public:
+
+    PhantomEntity(std::string name){_name = name;}
+    ~PhantomEntity(){}
+
+};//PhantomEntity
+
+
+class UnphantomEntity : public MapEvent{
+
+private:
+
+    std::string _name;
+
+    void _Update();
+
+public:
+
+    UnphantomEntity(std::string name){_name = name;}
+    ~UnphantomEntity(){}
+
+};//UnphantomEntity
+
+class TogglePhantomEntity : public MapEvent{
+
+private:
+
+    std::string _name;
+
+    void _Update();
+
+public:
+
+    TogglePhantomEntity(std::string name){_name = name;}
+    ~TogglePhantomEntity(){}
+
+};//TogglePhantomEntity
+
+
+class ToggleVisibleEntity : public MapEvent{
+
+private:
+
+    std::string _name;
+
+    void _Update();
+
+public:
+
+    ToggleVisibleEntity(std::string name){_name = name;}
+    ~ToggleVisibleEntity(){}
+
+};//ToggleVisibleEntity
 
 class PlayAnimation : public MapEvent{
 

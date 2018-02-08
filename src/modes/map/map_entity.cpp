@@ -6,7 +6,6 @@ using namespace neo;
 
 Entity::Entity(){
     _name = "";
-    _visible = true;
     _aabb_visible = false;
     _mesh = NULL;
     _texture = NULL;
@@ -59,6 +58,20 @@ bool Entity::IsColliding(Entity* E){
 }
 
 
+bool Entity::IsVisible(){
+
+    if(_texture == NULL)
+        return false;
+    else
+        return _texture->IsVisible();
+}
+
+void Entity::Update(int update_time){
+
+    _Update(update_time);
+}
+
+
 StaticEntity::StaticEntity(){
     if(MAP_DEBUG) LOG(".create and initialize [static object]");
 
@@ -69,7 +82,7 @@ StaticEntity::~StaticEntity(){
 }
 
 
-void StaticEntity::Update(int update_time){
+void StaticEntity::_Update(int update_time){
 
 }
 
@@ -90,7 +103,7 @@ ObjectEntity::~ObjectEntity(){
 }
 
 
-void ObjectEntity::Update(int update_time){
+void ObjectEntity::_Update(int update_time){
 
 }
 
@@ -110,7 +123,7 @@ ActorEntity::~ActorEntity(){
 }
 
 
-void ActorEntity::Update(int update_time){
+void ActorEntity::_Update(int update_time){
 
     _is_falling = _mesh->IsOnGround() == true ? false : true;
 

@@ -62,6 +62,9 @@ void MapEventString::Update(){
 
         }
     }
+    if(_current_event != NULL){
+        _current_event->Update();
+    }
 }
 
 MapEvent::MapEvent(){
@@ -159,6 +162,7 @@ EventManager::EventManager(){
 EventManager::~EventManager(){
 
     Clear(_events);
+    Clear(_event_strings);
 
 }
 
@@ -203,22 +207,6 @@ void EventManager::TurnOff(string name){
 }
 
 
-void EventManager::DeleteEvent(string name){
-
-    if(_events.find(name) != _events.end()){
-        delete _events.at(name);
-        _events.erase(name);
-    }
-}
-
-MapEvent* EventManager::GetEvent(std::string name){
-
-    if(_events.find(name) != _events.end()){
-        return _events.at(name);
-    }
-    else return NULL;
-}
-
 
 
 void EventManager::AddVar(string name, int value){
@@ -250,18 +238,24 @@ void EventManager::SetVar(string name, int value){
     }
 }
 
+void EventManager::RegisterEvent(MapEvent* ev){
 
+    _events.push_back(ev);
+}
+
+MapEventString* EventManager::CreateEventString(){
+
+    MapEventString* ev = new MapEventString();
+    _event_strings.push_back(ev);
+    return ev;
+}
 
 void EventManager::Update(){
-//    LOG("here");
 
     for(auto it = _event_strings.begin(); it != _event_strings.end(); ++it){
-        it->second->Update();
+        (*it)->Update();
     }
-    for(map<string, MapEvent*>::iterator it = _events.begin(); it != _events.end(); ++it){
-        (*it).second->Update();
 
-    }
 }
 
 using namespace event;
@@ -363,18 +357,60 @@ void HideEntity::_Update(){
 
     Entity* _entity = GetEntity(_name);
     _entity->SetVisible(false);
-    _entity->GetMesh()->SetSolid(false);
     _is_done = true;
+    LOG("hide");
 }
 
+
+void PhantomEntity::_Update(){
+
+    Entity* _entity = GetEntity(_name);
+    _entity->SetVisible(false);
+    _entity->GetMesh()->SetSolid(false);
+    _is_done = true;
+    LOG("hide");
+}
 
 
 void RevealEntity::_Update(){
 
     Entity* _entity = GetEntity(_name);
+    _entity->SetVisible(true);
+    _is_done = true;
+    LOG("reveal");
+}
 
+
+void UnphantomEntity::_Update(){
+
+    Entity* _entity = GetEntity(_name);
     _entity->SetVisible(true);
     _entity->GetMesh()->SetSolid(true);
+    _is_done = true;
+    LOG("reveal");
+}
+
+void ToggleVisibleEntity::_Update(){
+
+    Entity* _entity = GetEntity(_name);
+    if(_entity->IsVisible())
+        _entity->SetVisible(false);
+    else
+        _entity->SetVisible(true);
+    _is_done = true;
+}
+
+void TogglePhantomEntity::_Update(){
+
+    Entity* _entity = GetEntity(_name);
+    if(_entity->IsVisible())
+        _entity->SetVisible(false);
+    else
+        _entity->SetVisible(true);
+    if(_entity->GetMesh()->IsSolid())
+        _entity->GetMesh()->SetSolid(false);
+    else
+        _entity->GetMesh()->SetSolid(true);
     _is_done = true;
 }
 

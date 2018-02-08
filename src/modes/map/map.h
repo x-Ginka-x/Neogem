@@ -18,8 +18,6 @@ namespace neo{
 /**< this bool tells if MapMode should write logs in the console */
 extern bool MAP_DEBUG;
 
-
-
 enum MAP_STATE{
 
     NO_CHANGE,
@@ -83,13 +81,13 @@ public:
     ObjectEntity* CreateObjectEntity(std::string);
     ObjectEntity* GetObjectEntity(std::string);
 
+
 private:
 
     std::string _script_file;
     std::map<std::string, StaticEntity*> _static_entities;
     std::map<std::string, ObjectEntity*> _object_entities;
 //    std::map<std::string, ActorEntity*> _actors;
-
 
     MAP_STATE _state;
 
