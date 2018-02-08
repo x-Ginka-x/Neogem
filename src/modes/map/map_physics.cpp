@@ -7,7 +7,7 @@ bool neo::PHYSICS_DEBUG = true;
 
 PhysicsEngine::PhysicsEngine(){
 
-    _gravity = 9.1f;
+    _gravity = 5.1f;
     _update_zone = int4(0, 0, 1280, 640);
 }
 
@@ -104,7 +104,8 @@ void PhysicsEngine::Update(int update_time){
 
         else{
             if(_gravity > 0 && (*it)->IsStatic() == false)
-                (*it)->ApplyForce(DOWN, ENERGY_TYPE_METERSECOND, _gravity);
+                if((*it)->IsOnGround() == false)
+                    (*it)->ApplyForce(DOWN, ENERGY_TYPE_METERSECOND, _gravity);
 
             (*it)->Update(update_time);
         }
@@ -115,7 +116,8 @@ void PhysicsEngine::Update(int update_time){
         if(_IsMeshInUZone(*it)){
 
             if(_gravity > 0 && (*it)->IsStatic() == false)
-                (*it)->ApplyForce(DOWN, ENERGY_TYPE_METERSECOND, _gravity);
+                if((*it)->IsOnGround() == false)
+                    (*it)->ApplyForce(DOWN, ENERGY_TYPE_METERSECOND, _gravity);
 
             (*it)->Update(update_time);
             _updatable_meshes.insert(*it);

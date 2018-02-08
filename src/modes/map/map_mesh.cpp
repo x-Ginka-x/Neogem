@@ -230,7 +230,7 @@ void Mesh::Update(int update_time){
 
     if(_kinetic_energy.at(DOWN) < 0.01f)
         _kinetic_energy.at(DOWN) = 0.0f;
-    if(_kinetic_energy.at(UP) < 0.01f)
+    if(_kinetic_energy.at(UP) < 0.1f)
         _kinetic_energy.at(UP) = 0.0f;
     if(_kinetic_energy.at(EAST) < 0.01f)
         _kinetic_energy.at(EAST) = 0.0f;
@@ -413,8 +413,8 @@ void Mesh::ResolveCollision(Mesh* mesh){
         }
 
         float k = _kinetic_energy.at(DOWN);
-        mesh->ApplyForce(DOWN, ENERGY_TYPE_JOULE, k/2);
-        ApplyForce(UP, ENERGY_TYPE_JOULE, _bounce * k/2);
+//        mesh->ApplyForce(DOWN, ENERGY_TYPE_JOULE, k/2);
+//        ApplyForce(UP, ENERGY_TYPE_JOULE, _bounce * k/2);
         _kinetic_energy.at(DOWN) -= k;
     }
 
@@ -449,9 +449,11 @@ void Mesh::ResolveCollision(Mesh* mesh){
         if(mesh->IsBlocked(UP))
             SetBlocked(UP, true);
 
+        mesh->SetBlocked(DOWN, true);
+
         float k = _kinetic_energy.at(UP);
-        mesh->ApplyForce(UP, ENERGY_TYPE_JOULE, k/2);
-        ApplyForce(DOWN, ENERGY_TYPE_JOULE, k/2);
+//        mesh->ApplyForce(UP, ENERGY_TYPE_JOULE, mesh->_bounce * k/2);
+//        ApplyForce(DOWN, ENERGY_TYPE_JOULE, k/2);
         _kinetic_energy.at(UP) -= k;
     }
 
