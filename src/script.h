@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "kaguya/kaguya.hpp"
-
 #include "utils.h"
 #include "defs.h"
 

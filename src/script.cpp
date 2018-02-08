@@ -1,5 +1,4 @@
 #include "script.h"
-#define LUACLASS kaguya::UserdataMetatable
 
 #include <iostream>
 #include <fstream>

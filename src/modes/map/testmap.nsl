@@ -152,7 +152,7 @@ mesh
         size 16 16 16
 
     new mesh_ginka
-        pos 180 0 64
+        pos 32 150 0
         size 8 16 8
 
 end

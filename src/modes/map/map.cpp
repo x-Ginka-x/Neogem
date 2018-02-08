@@ -12,6 +12,7 @@ MapMode::MapMode(){
 
     neo_map::_current_map = this;
     _script_file = "";
+
     _view_manager = new MapVideoEngine();
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
@@ -19,8 +20,9 @@ MapMode::MapMode(){
     Script->_executescript("src/modes/map/testmap.nsl");
     _physics_manager->SetUpdateZone(-1000,-500,2000,1000);
 
+    _view_manager->Follow(coor3f(0,0,0));
+    _view_manager->Update();
     _state = NO_CHANGE;
-
 }
 
 MapMode::MapMode(string script_file){
@@ -29,7 +31,6 @@ MapMode::MapMode(string script_file){
     neo_map::_current_map = this;
     _script_file = script_file;
     _view_manager = new MapVideoEngine();
-    _view_manager->Follow(coor3f(0,0,0));
     _state = NO_CHANGE;
 }
 
@@ -46,7 +47,6 @@ MapMode::~MapMode(){
 
 void MapMode::Draw(){
 
-    _view_manager->Follow(coor3f(0,0,0));
     _view_manager->Draw();
 
 }
@@ -83,16 +83,18 @@ void MapMode::Update(){
         GetActorEntity("ginka")->Walk(SOUTH);
     }
 
-    _view_manager->Follow(GetActorEntity("ginka")->GetCenter());
-    _view_manager->Update();
     _physics_manager->Update(Time->GetUpdateTime());
     _physics_manager->ManageCollisions();
+
+
     _event_manager->Update();
-
-
     _UpdateEntities(_static_entities);
     _UpdateEntities(_object_entities);
     _UpdateEntities(_actor_entities);
+
+    _view_manager->Follow(GetActorEntity("ginka")->GetCenter());
+
+    _view_manager->Update();
 
 }
 
@@ -143,7 +145,6 @@ ActorEntity* MapMode::CreateActorEntity(std::string name){
     return _actor_entities.at(name);
 }
 
-
 ObjectEntity* MapMode::GetObjectEntity(string name){
 
     if(_object_entities.find(name) != _object_entities.end())
@@ -151,7 +152,6 @@ ObjectEntity* MapMode::GetObjectEntity(string name){
     else
         return NULL;
 }
-
 
 ActorEntity* MapMode::GetActorEntity(string name){
 
