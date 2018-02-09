@@ -11,11 +11,9 @@
     #include "modes/test/test.h"
 
 #include "script.h"
-#include "Shader.h"
 
-/***TODO LIST :
+/*** 1st TODO LIST :
 
-.Image::Load functions - reorganize and simplify 'loadscript'
 .TextManager - add support for texture batching
 .Shaders - reorganize and translate remaining french expressions
 .Input - simplify and enhance
@@ -28,9 +26,15 @@
         - Add one ScriptManager per MapMode and a ScriptEngine that acts on _current_script_manager (otherwise there are conflicts in ScriptEngine::_memory
 ***/
 
+/*** 2nd TODO List :
+
+.TextManager - Add color choice when loading or writing glyphs
+.ImageManager - Only one instance = Lots of useless memory alloc
+***/
+
 /**TODO NOW :
 
-    Fri 0210 - Empty TODO LIST
+    Fri 0210 - Empty 1st TODO LIST
     Sat 0211 -> Sun 0212 - Add content to test map
     Mon 0213 -> Sun 0219 - Dialog Manager
     Sun 0219 - 0.11-alpha.0 release

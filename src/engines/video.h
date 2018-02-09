@@ -20,7 +20,7 @@
 
 #include "../defs.h"
 #include "../utils.h"
-#include "../Shader.h"
+#include "shader.h"
 
 
 namespace neo{

@@ -45,7 +45,10 @@ bool Font::_LoadGlyphs(TTF_Font* font){
             ERR("-text.cpp : Problem with TTF_GlyphMetrics");
             return false;
         }
+
+        /** We need to add color choice **/
         SDL_Color black = {50,50,50,50};
+
         SDL_Surface* surf = TTF_RenderGlyph_Blended(font, glyph, black);
         if(!surf){
             ERR("-text.cpp : Problem with TTF_RenderGlyph");
@@ -53,11 +56,7 @@ bool Font::_LoadGlyphs(TTF_Font* font){
         }
         string glyphname = _name + "_font_char" + table[i];
         Image* img = ImgManager->RegisterSurfaceAsImage(surf, glyphname);
-//img=ImgManager->GetImage("block");
-//        if(img->LoadFromSurface(surf) == false){
-//            ERR("-text.cpp : Could not create a glyph : " + table[i]);
-//            return false;
-//        }
+
         SDL_FreeSurface(surf);
 
         FontGlyph* fontglyph = new FontGlyph();

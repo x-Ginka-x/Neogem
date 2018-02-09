@@ -79,7 +79,7 @@ bool neo::VideoEngine::Initialize(){
     _projection = glm::ortho(0.0f, (float)neo::SCREEN_WIDTH,(float)neo::SCREEN_HEIGHT,0.0f, 0.0f, 1000.0f);
     _modelview = glm::lookAt(glm::vec3(0.0,0.0,1000.0),glm::vec3(0.0,0.0,0.0),glm::vec3(0,1,0));
 
-    _texture_shader = Shader("src/Shaders/texture.vert", "src/Shaders/texture.frag");
+    _texture_shader = Shader("src/shaders/texture.vert", "src/shaders/texture.frag");
     _texture_shader.Load();
 
     return true;

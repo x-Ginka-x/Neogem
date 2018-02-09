@@ -14,8 +14,6 @@ Image::Image(){
     float oglvertices[18] = {-2, -2, 0,   2, -2, 0,   2, 2, 0,
                         -2, -2, 0,   -2, 2, 0,   2, 2, 0};
 
-//    float ogltexcoords[12] = {0, 0,   1, 0,   1, 1,
-//                        0, 0,   0, 1,   1, 1};
 
     for(int i = 0 ;i < 18; i++) _oglvertices[i] = oglvertices[i];
 

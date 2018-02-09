@@ -42,7 +42,7 @@ void MapVideoEngine::Draw(){
         coor.z = depth.z + depth.d/2;
 
         pos = tocameraf(coor);
-        Video->SetCursorPos(pos.x, pos.y, z);
+        Video->SetCursorPos(round(pos.x), round(pos.y), z);
         (*it).second->Draw();
         z += 1.0;
     }
