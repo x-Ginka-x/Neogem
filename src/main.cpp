@@ -30,8 +30,12 @@
 
 /**TODO NOW :
 
-    Events and Entities - Integrate Actor + Link to ScriptEngine
-                        - Recreate test map
+    Fri 0210 - Empty TODO LIST
+    Sat 0211 -> Sun 0212 - Add content to test map
+    Mon 0213 -> Sun 0219 - Dialog Manager
+    Sun 0219 - 0.11-alpha.0 release
+
+
 **/
 
 using namespace std;
