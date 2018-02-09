@@ -118,11 +118,11 @@ class d_int{
 
 public:
     d_int();
-    d_int(int X, int Y, int Z, int W, int H, int D){x=X;y=Y;z=Z;w=W;h=H;d=D;}
+    d_int(float X, float Y, float Z, float W, float H, float D){x=X;y=Y;z=Z;w=W;h=H;d=D;}
     ~d_int(){}
 
-    int x, y, z;
-    int w, h, d;
+    float x, y, z;
+    float w, h, d;
 
     bool operator <(d_int const& other) const;
 };

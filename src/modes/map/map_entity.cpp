@@ -78,7 +78,7 @@ StaticEntity::~StaticEntity(){
 
 
 void StaticEntity::_Update(int update_time){
-
+    if(_texture != NULL) _texture->Play("DEFAULT");
 }
 
 
@@ -281,7 +281,7 @@ void ActorEntity::Jump(){
 
 
 
-void neo::StaticEntityDescriptor(ScriptManager* Script){
+void neo::StaticEntityDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 
@@ -311,7 +311,7 @@ void neo::StaticEntityDescriptor(ScriptManager* Script){
 }
 
 
-void neo::ObjectEntityDescriptor(ScriptManager* Script){
+void neo::ObjectEntityDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 
@@ -345,7 +345,7 @@ void neo::ObjectEntityDescriptor(ScriptManager* Script){
     }
 }
 
-void neo::ActorEntityDescriptor(ScriptManager* Script){
+void neo::ActorEntityDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 

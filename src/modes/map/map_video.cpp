@@ -20,8 +20,8 @@ MapVideoEngine::~MapVideoEngine(){
 
 void MapVideoEngine::Update(){
 
-    _camera_offset.x = toscreen(_camera_target).x - SCREEN_WIDTH / 2;
-    _camera_offset.y = toscreen(_camera_target).y - SCREEN_HEIGHT / 2;
+    _camera_offset.x = toscreen(_camera_target).x - 640.0f;
+    _camera_offset.y = toscreen(_camera_target).y - 360.0f;
     for(auto it = _texture_objects.begin(); it != _texture_objects.end(); ++it){
         (*it)->Update(Time->GetUpdateTime());
     }
@@ -33,17 +33,17 @@ void MapVideoEngine::Draw(){
 
     coor3f pos;
     coor3f coor;
-    float z = 0.5;
+    float z = 1;
 
     for(multimap<d_int, Image*>::iterator it = _ordered_textures.begin(); it != _ordered_textures.end(); ++it){
 
         d_int depth = (*it).first;
-        coor.x = depth.x + depth.w/2;
-        coor.y = depth.y + depth.h/2;
-        coor.z = depth.z + depth.d/2;
+        coor.x = depth.x + depth.w/2.0f;
+        coor.y = depth.y + depth.h/2.0f;
+        coor.z = depth.z + depth.d/2.0f;
 
         pos = tocameraf(coor);
-        Video->SetCursorPos(round(pos.x), round(pos.y), z);
+        Video->SetCursorPos(pos.x, pos.y, z);
         (*it).second->Draw();
         z += 1.0;
     }

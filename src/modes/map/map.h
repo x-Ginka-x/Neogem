@@ -101,6 +101,9 @@ private:
 
     template<class A> void _UpdateEntities(A&);
 
+    /** Temporary **/
+    Image* _blank_bg;
+
 
 };//class MapMode
 

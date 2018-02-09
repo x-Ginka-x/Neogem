@@ -25,7 +25,6 @@
 
 /**TODO NOW :
 
-    Fri 0210 - Empty 1st TODO LIST
     Sat 0211 -> Sun 0212 - Add content to test map
     Mon 0213 -> Sun 0219 - Dialog Manager
     Sun 0219 - 0.11-alpha.0 release
@@ -46,7 +45,7 @@ void InitializeEngines(){
     neo::ImgManager = new neo::ImageManager();
     neo::Text = new neo::TextEngine();
     neo::Mode = new neo::ModeManager();
-    neo::Script = new neo::ScriptManager();
+    neo::Script = new neo::ScriptObject();
 
 }//void InitializeEngines()
 

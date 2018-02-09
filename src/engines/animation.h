@@ -69,7 +69,7 @@ public:
 };
 
 
-void AnimationDescriptor(ScriptManager*);
+void AnimationDescriptor(ScriptObject*);
 
 }//namespace
 #endif // ANIMATION_H_INCLUDED

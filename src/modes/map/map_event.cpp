@@ -436,7 +436,7 @@ void ListenPosition::_Update(){
 }
 
 
-void neo::MapEventDescriptor(ScriptManager* Script){
+void neo::MapEventDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 

@@ -21,7 +21,7 @@ namespace neo{
     class TimeEngine;
     class Timer;
 
-    class ScriptManager;
+    class ScriptObject;
 
     extern bool MODE_DEBUG;
     class ModeManager;

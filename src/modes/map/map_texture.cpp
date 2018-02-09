@@ -87,7 +87,7 @@ Image* MapTexture::GetCurrentFrame(){
 
 
 
-void neo::MapTextureDescriptor(ScriptManager* Script){
+void neo::MapTextureDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
     if(instruction == "new"){

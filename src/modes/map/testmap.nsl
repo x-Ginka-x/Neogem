@@ -18,6 +18,14 @@ animation
         frame block 100
         times 1
 
+    new anim_panel
+        frame panel7 100
+        times 1
+
+    new anim_switch
+        frame switchmark 100
+        frame switchmark2 100
+
 -------GINKA ANIMATIONS
 
     new anim_g1 --STANDING_SOUTH
@@ -61,6 +69,9 @@ end
 
 map_texture
 
+    new tex_panel
+        animation anim_panel DEFAULT
+
     new tex_crate
         animation anim_crate DEFAULT
 
@@ -83,6 +94,9 @@ map_texture
         animation anim_g7 WALKING_WEST
         animation anim_g8 WALKING_NORTH
         animation anim_g1 DEFAULT
+
+    new tex_switchmark
+        animation anim_switch DEFAULT
 
 end
 
@@ -130,10 +144,10 @@ mesh
 
     new mesh11
         pos 18 0 18
-        size 16 32 16
+        size 8 32 16
 
     new mesh12
-        pos 132 0 50
+        pos 130 0 30
         size 16 16 16
         mass 50
 
@@ -150,6 +164,11 @@ mesh
     new mesh14
         pos 64 0 32
         size 16 32 16
+
+    new mesh_switch
+        pos 130 0 50
+        size 15 1 15
+        solid 0
 
     new mesh_ginka
         pos 32 150 0
@@ -191,8 +210,8 @@ staticentity
         texture tex_table
         mesh mesh10
 
-    new static_rock
-        texture tex_rock
+    new static_panel
+        texture tex_panel
         mesh mesh11
 
     new walln3
@@ -210,6 +229,10 @@ staticentity
     new ground3
         mesh mesh132
 
+    new switch_mark
+        mesh mesh_switch
+        texture tex_switchmark
+
 end
 
 event
@@ -220,9 +243,9 @@ event
 
     new ev_str
         push hidereveal object_rock 4
-        condition 3 block_x 135
+        condition 3 block_x 125
         condition 2 block_x 140
-        condition 3 block_z 55
+        condition 3 block_z 45
         condition 2 block_z 60
 
     new ev_str2

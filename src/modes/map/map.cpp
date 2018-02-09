@@ -17,7 +17,7 @@ MapMode::MapMode(){
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
 
-    ScriptManager* script = new ScriptManager();
+    ScriptObject* script = new ScriptObject();
 
     script->BindParadigm("image", (paradigmfunction)&neo::ImageDescriptor);
     script->BindParadigm("animation", (paradigmfunction)&neo::AnimationDescriptor);
@@ -33,6 +33,8 @@ MapMode::MapMode(){
     delete script;
 
     _physics_manager->SetUpdateZone(-1000,-500,2000,1000);
+
+    _blank_bg = ImgManager->GetImage("crate2");
 
     _view_manager->Follow(coor3f(0,0,0));
     _view_manager->Update();
@@ -61,21 +63,22 @@ MapMode::~MapMode(){
 
 void MapMode::Draw(){
 
+    for(int i = 0; i < 4; i++){
+        Video->SetCursorPos((i%2)*640, (i/2)*360, 0.5);
+        _blank_bg->Draw(IMAGE_DRAW_FROM_TOPLEFT);
+    }
     _view_manager->Draw();
+    Video->SetCursorPos(150, 10.5, 999);
+    Text->Write("Place the Block on the Mark", "default_font");
 
 }
 
 void MapMode::Update(){
 
+    /*** Controls (to be moved away) ***/
+
     if(Input->Press(SDLK_ESCAPE))
         Mode->Pop();
-
-    if(_state == CHANGE)
-        Reset();
-
-    if(GetObjectEntity("object_rock") != NULL)
-        GetObjectEntity("object_rock")->PlayPassive();
-
 
     if(Input->State(SDLK_d)){
 
@@ -97,20 +100,33 @@ void MapMode::Update(){
         Mode->Push(new TestMode());
     }
 
+    /** Update the Physics and manage the collisions **/
+
     _physics_manager->Update(Time->GetUpdateTime());
     _physics_manager->ManageCollisions();
+
+    /** This recalculate collisions for meshes that are between two others meshes, preventing some bugs **/
+
     _physics_manager->ManageCollisions();
 
+    /** Updates the MapEvent strings **/
 
     _event_manager->Update();
+
+    /** Updates static, object and actor entities **/
+
     _UpdateEntities(_static_entities);
     _UpdateEntities(_object_entities);
     _UpdateEntities(_actor_entities);
 
+
+    /** Still not good but sets the camera to follow the hero **/
+
     _view_manager->Follow(GetActorEntity("ginka")->GetPos());
 
-    _view_manager->Update();
+    /** Updates the MapTextures **/
 
+    _view_manager->Update();
 }
 
 void MapMode::Reset(){
@@ -185,8 +201,9 @@ template<class A> void MapMode::_UpdateEntities(A& entities){
             Image* img = it->second->GetTexture()->GetCurrentFrame();
             coor3f pos = it->second->GetMesh()->GetPos();
             coor3f size = it->second->GetMesh()->GetSize();
-
             _view_manager->RegisterTextureForSorting(img, pos, size);
+
+            it->second->PlayPassive();
         }
     }
 }

@@ -52,7 +52,7 @@ private:
 
 };//class MapTexture
 
-void MapTextureDescriptor(ScriptManager*);
+void MapTextureDescriptor(ScriptObject*);
 
 }//namespace
 

@@ -160,7 +160,7 @@ void PhysicsEngine::ManageCollisions(){
 
             while(_mesh_collision_resolving_helper.empty() == false){
 
-                if(_mesh_collision_resolving_helper.back()->IsSolid() && mesh->IsSolid()){
+                if(_mesh_collision_resolving_helper.back()->IsSolid() == true && mesh->IsSolid() == true){
                     mesh->ResolveCollision(_mesh_collision_resolving_helper.back());
                 }
                 _mesh_collision_resolving_helper.pop_back();

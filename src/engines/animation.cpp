@@ -89,7 +89,7 @@ Image* Animation::GetCurrentFrameTexture(){
 
 
 
-void neo::AnimationDescriptor(ScriptManager* Script){
+void neo::AnimationDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 

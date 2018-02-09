@@ -144,9 +144,9 @@ private:
 };//class ActorEntity
 
 
-void StaticEntityDescriptor(ScriptManager*);
-void ObjectEntityDescriptor(ScriptManager*);
-void ActorEntityDescriptor(ScriptManager*);
+void StaticEntityDescriptor(ScriptObject*);
+void ObjectEntityDescriptor(ScriptObject*);
+void ActorEntityDescriptor(ScriptObject*);
 }//namespace
 
 #endif // MAP_ENTITY_H_INCLUDED

@@ -266,7 +266,7 @@ public:
 }//namespace event
 
 
-void MapEventDescriptor(ScriptManager*);
+void MapEventDescriptor(ScriptObject*);
 }//namespace
 
 #endif // MAP_EVENT_H_INCLUDED

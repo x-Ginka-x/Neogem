@@ -13,12 +13,12 @@ bool neo::MESH_DEBUG = true;
 
 float Mesh::_jouletospeed(float value, float mass){
 
-    return sqart(2*value/mass) * 16.0f;
+    return sqart(2.0f*value/mass) * 16.0f;
 }
 
 float Mesh::_speedtojoule(float value,float mass){
 
-    return (mass/2*value*value/256);
+    return (mass/2.0f*value*value/256.0f);
 }
 //
 //
@@ -271,16 +271,16 @@ void Mesh::Update(int update_time){
 
         float v = _jouletospeed(_kinetic_energy.at(WEST), _mass);
         float y = v - (_resistance * seconds_passed);
-        if (y < 0) y = 0;
-        float dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        float dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(WEST, dist);
         _kinetic_energy.at(WEST) = _speedtojoule(y, _mass);
 
 
         v = _jouletospeed(_kinetic_energy.at(EAST), _mass);
         y = v - (_resistance * seconds_passed);
-        if (y < 0) y = 0;
-        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(EAST, dist);
         _kinetic_energy.at(EAST) = _speedtojoule(y, _mass);
 
@@ -288,8 +288,8 @@ void Mesh::Update(int update_time){
 
         v = _jouletospeed(_kinetic_energy.at(NORTH), _mass);
         y = v - (_resistance * seconds_passed);
-        if (y < 0) y = 0;
-        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(NORTH, dist);
         _kinetic_energy.at(NORTH) = _speedtojoule(y, _mass);
 
@@ -297,8 +297,8 @@ void Mesh::Update(int update_time){
 
         v = _jouletospeed(_kinetic_energy.at(SOUTH), _mass);
         y = v - (_resistance * seconds_passed);
-        if (y < 0) y = 0;
-        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(SOUTH, dist);
         _kinetic_energy.at(SOUTH) = _speedtojoule(y, _mass);
 
@@ -306,16 +306,16 @@ void Mesh::Update(int update_time){
 
         v = _jouletospeed(_kinetic_energy.at(DOWN), _mass);
         y = v - (_resistance * seconds_passed);
-        if (y < 0) y = 0;
-        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(DOWN, dist);
         _kinetic_energy.at(DOWN) = _speedtojoule(y, _mass);
 
 
         v = _jouletospeed(_kinetic_energy.at(UP), _mass);
         y = v - (300.0f * seconds_passed);
-        if (y < 0) y = 0;
-        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
+        if (y < 0.0f) y = 0.0f;
+        dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2.0f);
         Move(UP, dist);
         _kinetic_energy.at(UP) = _speedtojoule(y, _mass);
 
@@ -391,7 +391,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         float k = _kinetic_energy.at(WEST);
 
         if(_has_the_right_to_push_other_meshes)
-            mesh->ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
+            mesh->ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(WEST) -= k;
     }
@@ -405,7 +405,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         float k = _kinetic_energy.at(EAST);
 
         if(_has_the_right_to_push_other_meshes)
-            mesh->ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
+            mesh->ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(EAST) -= k;
     }
@@ -435,7 +435,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         float k = _kinetic_energy.at(SOUTH);
 
         if(_has_the_right_to_push_other_meshes)
-            mesh->ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
+            mesh->ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(SOUTH) -= k;
     }
@@ -450,7 +450,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         float k = _kinetic_energy.at(NORTH);
 
         if(_has_the_right_to_push_other_meshes)
-            mesh->ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
+            mesh->ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(NORTH) -= k;
     }
@@ -469,7 +469,7 @@ void Mesh::ApplyForce(DIRECTION dir, ENERGY_TYPE type, float value, bool is_capp
     float cap = 0;
 
     if(type == ENERGY_TYPE_METERSECOND){
-        temp_k = (_mass * value * value / 2);
+        temp_k = (_mass * value * value / 2.0f);
         cap = temp_k;
     }
     else if(type == ENERGY_TYPE_JOULE){
@@ -504,7 +504,7 @@ void Mesh::ResetForces(){
 }
 
 
-void neo::MeshDescriptor(ScriptManager* Script){
+void neo::MeshDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
     if(instruction == "new"){
@@ -532,6 +532,12 @@ void neo::MeshDescriptor(ScriptManager* Script){
         Mesh* mesh = s_mesh(s_active);
         int i = s_int;
         mesh->SetMass(i);
+    }
+    else if(instruction == "solid"){
+        Mesh* mesh = s_mesh(s_active);
+        int i = s_int;
+        bool value = (i >= 1 ? true : false);
+        mesh->SetSolid(value);
     }
     else{
 

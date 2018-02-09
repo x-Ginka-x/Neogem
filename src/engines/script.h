@@ -25,19 +25,19 @@
 #define s_eventstring static_cast<MapEventString*>
 
 
-typedef void (*paradigmfunction)(neo::ScriptManager*);
+typedef void (*paradigmfunction)(neo::ScriptObject*);
 
 namespace neo{
 
 extern bool SCRIPT_DEBUG;
 
 
-class ScriptManager{
+class ScriptObject{
 
 public:
 
-    ScriptManager();
-    ~ScriptManager();
+    ScriptObject();
+    ~ScriptObject();
 
     void BindParadigm(std::string, paradigmfunction);
 
@@ -85,11 +85,11 @@ public:
 
 
 
-};//ScriptManager
+};//ScriptObject
 
-extern ScriptManager* Script;
+extern ScriptObject* Script;
 
-void GlobalDescriptor(ScriptManager*);
+void GlobalDescriptor(ScriptObject*);
 
 }//namespace
 

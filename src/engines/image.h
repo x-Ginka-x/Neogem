@@ -120,7 +120,7 @@ public:
 
 };//ImageManager
 
-void ImageDescriptor(ScriptManager*);
+void ImageDescriptor(ScriptObject*);
 
 /** Only one ImageManager is used throughout the entire program but it could be good to be able to clean it from time to time **/
 extern ImageManager* ImgManager;

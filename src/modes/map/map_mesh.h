@@ -138,7 +138,7 @@ private:
 
 };//class Mesh
 
-void MeshDescriptor(ScriptManager*);
+void MeshDescriptor(ScriptObject*);
 
 }//namespace
 

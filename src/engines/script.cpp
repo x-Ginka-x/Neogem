@@ -7,10 +7,10 @@
 using namespace neo;
 
 bool neo::SCRIPT_DEBUG = true;
-ScriptManager* neo::Script = NULL;
+ScriptObject* neo::Script = NULL;
 
 
-void neo::GlobalDescriptor(ScriptManager* Script){
+void neo::GlobalDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
     ERR(instruction);
@@ -29,16 +29,16 @@ void neo::GlobalDescriptor(ScriptManager* Script){
 }
 
 
-ScriptManager::ScriptManager(){
+ScriptObject::ScriptObject(){
     _cursor = 0;
     BindParadigm("global", (paradigmfunction)&neo::GlobalDescriptor);
 }
 
-ScriptManager::~ScriptManager(){
+ScriptObject::~ScriptObject(){
 
 }
 
-void ScriptManager::readfile(std::string name){
+void ScriptObject::readfile(std::string name){
 
     std::ifstream t(name,std::ios::in);
     t.seekg(0, std::ios::end);
@@ -49,7 +49,7 @@ void ScriptManager::readfile(std::string name){
     _file = buffer;
 }
 
-std::string ScriptManager::readtext(){
+std::string ScriptObject::readtext(){
 
     std::string str;
     size_t newcursor = _file.find_first_of(" \n", _cursor);
@@ -64,7 +64,7 @@ std::string ScriptManager::readtext(){
     return "";
 }
 
-int ScriptManager::readint(){
+int ScriptObject::readint(){
 
 
     int i;
@@ -74,7 +74,7 @@ int ScriptManager::readint(){
     return i;
 }
 
-float ScriptManager::readfloat(){
+float ScriptObject::readfloat(){
 
     float f;
     std::string str = readtext();
@@ -83,7 +83,7 @@ float ScriptManager::readfloat(){
     return f;
 }
 
-DIRECTION ScriptManager::readdirection(){
+DIRECTION ScriptObject::readdirection(){
 
     std::string direction;
     DIRECTION dir = SOUTH;
@@ -99,7 +99,7 @@ DIRECTION ScriptManager::readdirection(){
     return dir;
 }
 
-//bool ScriptManager::readspecialchar(const char* value){
+//bool ScriptObject::readspecialchar(const char* value){
 //
 //    const char* str = (_file.substr(_cursor, 2)).c_str();
 //    std::cout << str << std::endl;
@@ -109,13 +109,13 @@ DIRECTION ScriptManager::readdirection(){
 //        return false;
 //}
 
-void ScriptManager::_jumpline(){
+void ScriptObject::_jumpline(){
 
     size_t newcursor = _file.find("\n", _cursor);
     _cursor = newcursor + 1;
 }
 
-void ScriptManager::_executescript(std::string name){
+void ScriptObject::_executescript(std::string name){
 
     readfile(name);
     _paradigm = "global";
@@ -131,14 +131,14 @@ void ScriptManager::_executescript(std::string name){
     LOG("End of file");
 }
 
-void ScriptManager::_executeline(){
+void ScriptObject::_executeline(){
 
     if(_paradigms.find(_paradigm) != _paradigms.end())
         _paradigms[_paradigm](this);
 }
 
 
-void ScriptManager::BindParadigm(std::string name, paradigmfunction paradigm){
+void ScriptObject::BindParadigm(std::string name, paradigmfunction paradigm){
 
       _paradigms.insert(std::make_pair(name, paradigm));
 

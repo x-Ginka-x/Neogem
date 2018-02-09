@@ -395,7 +395,7 @@ Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
 
 /** TEST **/
 
-void neo::ImageDescriptor(ScriptManager* Script){
+void neo::ImageDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;
 
