@@ -1,5 +1,5 @@
 #include "test.h"
-#include "../../script.h"
+#include "../../engines/script.h"
 
 using namespace std;
 using namespace neo;
@@ -33,7 +33,7 @@ void TestMode::Draw(){
 
 void TestMode::Update(){
 
-    if(Input->EscapePress()) Mode->Pop();
+    if(Input->Press(SDLK_ESCAPE)) Mode->Pop();
 
 
 }//Update()

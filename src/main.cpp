@@ -10,12 +10,11 @@
     #include "modes/map/map.h"
     #include "modes/test/test.h"
 
-#include "script.h"
+#include "engines/script.h"
 
 /*** 1st TODO LIST :
 
 .TextManager - add support for texture batching
-.Shaders - reorganize and translate remaining french expressions
 .Input - simplify and enhance
 .Image manager - add a _loaded_surfaces map and a _CollectGarbage() to clean it
 .Map - _current_map should be a static attribute of MapMode

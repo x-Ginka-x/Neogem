@@ -53,7 +53,7 @@ void MapMode::Draw(){
 
 void MapMode::Update(){
 
-    if(Input->EscapePress())
+    if(Input->Press(SDLK_ESCAPE))
         Mode->Pop();
 
     if(_state == CHANGE)
@@ -63,19 +63,19 @@ void MapMode::Update(){
         GetObjectEntity("object_rock")->PlayPassive();
 
 
-    if(Input->RightState()){
+    if(Input->State(SDLK_d)){
 
         GetActorEntity("ginka")->Walk(EAST);
     }
-    else if(Input->LeftState()){
+    else if(Input->State(SDLK_q)){
 
         GetActorEntity("ginka")->Walk(WEST);
     }
-    else if(Input->UpState()){
+    else if(Input->State(SDLK_z)){
 
         GetActorEntity("ginka")->Walk(NORTH);
     }
-    else if(Input->DownState()){
+    else if(Input->State(SDLK_s)){
 
         GetActorEntity("ginka")->Walk(SOUTH);
     }

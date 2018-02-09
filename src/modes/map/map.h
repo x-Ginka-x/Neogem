@@ -9,7 +9,7 @@
 #include "map_entity.h"
 
 
-#include "../../script.h"
+#include "../../engines/script.h"
 
 #include "map_video.h"
 
