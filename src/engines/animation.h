@@ -68,5 +68,8 @@ public:
 
 };
 
+
+void AnimationDescriptor(ScriptManager*);
+
 }//namespace
 #endif // ANIMATION_H_INCLUDED

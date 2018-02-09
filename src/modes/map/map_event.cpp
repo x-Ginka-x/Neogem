@@ -434,3 +434,69 @@ void ListenPosition::_Update(){
 
     _is_done = true;
 }
+
+
+void neo::MapEventDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "setvar"){
+        std::string name = s_text;
+        int value = s_int;
+        event::current_event_manager->SetVar(name, value);
+    }
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        MapEventString* ev_str = event::current_event_manager->CreateEventString();
+        s_register(name, ev_str);
+    }
+    else if(instruction == "push"){
+        std::string mapevent_type = s_text;
+        if(mapevent_type == "hidereveal"){
+            std::string name = s_text;
+            int mode = s_int;
+            MapEventString* ev_str = s_eventstring(s_active);
+            ev_str->PushEvent(new event::HideRevealEntity(name, mode));
+        }
+        else if(mapevent_type == "teleport"){
+            float x = s_float;
+            float y = s_float;
+            float z = s_float;
+            DIRECTION dir = s_enum_DIRECTION;
+            std::string map_name = s_text;
+            MapEventString* ev_str = s_eventstring(s_active);
+            ev_str->PushEvent(new event::Teleport(coor3f(x,y,z), dir, map_name));
+        }
+        else if(mapevent_type == "playanimation"){
+
+        }
+        else if(mapevent_type == "activateswitch"){
+
+        }
+        else if(mapevent_type == "modifyvariable"){
+
+        }
+        else if(mapevent_type == "listenposition"){
+            MapEventString* ev_str = s_eventstring(s_active);
+            std::string name = s_text;
+            std::string x = s_text;
+            std::string y = s_text;
+            std::string z = s_text;
+            ev_str->PushEvent(new event::ListenPosition(name,x,y,z));
+        }
+    }
+    else if(instruction == "condition"){
+        int type = s_int;
+        std::string str = s_text;
+        int value = s_int;
+        MapEventString* ev_str = s_eventstring(s_active);
+        ev_str->SetCondition(type, str, value);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else{
+
+    }
+}

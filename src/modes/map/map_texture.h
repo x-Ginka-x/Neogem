@@ -52,6 +52,8 @@ private:
 
 };//class MapTexture
 
+void MapTextureDescriptor(ScriptManager*);
+
 }//namespace
 
 #endif // MAP_TEXTURE_H_INCLUDED

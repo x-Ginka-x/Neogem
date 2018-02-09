@@ -31,6 +31,9 @@
 #include "shader.h"
 
 
+#include "script.h"
+
+
 namespace neo{
 
 enum IMAGE_DRAW_FLAG{
@@ -113,7 +116,11 @@ public:
     /** Cleans the memory but keeps default texture and default font **/
     void ClearResources();
 
+    /** TEST **/
+
 };//ImageManager
+
+void ImageDescriptor(ScriptManager*);
 
 /** Only one ImageManager is used throughout the entire program but it could be good to be able to clean it from time to time **/
 extern ImageManager* ImgManager;

@@ -264,6 +264,9 @@ public:
 };
 
 }//namespace event
+
+
+void MapEventDescriptor(ScriptManager*);
 }//namespace
 
 #endif // MAP_EVENT_H_INCLUDED

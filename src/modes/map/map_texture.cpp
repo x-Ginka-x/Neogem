@@ -1,5 +1,5 @@
 #include "map_texture.h"
-
+#include "map.h"
 using namespace std;
 using namespace neo;
 
@@ -83,4 +83,28 @@ coor2i MapTexture::GetCurrentFrameSize(){
 Image* MapTexture::GetCurrentFrame(){
 
     return _current_frame;
+}
+
+
+
+void neo::MapTextureDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+    if(instruction == "new"){
+        MapTexture* tex = MapMode::_current_map->GetViewManager()->CreateMapTexture();
+        s_register(s_text, tex);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "animation"){
+        MapTexture* tex = s_texture(s_active);
+        std::string name = s_text;
+        std::string animname = s_text;
+        Animation* anim = s_animation(s_get(name));
+        tex->AddAnimation(animname, anim);
+    }
+    else{
+
+    }
 }

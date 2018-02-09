@@ -390,3 +390,22 @@ Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
     return _resource_holder.at(name);
 }
 
+
+
+
+/** TEST **/
+
+void neo::ImageDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        instruction = s_text;
+
+        Image* img = ImgManager->GetImage(instruction);
+        s_register(instruction, img);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+}

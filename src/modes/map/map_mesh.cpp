@@ -1,5 +1,6 @@
 #include "map_mesh.h"
-
+#include "map.h"
+#include "../../engines/script.h"
 
 using namespace std;
 using namespace neo;
@@ -503,3 +504,36 @@ void Mesh::ResetForces(){
 }
 
 
+void neo::MeshDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+    if(instruction == "new"){
+        Mesh* mesh = MapMode::_current_map->GetPhysicsManager()->CreateMesh();
+        s_register(s_text, mesh);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "pos"){
+        Mesh* mesh = s_mesh(s_active);
+        float x = s_float;
+        float y = s_float;
+        float z = s_float;
+        mesh->SetPos(x, y, z);
+    }
+    else if(instruction == "size"){
+        Mesh* mesh = s_mesh(s_active);
+        float x = s_float;
+        float y = s_float;
+        float z = s_float;
+        mesh->SetSize(x, y, z);
+    }
+    else if(instruction == "mass"){
+        Mesh* mesh = s_mesh(s_active);
+        int i = s_int;
+        mesh->SetMass(i);
+    }
+    else{
+
+    }
+}

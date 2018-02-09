@@ -86,3 +86,27 @@ Image* Animation::GetCurrentFrameTexture(){
     if(_is_initialized == false || _current_frame == NULL) return NULL;
     else return _current_frame->_texture;
 }
+
+
+
+void neo::AnimationDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        Animation* anim = new Animation();
+        s_register(s_text, anim);
+    }
+    else if(instruction == "frame"){
+        Animation* anim = s_animation(s_active);
+        std::string str = s_text;
+        anim->PushFrame(ImgManager->GetImage(str), s_int);
+    }
+    else if(instruction == "time"){
+        Animation* anim = s_animation(s_active);
+        anim->SetTimesToPlay(s_int);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+}

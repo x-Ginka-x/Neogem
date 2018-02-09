@@ -17,7 +17,21 @@ MapMode::MapMode(){
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
 
-    Script->_executescript("src/modes/map/testmap.nsl");
+    ScriptManager* script = new ScriptManager();
+
+    script->BindParadigm("image", (paradigmfunction)&neo::ImageDescriptor);
+    script->BindParadigm("animation", (paradigmfunction)&neo::AnimationDescriptor);
+    script->BindParadigm("mesh", (paradigmfunction)&neo::MeshDescriptor);
+    script->BindParadigm("event", (paradigmfunction)&neo::MapEventDescriptor);
+    script->BindParadigm("staticentity", (paradigmfunction)&neo::StaticEntityDescriptor);
+    script->BindParadigm("objectentity", (paradigmfunction)&neo::ObjectEntityDescriptor);
+    script->BindParadigm("actorentity", (paradigmfunction)&neo::ActorEntityDescriptor);
+    script->BindParadigm("map_texture", (paradigmfunction)&neo::MapTextureDescriptor);
+
+    script->_executescript("src/modes/map/testmap.nsl");
+
+    delete script;
+
     _physics_manager->SetUpdateZone(-1000,-500,2000,1000);
 
     _view_manager->Follow(coor3f(0,0,0));

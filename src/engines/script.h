@@ -6,7 +6,26 @@
 #include "../utils.h"
 #include "../defs.h"
 
-typedef void (*voidfunction)();
+
+#define s_text Script->readtext()
+#define s_int Script->readint()
+#define s_float Script->readfloat()
+#define s_enum_DIRECTION Script->readdirection()
+#define s_active Script->getactiveobject()
+#define s_get Script->getobject
+#define s_register Script->registerobject
+#define s_par Script->setparadigm
+#define s_animation static_cast<Animation*>
+#define s_image static_cast<Image*>
+#define s_mesh static_cast<Mesh*>
+#define s_texture static_cast<MapTexture*>
+#define s_staticentity static_cast<StaticEntity*>
+#define s_objectentity static_cast<ObjectEntity*>
+#define s_actorentity static_cast<ActorEntity*>
+#define s_eventstring static_cast<MapEventString*>
+
+
+typedef void (*paradigmfunction)(neo::ScriptManager*);
 
 namespace neo{
 
@@ -19,6 +38,8 @@ public:
 
     ScriptManager();
     ~ScriptManager();
+
+    void BindParadigm(std::string, paradigmfunction);
 
     std::map<std::string, void*> _memory;
     void* _active_object;
@@ -57,7 +78,7 @@ public:
     void _executeline();
     std::string _paradigm;
     void setparadigm(std::string paradigm){_paradigm = paradigm;}
-    std::map<std::string, voidfunction> _paradigms;
+    std::map<std::string, paradigmfunction> _paradigms;
 
 
 
@@ -68,23 +89,8 @@ public:
 
 extern ScriptManager* Script;
 
+void GlobalDescriptor(ScriptManager*);
 
-    /**Paradigms definitions**/
-
-
-namespace paradigm{
-
-void image();
-void global();
-void animation();
-void map_texture();
-void map_mesh();
-void map_entity_static();
-void map_entity_object();
-void map_entity_actor();
-void map_event();
-
-}//paradigm
 }//namespace
 
 #endif // SCRIPT_H_INCLUDED

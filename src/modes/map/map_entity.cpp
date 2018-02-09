@@ -1,4 +1,5 @@
 #include "map_entity.h"
+#include "map.h"
 
 using namespace std;
 using namespace neo;
@@ -273,4 +274,102 @@ void ActorEntity::Walk(DIRECTION dir){
 void ActorEntity::Jump(){
     LOG("jump");
     _is_jumping = true;
+}
+
+
+
+
+
+
+void neo::StaticEntityDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        StaticEntity* obj = MapMode::_current_map->CreateStaticEntity(name);
+        s_register(name, obj);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "texture"){
+        MapTexture* tex = s_texture(s_get(s_text));
+        StaticEntity* obj = s_staticentity(s_active);
+        obj->LinkMapTexture(tex);
+    }
+
+    else if(instruction == "mesh"){
+        Mesh* mesh = (Mesh*)s_get(s_text);
+        StaticEntity* obj = s_staticentity(s_active);
+        obj->LinkMesh(mesh);
+        mesh->SetStatic(true);
+    }
+    else{
+
+    }
+}
+
+
+void neo::ObjectEntityDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        ObjectEntity* obj = MapMode::_current_map->CreateObjectEntity(name);
+        s_register(name, obj);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "texture"){
+        MapTexture* tex = s_texture(s_get(s_text));
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->LinkMapTexture(tex);
+    }
+
+    else if(instruction == "mesh"){
+        Mesh* mesh = (Mesh*)s_get(s_text);
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->LinkMesh(mesh);
+        mesh->SetStatic(false);
+    }
+    else if(instruction == "eventstring"){
+        MapEventString* ev = s_eventstring(s_get(s_text));
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->AddPassiveEvent(ev);
+    }
+    else{
+
+    }
+}
+
+void neo::ActorEntityDescriptor(ScriptManager* Script){
+
+    std::string instruction = s_text;
+
+    if(instruction == "new"){
+        std::string name = s_text;
+        ActorEntity* act = MapMode::_current_map->CreateActorEntity(name);
+        s_register(name, act);
+    }
+    else if(instruction == "end"){
+        s_par("global");
+    }
+    else if(instruction == "texture"){
+        MapTexture* tex = s_texture(s_get(s_text));
+        ActorEntity* act = s_actorentity(s_active);
+        act->LinkMapTexture(tex);
+    }
+
+    else if(instruction == "mesh"){
+        Mesh* mesh = (Mesh*)s_get(s_text);
+        ActorEntity* act = s_actorentity(s_active);
+        act->LinkMesh(mesh);
+        mesh->SetStatic(false);
+    }
+    else{
+
+    }
 }

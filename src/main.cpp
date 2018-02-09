@@ -12,19 +12,15 @@
 
 #include "engines/script.h"
 
-/*** 1st TODO LIST :
 
+/*** TODO List :
+
+.TextManager - Add color choice when loading or writing glyphs
 .TextManager - add support for texture batching
 .Image manager - add a _loaded_surfaces map
 .Overall - Access to different attributes (in Entity for example) is too easy
 .ActorEntity - change ActorEntity::Update()
-.Script - Maybe create different types of ScriptManager (MapScript for example) and place them with their respective gamemodes (modes/map/map_script)
-        - Add one ScriptManager per MapMode and a ScriptEngine that acts on _current_script_manager (otherwise there are conflicts in ScriptEngine::_memory
-***/
 
-/*** 2nd TODO List :
-
-.TextManager - Add color choice when loading or writing glyphs
 ***/
 
 /**TODO NOW :
