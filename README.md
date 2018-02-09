@@ -15,8 +15,9 @@ For now, these are the main parts of the Ngine that are functional :
 
 -Main architecture of the game modes
 
-Now I just have to make different game modes (exploration, menus, etc...)
 
+
+Now I just have to make different game modes (exploration, menus, etc...)
 
 The main mode being the exploration, I already have made quite a job for it, so I have different working parts :
 
@@ -25,6 +26,7 @@ The main mode being the exploration, I already have made quite a job for it, so 
 -2D Textures and Animations
 
 -Events (made in the RPG Maker-style)
+
 
 
 The first pre-release (v0.1.0) just came out with a test map containing a mini-puzzle.
