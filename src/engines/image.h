@@ -49,6 +49,7 @@ private:
 
     Image();
     ~Image();
+
     //OpenGL attributes
     float _oglvertices[18];
     GLuint _oglvboid;
@@ -61,10 +62,22 @@ private:
 
 public:
 
-
+    /** Loads an image from a png file (must be RGBA) **/
     bool LoadFromFile(std::string);
+
+    /**Loads an image from a chunk of a png file, with specific coords **/
     bool LoadFromFile_Coord(std::string,int,int,int,int);
+
+    /** Loads an image from an already existing SDL_Surface* (used in TextManager) **/
     bool LoadFromSurface(SDL_Surface*);
+
+    /**Draws the image at the current VideoManager's cursor location **/
+    /** flags are :
+        .IMAGE_DRAW_CENTERED(default) -> draws from the center of the image
+        .IMAGE_DRAW_FROM_BOTTOM -> draws from the point at the center of the bottom side of the image
+        .IMAGE_DRAW_FROM_TOPLEFT -> 'standard' 2D blitting from top left corner (like SDL_Blit)
+    **/
+
     void Draw(IMAGE_DRAW_FLAG flag = IMAGE_DRAW_CENTERED);
 
     coor2i GetSize() const;
@@ -80,19 +93,26 @@ class ImageManager{
 
 private:
 
+    /** Used in destructor to delete all resources **/
+    void _ClearResources();
 
 public:
-std::map<std::string, Image*> _resource_holder;
-void err(){ERR("coucou");}
+
     ImageManager();
     ~ImageManager();
 
+    /** Image memory **/
+    std::map<std::string, Image*> _resource_holder;
+
+    /** Returns an image of the memory or tries to load it from a file **/
     Image* GetImage(std::string);
+
+    /** Used in TextManager **/
     Image* RegisterSurfaceAsImage(SDL_Surface*, std::string);
-    void Clear();
 
 };//ImageManager
 
+/** Only one ImageManager is used throughout the entire program but it could be good to be able to clean it from time to time **/
 extern ImageManager* ImgManager;
 
 }//namespace

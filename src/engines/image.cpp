@@ -275,41 +275,53 @@ ImageManager::ImageManager(){
 
 ImageManager::~ImageManager(){
 
-    Clear();
+    _ClearResources();
     if(IMAGE_DEBUG) LOG(".destroy imagemanager");
 }
 
-Image* ImageManager::GetImage(string loadscript){ /**TODO : Simplify the process and add multiple chunks loading **/
+/** This function searches the _resource_holder to find the image named by loadscript
+*** If it's not found it loads it
+*** It will automatically look for "img/[loadscript].png
+*** The format must be RGBA
+*** If you put the mark <f< and a set of 4 coordinates, it will search for the designated chunk in the png file
+*** example : GetImage("character<f<20,20,64,64") will load img/character.png and cut a chunk from x20, y20, with width and height of 64px **/
+
+Image* ImageManager::GetImage(string loadscript){
+
+    /*If we don't find the image in the memory*/
 
     if(_resource_holder.find(loadscript) == _resource_holder.end()){
 
         if(IMAGE_DEBUG) LOG(".IMAGE_DEBUG : Loading " + loadscript);
 
+        /*Find if we need to cut a chunk*/
+
         size_t script_pos = loadscript.find("<f<");
+
+        /*If yes */
 
         if(script_pos != loadscript.npos){
 
-            string path = loadscript.substr(0,script_pos);
+            string path = loadscript.substr(0,script_pos);//Holds the image path
 
             string str = loadscript.substr(script_pos + 3);
             int x,y,w,h;
-            string strx,stry,strw,strh;
 
             script_pos = str.find(",");//find coma
-            strx = str.substr(0,script_pos);//x = what's between beginning and coma
+            x = atoi((str.substr(0,script_pos)).c_str());//extract int from the string
             str = str.substr(script_pos+1);//string is truncated from after coma
 
             script_pos = str.find(",");//find coma
-            stry = str.substr(0,script_pos);
+            y = atoi((str.substr(0,script_pos)).c_str());
             str = str.substr(script_pos+1);
 
             script_pos = str.find(",");
-            strw = str.substr(0,script_pos);
-            strh = str.substr(script_pos+1);
-            x = atoi(strx.c_str());
-            y = atoi(stry.c_str());
-            w = atoi(strw.c_str());
-            h = atoi(strh.c_str());
+            w = atoi((str.substr(0,script_pos)).c_str());
+            str = str.substr(script_pos+1);
+
+            h = atoi(str.c_str());
+
+            /*Now that all coords are set, we load the image*/
 
             Image* img = new Image();
             img->LoadFromFile_Coord(("img/" + path + ".png"),x,y,w,h);
@@ -324,12 +336,14 @@ Image* ImageManager::GetImage(string loadscript){ /**TODO : Simplify the process
 
         }
         else{
-            Image* img = new Image();
-            img->LoadFromFile("img/" + loadscript + ".png");
 
-            if(img->IsValid()){
+            Image* img = new Image();
+
+            /*if the image is valid, we return it, else we return a default texture*/
+
+            if(img->LoadFromFile("img/" + loadscript + ".png") == true)
                 _resource_holder.insert(make_pair(loadscript, img));
-            }
+
             else{
                 if(IMAGE_DEBUG) ERR(".IMAGE_DEBUG : Unable to load image at this location : " + loadscript);
                 return _resource_holder.at("defaulttexture");
@@ -338,6 +352,14 @@ Image* ImageManager::GetImage(string loadscript){ /**TODO : Simplify the process
     }
     if(IMAGE_DEBUG) LOG(".IMAGE_DEBUG : Retrieving image : " + loadscript + " " + to_string(_resource_holder.at(loadscript)->_size.x));
     return _resource_holder.at(loadscript);
+}
+
+void ImageManager::_ClearResources(){
+
+    for(auto it = _resource_holder.begin(); it != _resource_holder.end(); ++it){
+
+        delete it->second;
+    }
 }
 
 Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
@@ -349,10 +371,3 @@ Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
     return _resource_holder.at(name);
 }
 
-void ImageManager::Clear(){
-
-    for(auto it = _resource_holder.begin();it!=_resource_holder.end();++it){
-        delete it->second;
-        LOG(it->first);
-    }
-}
