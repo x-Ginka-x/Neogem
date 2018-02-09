@@ -130,12 +130,12 @@ mesh
 
     new mesh11
         pos 18 0 18
-        size 8 32 16
+        size 16 32 16
 
     new mesh12
         pos 132 0 50
         size 16 16 16
-        mass 100
+        mass 50
 
     new mesh13
         pos -100 -8 -10

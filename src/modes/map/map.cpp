@@ -5,12 +5,12 @@ using namespace std;
 using namespace neo;
 
 bool neo::MAP_DEBUG = true;
-MapMode* neo::neo_map::_current_map = NULL;
+MapMode* MapMode::_current_map = NULL;
 
 MapMode::MapMode(){
     if(MAP_DEBUG) LOG(".MAP_DEBUG : create map mode");
 
-    neo_map::_current_map = this;
+    _current_map = this;
     _script_file = "";
 
     _view_manager = new MapVideoEngine();
@@ -28,7 +28,7 @@ MapMode::MapMode(){
 MapMode::MapMode(string script_file){
 
     if(MAP_DEBUG) LOG(".MAP_DEBUG : create map mode");
-    neo_map::_current_map = this;
+    _current_map = this;
     _script_file = script_file;
     _view_manager = new MapVideoEngine();
     _state = NO_CHANGE;
@@ -79,8 +79,12 @@ void MapMode::Update(){
 
         GetActorEntity("ginka")->Walk(SOUTH);
     }
+    if(Input->Press(SDLK_i)){
+        Mode->Push(new TestMode());
+    }
 
     _physics_manager->Update(Time->GetUpdateTime());
+    _physics_manager->ManageCollisions();
     _physics_manager->ManageCollisions();
 
 
@@ -89,7 +93,7 @@ void MapMode::Update(){
     _UpdateEntities(_object_entities);
     _UpdateEntities(_actor_entities);
 
-    _view_manager->Follow(GetActorEntity("ginka")->GetCenter());
+    _view_manager->Follow(GetActorEntity("ginka")->GetPos());
 
     _view_manager->Update();
 
@@ -97,7 +101,7 @@ void MapMode::Update(){
 
 void MapMode::Reset(){
 
-    neo_map::_current_map = this;
+    _current_map = this;
 }
 
 

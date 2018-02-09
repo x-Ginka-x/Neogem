@@ -357,8 +357,29 @@ void ImageManager::_ClearResources(){
     for(auto it = _resource_holder.begin(); it != _resource_holder.end(); ++it){
 
         delete it->second;
+        LOG(it->first);
     }
 }
+
+void ImageManager::ClearResources(){
+
+    for(auto it = _resource_holder.begin(); it != _resource_holder.end(); ++it){
+
+        std::string str = it->first;
+        if(str == "defaulttexture"){
+
+        }
+        else if(str.substr(0, 12) == "default_font"){
+
+        }
+        else{
+            delete it->second;
+            LOG(str);
+        }
+    }
+}
+
+
 
 Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
 

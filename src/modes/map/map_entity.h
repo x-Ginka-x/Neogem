@@ -29,7 +29,7 @@ public:
 
     /*** Mesh management ***/
 
-    void LinkMesh(Mesh*);
+    virtual void LinkMesh(Mesh*);
     Mesh* GetMesh() const {return _mesh;}
 
     coor3f GetPos() {return _mesh->GetPos();}
@@ -131,7 +131,7 @@ public:
     bool IsJumping() const {return _is_jumping;}
     bool IsFalling() const {return _is_falling;}
 
-
+    void LinkMesh(Mesh*);
 
 private:
 

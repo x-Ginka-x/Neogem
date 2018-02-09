@@ -27,7 +27,6 @@ public:
 
 
 class Animation{
-//    friend class MapTexture;
 
 private:
 

@@ -14,7 +14,7 @@ AnimationFrame::AnimationFrame(Image* img, int duration){
 }
 
 AnimationFrame::~AnimationFrame(){
-
+    _texture = NULL;
 }
 
 

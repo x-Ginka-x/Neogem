@@ -30,9 +30,6 @@ enum MAP_STATE{
  *  It can be in several states, like exploration, dialogue, etc...
  *  It updates in every loop, then draws all the scene we need to see.
  *  In MapMode, the player will be able to walk (perhaps jump), fight, speak to NPCs...
- *  The actual processing of updating and drawing is in fact held by chunks, which are
- *  grouped in the _chunks vector.
- *  Each chunk communicates with the map by the means of _current_map.
  *
  *  Map.h and the others map_* headers contain all the necessary to create a 2.5D world,
  *  with a bit of physics, with collisions, events, and rendering helpers like textures etc...
@@ -43,6 +40,8 @@ enum MAP_STATE{
 class MapMode: public GameMode{
 
 public:
+
+    static MapMode* _current_map;
 
     MapMode();
     MapMode(std::string);
@@ -101,31 +100,11 @@ private:
 
 
     template<class A> void _UpdateEntities(A&);
-//
-//    int _update_time;
-//
-//    /** Helpers designed to help Update() **/
-//
-//    /**< Read controls that affect the player's entity */
-//    void _CheckPlayerControls();
-
-//    int _milliseconds_passed;
-//    int _loop_counter;
-//
-//    /*** EDITOR TEST***/
-//
-//    std::string _edMode;
-//    int _edCount;
-//    Entity* _edTarget;
 
 
 };//class MapMode
 
 
-namespace neo_map{
-
-    extern MapMode* _current_map;
-}
 
 }//namespace
 

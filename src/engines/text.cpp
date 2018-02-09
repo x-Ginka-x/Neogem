@@ -79,7 +79,7 @@ TextEngine* neo::Text = NULL;
 TextEngine::TextEngine(){
 
     if(TTF_Init()<0 && VIDEO_DEBUG) ERR(".VIDEO_DEBUG : Error while initializing TTF library");
-    LoadFont("minecraft", 32, "default_font");
+    LoadFont("default_font", 32, "default_font");
 }
 
 TextEngine::~TextEngine(){

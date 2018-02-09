@@ -15,11 +15,8 @@
 /*** 1st TODO LIST :
 
 .TextManager - add support for texture batching
-.Input - simplify and enhance
-.Image manager - add a _loaded_surfaces map and a _CollectGarbage() to clean it
-.Map - _current_map should be a static attribute of MapMode
+.Image manager - add a _loaded_surfaces map
 .Overall - Access to different attributes (in Entity for example) is too easy
-.Mesh - Speed = bugs. Add support for when fast objects go through other meshes
 .ActorEntity - change ActorEntity::Update()
 .Script - Maybe create different types of ScriptManager (MapScript for example) and place them with their respective gamemodes (modes/map/map_script)
         - Add one ScriptManager per MapMode and a ScriptEngine that acts on _current_script_manager (otherwise there are conflicts in ScriptEngine::_memory
@@ -28,7 +25,6 @@
 /*** 2nd TODO List :
 
 .TextManager - Add color choice when loading or writing glyphs
-.ImageManager - Only one instance = Lots of useless memory alloc
 ***/
 
 /**TODO NOW :

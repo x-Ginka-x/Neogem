@@ -110,6 +110,9 @@ public:
     /** Used in TextManager **/
     Image* RegisterSurfaceAsImage(SDL_Surface*, std::string);
 
+    /** Cleans the memory but keeps default texture and default font **/
+    void ClearResources();
+
 };//ImageManager
 
 /** Only one ImageManager is used throughout the entire program but it could be good to be able to clean it from time to time **/

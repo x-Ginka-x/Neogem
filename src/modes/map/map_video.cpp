@@ -14,7 +14,8 @@ MapVideoEngine::MapVideoEngine(){
 
 MapVideoEngine::~MapVideoEngine(){
     if(MAP_DEBUG) LOG(".MAP_DEBUG : destroy map video");
-    Clear(_texture_objects);
+//    Clear(_texture_objects);
+
 }//Destructor
 
 void MapVideoEngine::Update(){

@@ -91,7 +91,7 @@ Entity* MapEvent::GetEntity(string name){
 //
 //        return neo_map::_current_map->_actors.at(name);
 
-    return neo_map::_current_map->GetObjectEntity(name);
+    return MapMode::_current_map->GetObjectEntity(name);
 
 }
 
@@ -163,7 +163,7 @@ bool MapEvent::_AssertConditions(){
 
 EventManager::EventManager(){
 
-    _current_map = neo_map::_current_map;
+    _current_map = MapMode::_current_map;
     neo::event::current_event_manager = this;
 }
 

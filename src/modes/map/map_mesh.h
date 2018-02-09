@@ -64,6 +64,8 @@ protected:
     float _resistance;
     float _bounce;
 
+    bool _has_the_right_to_push_other_meshes;
+
 
     ///*** Private function used to calculate 'key positions'
     ///*** like screen position of the entity
@@ -90,7 +92,8 @@ public:
 
     void Move(DIRECTION, float);
 
-
+    bool HasTheRightToPushOtherMeshes() {return _has_the_right_to_push_other_meshes;}
+    void SetTheRightToPushOtherMeshes(bool value) {_has_the_right_to_push_other_meshes = value;}
 
     float GetMass() const {return _mass;}
     Mesh* SetMass(float mass){_mass = mass; return this;}

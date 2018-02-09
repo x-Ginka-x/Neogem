@@ -33,6 +33,8 @@ Mesh::Mesh(){
     _resistance = 500.0f;
     _bounce = 0.0f;
 
+    _has_the_right_to_push_other_meshes = false;
+
     _blocked_directions.insert(make_pair(UP, false));
     _blocked_directions.insert(make_pair(DOWN, false));
     _blocked_directions.insert(make_pair(EAST, false));
@@ -86,7 +88,7 @@ void Mesh::SetSize(float x, float y, float z){
 //
 //
 void Mesh::Move(DIRECTION dir, float speed){
-    //cout << "ENTITY MOVING" << endl;
+
 
     switch(dir){
     case NORTH:
@@ -264,14 +266,6 @@ void Mesh::Update(int update_time){
 
 
 
-    /** This, below, is a very bad but important fix that cancels infinitesimal bouncing **/
-//
-//    float mv = seconds_passed * _jouletospeed(_kinetic_energy.at(UP), _mass);
-//    if (mv < 1.0f) _kinetic_energy.at(UP) = 0; //Temp fix for bouncing issue
-
-    /** ---------------- **/
-
-
     if(_is_moving){
 
         float v = _jouletospeed(_kinetic_energy.at(WEST), _mass);
@@ -323,37 +317,6 @@ void Mesh::Update(int update_time){
         dist = (seconds_passed * y) + ((v - y) * seconds_passed / 2);
         Move(UP, dist);
         _kinetic_energy.at(UP) = _speedtojoule(y, _mass);
-//
-//        /** Convert energy to speed in pixels then multiply by time passed **/
-//
-//        Move(NORTH, seconds_passed * _jouletospeed(_kinetic_energy.at(NORTH), _mass));
-//        Move(SOUTH, seconds_passed * _jouletospeed(_kinetic_energy.at(SOUTH), _mass));
-//        Move(EAST, seconds_passed * _jouletospeed(_kinetic_energy.at(EAST), _mass));
-//
-//        Move(UP, seconds_passed * _jouletospeed(_kinetic_energy.at(UP), _mass));
-//        Move(DOWN, seconds_passed * _jouletospeed(_kinetic_energy.at(DOWN), _mass));
-
-
-        /** Energies need to be updated by a ratio calculated with time passed and resistance of mesh **/
-        //STILL EXPERIMENTAL
-
-
-
-//
-//        if(IsBlocked(DOWN) == false){
-//            float k = _kinetic_energy.at(DOWN);
-//            _kinetic_energy.at(DOWN) -= k*0.5f;
-//        }
-//        else{
-//            _kinetic_energy.at(DOWN) = 0.0f;
-//        }
-//        if(IsBlocked(UP) == false){
-////            k = _kinetic_energy.at(UP)*0.1f;
-////            _kinetic_energy.at(UP) -= k;
-//        }
-//        else{
-//            _kinetic_energy.at(UP) = 0.0f;
-//        }
 
 
         /** Update all the variables attached to _pos **/
@@ -425,8 +388,10 @@ void Mesh::ResolveCollision(Mesh* mesh){
             SetBlocked(WEST, true);
 
         float k = _kinetic_energy.at(WEST);
-        mesh->ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
-        ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
+
+        if(_has_the_right_to_push_other_meshes)
+            mesh->ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
+//        ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(WEST) -= k;
     }
 
@@ -437,8 +402,10 @@ void Mesh::ResolveCollision(Mesh* mesh){
             SetBlocked(EAST, true);
 
         float k = _kinetic_energy.at(EAST);
-        mesh->ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
-        ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
+
+        if(_has_the_right_to_push_other_meshes)
+            mesh->ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
+//        ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(EAST) -= k;
     }
 
@@ -465,8 +432,10 @@ void Mesh::ResolveCollision(Mesh* mesh){
             SetBlocked(SOUTH, true);
 
         float k = _kinetic_energy.at(SOUTH);
-        mesh->ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
-        ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
+
+        if(_has_the_right_to_push_other_meshes)
+            mesh->ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
+//        ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(SOUTH) -= k;
     }
 
@@ -478,21 +447,18 @@ void Mesh::ResolveCollision(Mesh* mesh){
             SetBlocked(NORTH, true);
 
         float k = _kinetic_energy.at(NORTH);
-        mesh->ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
-        ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
+
+        if(_has_the_right_to_push_other_meshes)
+            mesh->ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
+//        ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
         _kinetic_energy.at(NORTH) -= k;
     }
-
-
-//    else cout << "Collision doesn't need a correction\n";
 
     _CalculatePosition();
 
 }
 
-///*** NEW KINETIC INTERFACE ***/
-//
-//
+
 void Mesh::ApplyForce(DIRECTION dir, ENERGY_TYPE type, float value, bool is_capped){
 
     if(IsBlocked(dir))

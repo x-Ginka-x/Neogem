@@ -97,7 +97,7 @@ void paradigm::map_mesh(){
 
     std::string instruction = s_text;
     if(instruction == "new"){
-        Mesh* mesh = neo_map::_current_map->GetPhysicsManager()->CreateMesh();
+        Mesh* mesh = MapMode::_current_map->GetPhysicsManager()->CreateMesh();
         s_register(s_text, mesh);
     }
     else if(instruction == "end"){
@@ -132,7 +132,7 @@ void paradigm::map_texture(){
 
     std::string instruction = s_text;
     if(instruction == "new"){
-        MapTexture* tex = neo_map::_current_map->GetViewManager()->CreateMapTexture();
+        MapTexture* tex = MapMode::_current_map->GetViewManager()->CreateMapTexture();
         s_register(s_text, tex);
     }
     else if(instruction == "end"){
@@ -157,7 +157,7 @@ void paradigm::map_entity_static(){
 
     if(instruction == "new"){
         std::string name = s_text;
-        StaticEntity* obj = neo_map::_current_map->CreateStaticEntity(name);
+        StaticEntity* obj = MapMode::_current_map->CreateStaticEntity(name);
         s_register(name, obj);
     }
     else if(instruction == "end"){
@@ -187,7 +187,7 @@ void paradigm::map_entity_object(){
 
     if(instruction == "new"){
         std::string name = s_text;
-        ObjectEntity* obj = neo_map::_current_map->CreateObjectEntity(name);
+        ObjectEntity* obj = MapMode::_current_map->CreateObjectEntity(name);
         s_register(name, obj);
     }
     else if(instruction == "end"){
@@ -221,7 +221,7 @@ void paradigm::map_entity_actor(){
 
     if(instruction == "new"){
         std::string name = s_text;
-        ActorEntity* act = neo_map::_current_map->CreateActorEntity(name);
+        ActorEntity* act = MapMode::_current_map->CreateActorEntity(name);
         s_register(name, act);
     }
     else if(instruction == "end"){

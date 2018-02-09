@@ -170,7 +170,7 @@ void ActorEntity::_Update(int update_time){
     else if(_is_walking == true){
 
         _mesh->ResetForces();
-        _mesh->ApplyForce(_direction, ENERGY_TYPE_METERSECOND, 5.0f, true);
+        _mesh->ApplyForce(_direction, ENERGY_TYPE_METERSECOND, 9.0f, true);
     }
 
     _texture->Play(_state);
@@ -184,6 +184,12 @@ void ActorEntity::_Update(int update_time){
 void ActorEntity::Initialize(){
 
 
+}
+
+void ActorEntity::LinkMesh(Mesh* mesh){
+
+    _mesh = mesh;
+    _mesh->SetTheRightToPushOtherMeshes(true);
 }
 
 
