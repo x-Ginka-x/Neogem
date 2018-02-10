@@ -421,7 +421,10 @@ void PlayAnimation::_Update(){
 
 void ListenPosition::_Update(){
     Entity* _entity = GetEntity(_target);
-    if(_entity == NULL) return;
+    if(_entity == NULL) {
+        _is_done = true;
+        return;
+    }
 
     float x,y,z;
     x = _entity->GetPos().x;
@@ -434,6 +437,24 @@ void ListenPosition::_Update(){
 
     _is_done = true;
 }
+
+
+void SetStatic::_Update(){
+
+    Entity* _entity = GetEntity(_target);
+    if(_entity == NULL){
+        _is_done = true;
+        return;
+    }
+
+    if(_entity->GetMesh() == NULL)
+        _is_done = true;
+    else
+        _entity->GetMesh()->SetStatic(_value);
+
+    _is_done = true;
+}
+
 
 
 void neo::MapEventDescriptor(ScriptObject* Script){
@@ -484,6 +505,13 @@ void neo::MapEventDescriptor(ScriptObject* Script){
             std::string y = s_text;
             std::string z = s_text;
             ev_str->PushEvent(new event::ListenPosition(name,x,y,z));
+        }
+        else if(mapevent_type == "setstatic"){
+            MapEventString* ev_str = s_eventstring(s_active);
+            std::string target = s_text;
+            int i = s_int;
+            bool value = (i >= 1 ? true : false);
+            ev_str->PushEvent(new event::SetStatic(target, value));
         }
     }
     else if(instruction == "condition"){

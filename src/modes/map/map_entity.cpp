@@ -78,7 +78,7 @@ StaticEntity::~StaticEntity(){
 
 
 void StaticEntity::_Update(int update_time){
-    if(_texture != NULL) _texture->Play("DEFAULT");
+//    if(_texture != NULL) _texture->Play("DEFAULT");
 }
 
 

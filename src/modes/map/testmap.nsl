@@ -22,9 +22,15 @@ animation
         frame panel7 100
         times 1
 
-    new anim_switch
+    new anim_switchmark
         frame switchmark 100
         frame switchmark2 100
+
+    new anim_scarecrow
+        frame scarecrow 100
+
+    new anim_switch_open
+        frame switch<f<0,0,70,92 1
 
 -------GINKA ANIMATIONS
 
@@ -96,79 +102,93 @@ map_texture
         animation anim_g1 DEFAULT
 
     new tex_switchmark
-        animation anim_switch DEFAULT
+        animation anim_switchmark DEFAULT
+
+    new tex_scarecrow
+        animation anim_scarecrow DEFAULT
+
+    new tex_switch
+        animation anim_switch_open DEFAULT
 
 end
 
 mesh
 
-    new mesh1
-        pos 0 0 32
+    new mesh_crate_n1
+        pos 50 0 150
         size 16 32 16
 
-    new mesh2
-        pos 16 0 0
+    new mesh_crate_n2
+        pos 66 0 150
         size 16 32 16
 
-    new mesh3
-        pos 32 0 0
+    new mesh_crate_n3
+        pos 82 0 150
         size 16 32 16
 
-    new mesh4
-        pos 48 0 0
+    new mesh_crate_e1
+        pos 82 0 166
         size 16 32 16
 
-    new mesh5
-        pos 0 0 16
+    new mesh_crate_s1
+        pos 50 0 208
         size 16 32 16
 
-    new mesh6
-        pos 32 0 48
+    new mesh_crate_s2
+        pos 66 0 208
         size 16 32 16
 
-    new mesh7
-        pos 16 0 48
+    new mesh_crate_s3
+        pos 82 0 208
         size 16 32 16
 
-    new mesh8
-        pos 48 0 48
+    new mesh_crate_w1
+        pos 34 0 166
         size 16 32 16
 
-    new mesh9
-        pos 64 0 16
+    new mesh_crate_w2
+        pos 34 0 182
         size 16 32 16
 
-    new mesh10
-        pos 64 0 64
+    new mesh_table
+        pos 82 0 214
         size 16 24 16
 
-    new mesh11
-        pos 18 0 18
+    new mesh_panel
+        pos 50 0 166
         size 8 32 16
 
-    new mesh12
-        pos 130 0 30
+    new mesh_block
+        pos 400 0 50
         size 16 16 16
         mass 50
 
-    new mesh13
-        pos -100 -8 -10
-        size 300 8 300
-    new mesh131
-        pos 200 -8 150
-        size 100 8 50
-    new mesh132
-        pos 300 -8 -100
-        size 100 8 300
+    new mesh_ground1
+        pos 0 -8 0
+        size 500 8 500
+    new mesh_ground2
+        pos 400 -8 500
+        size 100 8 150
+    new mesh_ground3
+        pos 250 -8 650
+        size 400 8 150
 
-    new mesh14
-        pos 64 0 32
+    new mesh_rock
+        pos 82 0 182
+        size 16 32 16
+
+    new mesh_switchmark
+        pos 400 0 70
+        size 15 1 15
+        solid 0
+
+    new mesh_scarecrow
+        pos 200 0 670
         size 16 32 16
 
     new mesh_switch
-        pos 130 0 50
-        size 15 1 15
-        solid 0
+        pos 66 0 224
+        size 16 32 16
 
     new mesh_ginka
         pos 32 150 0
@@ -176,80 +196,78 @@ mesh
 
 end
 
-staticentity
 
-    new wallw2
-        texture tex_crate
-        mesh mesh1
+staticentity
 
     new walln1
         texture tex_crate
-        mesh mesh2
+        mesh mesh_crate_n1
 
     new walln2
         texture tex_crate
-        mesh mesh3
-
-    new walls1
-        texture tex_crate
-        mesh mesh7
-
-    new walls2
-        texture tex_crate
-        mesh mesh6
-
-    new walls3
-        texture tex_crate
-        mesh mesh8
-
-    new walle1
-        texture tex_crate
-        mesh mesh9
-
-    new table
-        texture tex_table
-        mesh mesh10
-
-    new static_panel
-        texture tex_panel
-        mesh mesh11
+        mesh mesh_crate_n2
 
     new walln3
         texture tex_crate
-        mesh mesh4
+        mesh mesh_crate_n3
+
+    new walln3
+        texture tex_crate
+        mesh mesh_crate_n3
+
+    new walls1
+        texture tex_crate
+        mesh mesh_crate_s1
+
+    new walls2
+        texture tex_crate
+        mesh mesh_crate_s2
+
+    new walls3
+        texture tex_crate
+        mesh mesh_crate_s3
+
+    new walle1
+        texture tex_crate
+        mesh mesh_crate_e1
 
     new wallw1
         texture tex_crate
-        mesh mesh5
+        mesh mesh_crate_w1
 
-    new ground1
-        mesh mesh13
-    new ground2
-        mesh mesh131
-    new ground3
-        mesh mesh132
+    new wallw2
+        texture tex_crate
+        mesh mesh_crate_w2
+
+    new table
+        texture tex_table
+        mesh mesh_table
+
+    new static_panel
+        texture tex_panel
+        mesh mesh_panel
 
     new switch_mark
-        mesh mesh_switch
+        mesh mesh_switchmark
         texture tex_switchmark
+
+    new ground1
+        mesh mesh_ground1
+    new ground2
+        mesh mesh_ground2
+    new ground3
+        mesh mesh_ground3
 
 end
 
 event
 
-    setvar block_x 0
-    setvar block_y 0
-    setvar block_z 0
 
-    new ev_str
-        push hidereveal object_rock 4
-        condition 3 block_x 125
-        condition 2 block_x 140
-        condition 3 block_z 45
-        condition 2 block_z 60
+    new ev_str_switch
+        push hidereveal ground2 5
 
-    new ev_str2
-        push listenposition object_block block_x block_y block_z
+    new ev_str_scarecrow
+        push setstatic object_block 0
 
 
 end
@@ -258,13 +276,21 @@ objectentity
 
     new object_block
         texture tex_block
-        mesh mesh12
+        mesh mesh_block
 
     new object_rock
         texture tex_rock
-        mesh mesh14
-        eventstring ev_str2
-        eventstring ev_str
+        mesh mesh_rock
+
+    new object_switch
+        texture tex_switch
+        mesh mesh_switch
+
+    new object_scarecrow
+        texture tex_scarecrow
+        mesh mesh_scarecrow
+
+
 end
 
 actorentity

@@ -263,6 +263,25 @@ public:
     ~ListenPosition(){}
 };
 
+
+class SetStatic : public MapEvent{
+
+private:
+
+    std::string _target;
+    bool _value;
+    void _Update();
+
+public:
+
+    SetStatic(std::string target, bool value){_target = target; _value = value;}
+    ~SetStatic(){}
+};
+
+//class ReflectMovement : public MapEvent{
+//
+//};
+
 }//namespace event
 
 
