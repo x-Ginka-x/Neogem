@@ -34,7 +34,7 @@ public:
 
     coor3f GetPos() {return _mesh->GetPos();}
     coor3f GetSize(){return _mesh->GetSize();}
-    coor3f GetAnchor() {return _mesh->GetAnchor(); }
+    coor3f GetAnchor() {return _mesh->GetAnchor();}
     coor3f GetCenter() {return _mesh->GetCenter();}
     bool IsColliding(Entity* E);
 

@@ -90,9 +90,13 @@ Entity* MapEvent::GetEntity(string name){
 //    else if(_event_manager->GetCurrentMap()->_actors.find(name) != neo_map::_current_map->_actors.end())
 //
 //        return neo_map::_current_map->_actors.at(name);
-
-    return MapMode::_current_map->GetObjectEntity(name);
-
+    if(MapMode::_current_map->GetObjectEntity(name) != NULL)
+        return MapMode::_current_map->GetObjectEntity(name);
+    else if(MapMode::_current_map->GetActorEntity(name) != NULL)
+        return MapMode::_current_map->GetActorEntity(name);
+    else if(MapMode::_current_map->GetStaticEntity(name) != NULL)
+        return MapMode::_current_map->GetStaticEntity(name);
+    else return NULL;
 }
 
 
@@ -196,11 +200,24 @@ bool EventManager::DeleteSwitch(string name){
     }
 }
 
+bool EventManager::GetSwitch(string name){
+
+    if(_switches.find(name) == _switches.end())
+        return false;
+    else{
+        return _switches[name];
+    }
+}
+
 
 
 void EventManager::TurnOn(string name){
 
     if(_switches.find(name) != _switches.end() ){
+        _switches.at(name) = true;
+    }
+    else{
+        AddSwitch(name);
         _switches.at(name) = true;
     }
 }
@@ -210,6 +227,10 @@ void EventManager::TurnOn(string name){
 void EventManager::TurnOff(string name){
 
     if(_switches.find(name) != _switches.end() ){
+        _switches.at(name) = false;
+    }
+    else{
+        AddSwitch(name);
         _switches.at(name) = false;
     }
 }
@@ -364,6 +385,11 @@ void ActivateSwitch::_Update(){
 void HideRevealEntity::_Update(){
 
     Entity* _entity = GetEntity(_name);
+    if(_entity == NULL){
+
+        _is_done = true;
+        return;
+    }
     switch(_mode){
     case EVENT_HIDE:
         _entity->SetVisible(false);
@@ -490,9 +516,12 @@ void neo::MapEventDescriptor(ScriptObject* Script){
             ev_str->PushEvent(new event::Teleport(coor3f(x,y,z), dir, map_name));
         }
         else if(mapevent_type == "playanimation"){
-
         }
         else if(mapevent_type == "activateswitch"){
+            std::string name = s_text;
+            std::string mode = s_text;
+            MapEventString* ev_str = s_eventstring(s_active);
+            ev_str->PushEvent(new event::ActivateSwitch(name, mode));
 
         }
         else if(mapevent_type == "modifyvariable"){

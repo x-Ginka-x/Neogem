@@ -80,6 +80,7 @@ public:
     ObjectEntity* CreateObjectEntity(std::string);
     ActorEntity* CreateActorEntity(std::string);
 
+    StaticEntity* GetStaticEntity(std::string);
     ObjectEntity* GetObjectEntity(std::string);
     ActorEntity* GetActorEntity(std::string);
 
@@ -103,6 +104,7 @@ private:
 
     /** Temporary **/
     Image* _blank_bg;
+    ObjectEntity* aabb;
 
 
 };//class MapMode

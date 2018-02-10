@@ -539,6 +539,12 @@ void neo::MeshDescriptor(ScriptObject* Script){
         bool value = (i >= 1 ? true : false);
         mesh->SetSolid(value);
     }
+    else if(instruction == "static"){
+        Mesh* mesh = s_mesh(s_active);
+        int i = s_int;
+        bool value = (i >= 1 ? true : false);
+        mesh->SetStatic(value);
+    }
     else{
 
     }

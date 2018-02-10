@@ -138,7 +138,7 @@ public:
     bool AddSwitch(std::string);
     bool DeleteSwitch(std::string);
 
-    bool GetSwitch(std::string name) const {if (_switches.find(name) != _switches.end()) return _switches.at(name); else return false;}
+    bool GetSwitch(std::string name);
     void TurnOn(std::string) ;
     void TurnOff(std::string);
 

@@ -38,6 +38,13 @@ MapMode::MapMode(){
 
     _view_manager->Follow(coor3f(0,0,0));
     _view_manager->Update();
+    _event_manager->AddSwitch("switch1");
+    aabb = CreateObjectEntity("aabb");
+    Mesh* mesh = _physics_manager->CreateMesh();
+    mesh->SetSize(16,16,16);
+    mesh->SetSolid(false);
+    mesh->SetStatic(false);
+    aabb->LinkMesh(mesh);
     _state = NO_CHANGE;
 }
 
@@ -74,6 +81,9 @@ void MapMode::Draw(){
 }
 
 void MapMode::Update(){
+
+    coor3f pos = GetActorEntity("ginka")->GetPos();
+    GetObjectEntity("aabb")->GetMesh()->SetPos(pos.x-4, pos.y, pos.z-4);
 
     /*** Controls (to be moved away) ***/
 
@@ -176,6 +186,15 @@ ActorEntity* MapMode::CreateActorEntity(std::string name){
     return _actor_entities.at(name);
 }
 
+
+StaticEntity* MapMode::GetStaticEntity(string name){
+
+    if(_static_entities.find(name) != _static_entities.end())
+        return _static_entities.at(name);
+    else
+        return NULL;
+}
+
 ObjectEntity* MapMode::GetObjectEntity(string name){
 
     if(_object_entities.find(name) != _object_entities.end())
@@ -203,6 +222,9 @@ template<class A> void MapMode::_UpdateEntities(A& entities){
             coor3f size = it->second->GetMesh()->GetSize();
             _view_manager->RegisterTextureForSorting(img, pos, size);
 
+            if(GetObjectEntity("aabb")->IsColliding(it->second) && Input->Press(SDLK_e)){
+                it->second->PlayActive();
+            }
             it->second->PlayPassive();
         }
     }

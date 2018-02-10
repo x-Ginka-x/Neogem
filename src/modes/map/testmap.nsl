@@ -131,15 +131,15 @@ mesh
         size 16 32 16
 
     new mesh_crate_s1
-        pos 50 0 208
+        pos 50 0 196
         size 16 32 16
 
     new mesh_crate_s2
-        pos 66 0 208
+        pos 66 0 196
         size 16 32 16
 
     new mesh_crate_s3
-        pos 82 0 208
+        pos 82 0 196
         size 16 32 16
 
     new mesh_crate_w1
@@ -162,6 +162,7 @@ mesh
         pos 400 0 50
         size 16 16 16
         mass 50
+        static 1
 
     new mesh_ground1
         pos 0 -8 0
@@ -176,6 +177,7 @@ mesh
     new mesh_rock
         pos 82 0 182
         size 16 32 16
+        static 1
 
     new mesh_switchmark
         pos 400 0 70
@@ -183,12 +185,13 @@ mesh
         solid 0
 
     new mesh_scarecrow
-        pos 200 0 670
+        pos 260 0 670
         size 16 32 16
 
     new mesh_switch
         pos 66 0 224
         size 16 32 16
+        mass 1000
 
     new mesh_ginka
         pos 32 150 0
@@ -255,8 +258,11 @@ staticentity
         mesh mesh_ground1
     new ground2
         mesh mesh_ground2
+        texture tex_crate
     new ground3
         mesh mesh_ground3
+        texture tex_crate
+
 
 end
 
@@ -265,11 +271,24 @@ event
 
     new ev_str_switch
         push hidereveal ground2 5
+        condition 4 switch1 1
+
+    new ev_str_switch2
+        push activateswitch switch1 toggle
+
+    new ev_str_switch3
+        push hidereveal ground2 4
+        condition 4 switch1 0
 
     new ev_str_scarecrow
         push setstatic object_block 0
 
+    new ev_rock
+        push hidereveal object_rock 4
+        condition 3 block_z 65
 
+    new ev_object
+        push listenposition object_block block_x block_y block_z
 end
 
 objectentity
@@ -277,19 +296,25 @@ objectentity
     new object_block
         texture tex_block
         mesh mesh_block
-
-    new object_rock
-        texture tex_rock
-        mesh mesh_rock
+        passive ev_object
 
     new object_switch
         texture tex_switch
         mesh mesh_switch
+        passive ev_str_switch
+        active ev_str_switch2
+        passive ev_str_switch3
+
 
     new object_scarecrow
         texture tex_scarecrow
         mesh mesh_scarecrow
+        active ev_str_scarecrow
 
+    new object_rock
+        mesh mesh_rock
+        texture tex_rock
+        passive ev_rock
 
 end
 

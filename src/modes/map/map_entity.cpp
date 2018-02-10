@@ -333,12 +333,16 @@ void neo::ObjectEntityDescriptor(ScriptObject* Script){
         Mesh* mesh = (Mesh*)s_get(s_text);
         ObjectEntity* obj = s_objectentity(s_active);
         obj->LinkMesh(mesh);
-        mesh->SetStatic(false);
     }
-    else if(instruction == "eventstring"){
+    else if(instruction == "passive"){
         MapEventString* ev = s_eventstring(s_get(s_text));
         ObjectEntity* obj = s_objectentity(s_active);
         obj->AddPassiveEvent(ev);
+    }
+    else if(instruction == "active"){
+        MapEventString* ev = s_eventstring(s_get(s_text));
+        ObjectEntity* obj = s_objectentity(s_active);
+        obj->AddActiveEvent(ev);
     }
     else{
 

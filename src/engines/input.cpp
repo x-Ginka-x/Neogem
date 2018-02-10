@@ -54,7 +54,7 @@ void InputEngine::Update(){
 
 
     SDL_Event event;
-    if (SDL_PollEvent(&event))
+    while (SDL_PollEvent(&event))
     {
         _event=event;
         switch (event.type)

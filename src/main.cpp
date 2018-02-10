@@ -20,6 +20,7 @@
 .Image manager - add a _loaded_surfaces map
 .Overall - Access to different attributes (in Entity for example) is too easy
 .ActorEntity - change ActorEntity::Update()
+.MapMode - add a GetNearestObject function to decide what active event should be played
 
 ***/
 
