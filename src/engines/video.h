@@ -36,13 +36,15 @@ private:
     SDL_Window* _window;
     SDL_GLContext _glcontext;
 
-    glm::mat4 _modelview;
     glm::mat4 _projection;
     glm::mat4 _modelview_save;
     Shader _texture_shader;
 
+    std::vector<glm::mat4> _matrices;
+
 public:
 
+    glm::mat4 _modelview;
     VideoEngine();
     ~VideoEngine();
 
@@ -55,13 +57,17 @@ public:
 
     void SetCursorPos(float,float,float);
     void TranslateCursor(float,float,float);
+    void ResizeCursor(float, float);
     void SetCamPos(float,float,float);
     void SaveMatrix();
     void ResetMatrix();
+    void PushMatrix();
+    void PopMatrix();
 
     float _ogltexcoords[12];
     int _oglvertices_array_size;
     int _ogltexcoords_array_size;
+
 
 
 };//VideoEngine

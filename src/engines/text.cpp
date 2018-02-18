@@ -3,74 +3,6 @@
 using namespace neo;
 using namespace std;
 
-FontGlyph::FontGlyph(){
-    _minx = _miny = _maxx = _maxy = _advance = 0;
-}
-
-FontGlyph::~FontGlyph(){
-
-}
-
-Font::Font(TTF_Font* font, string name){
-
-    _is_loaded = false;
-    _name = name;
-    _height = TTF_FontHeight(font);
-    _ascent = TTF_FontAscent(font);
-    _descent = TTF_FontDescent(font);
-    _line_skip = TTF_FontLineSkip(font);
-    if(!_LoadGlyphs(font))
-        ERR("-text.cpp : Glyphs not loaded correctly !");
-    else
-        _is_loaded = true;
-}//Constructor
-
-Font::~Font(){
-
-    for(map<Uint16, FontGlyph*>::iterator it = _glyph_cache.begin(); it != _glyph_cache.end(); ++it){
-        delete (*it).second;
-    }
-    _glyph_cache.clear();
-}//Destructor
-
-bool Font::_LoadGlyphs(TTF_Font* font){
-
-    char table[93] = {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !\"#$%&'()*+,-./0123456789:;<=>?@[]_{|}~"};
-    for(int i = 0; i < 92; ++i){
-
-        Uint16 glyph = table[i];
-
-        int miny,maxy,minx,maxx,advance;
-        if(TTF_GlyphMetrics(font, glyph, &minx, &maxx, &miny, &maxy, &advance) < 0){
-            ERR("-text.cpp : Problem with TTF_GlyphMetrics");
-            return false;
-        }
-
-        /** We need to add color choice **/
-        SDL_Color black = {50,50,50,50};
-
-        SDL_Surface* surf = TTF_RenderGlyph_Blended(font, glyph, black);
-        if(!surf){
-            ERR("-text.cpp : Problem with TTF_RenderGlyph");
-            return false;
-        }
-        string glyphname = _name + "_font_char" + table[i];
-        Image* img = ImgManager->RegisterSurfaceAsImage(surf, glyphname);
-
-        SDL_FreeSurface(surf);
-
-        FontGlyph* fontglyph = new FontGlyph();
-        fontglyph->_miny = miny;
-        fontglyph->_minx = minx;
-        fontglyph->_maxy = maxy;
-        fontglyph->_maxx = maxx;
-        fontglyph->_advance = advance;
-        fontglyph->_texture = img;
-
-        _glyph_cache.insert(std::pair<Uint16, FontGlyph*>(table[i], fontglyph));
-    }
-    return true;
-}
 
 
 TextEngine* neo::Text = NULL;
@@ -79,7 +11,7 @@ TextEngine* neo::Text = NULL;
 TextEngine::TextEngine(){
 
     if(TTF_Init()<0 && VIDEO_DEBUG) ERR(".VIDEO_DEBUG : Error while initializing TTF library");
-    LoadFont("default_font", 32, "default_font");
+    LoadFont("default_font", 20, "default_font");
 }
 
 TextEngine::~TextEngine(){
@@ -90,19 +22,19 @@ TextEngine::~TextEngine(){
 }
 
 
-bool TextEngine::LoadFont(std::string fontpath, int size, std::string name){
+Font* TextEngine::LoadFont(std::string fontpath, int fontsize, std::string name){
 
     if(_loaded_fonts.find(name) != _loaded_fonts.end())
-        return false;
+        return _loaded_fonts[name];
 
-    TTF_Font* font = TTF_OpenFont(("fonts/" + fontpath + ".ttf").c_str(), size);
+    TTF_Font* font = TTF_OpenFont(("fonts/" + fontpath + ".ttf").c_str(), fontsize);
     if(!font)
-        return false;
+        return NULL;
 
-    Font* ft = new Font(font, fontpath);
+    Font* ft = new Font(font, name);
 
     _loaded_fonts.insert(make_pair(name, ft));
-    return true;
+    return ft;
 }//LoadFont
 
 
@@ -117,27 +49,49 @@ void TextEngine::FreeFont(std::string name){
 }//FreeFont
 
 
-void TextEngine::Write(std::string text, std::string fontname){
+Font* TextEngine::GetFont(std::string font){
 
-    if(_loaded_fonts.find(fontname) == _loaded_fonts.end()){
-        ERR("-text.cpp : Trying to write with non-existing font !");
-        return;
-    }
+    if(_loaded_fonts.find(font) != _loaded_fonts.end())
+        return _loaded_fonts[font];
 
-    else if(_loaded_fonts.at(fontname)->IsLoaded() == false){
-        ERR("-text.cpp : Trying to write with existing but unloaded font !");
-        return;
-    }
+    return _loaded_fonts["default_font"];
+}
 
-    else{
-        Font* font = _loaded_fonts[fontname];
+
+void TextEngine::Write(std::string text, Font* font){
+
+//    if(_loaded_fonts.find(fontname) == _loaded_fonts.end()){
+//        ERR("-text.cpp : Trying to write with non-existing font !");
+//        return;
+//    }
+//
+//    else if(_loaded_fonts.at(fontname)->IsLoaded() == false){
+//        ERR("-text.cpp : Trying to write with existing but unloaded font !");
+//        return;
+//    }
+//
+//    else{
+//        Font* font = _loaded_fonts[fontname];
         const char* characters = text.c_str();
 
         for(unsigned int i = 0; i < text.size(); ++i){
-            FontGlyph* glyph = font->_glyph_cache.find((Uint16)characters[i])->second;
+
+            FontGlyph* glyph = font->_glyph_cache[characters[i]];
             glyph->_texture->Draw(IMAGE_DRAW_FROM_TOPLEFT);
             Video->TranslateCursor((float)glyph->_advance,0.0,0.0);
 
         }
-    }
+//    }
 }//Write
+
+
+int TextEngine::CalculateLength(string text, Font* font){
+
+    int length = 0;
+    const char* characters = text.c_str();
+
+    for(unsigned int i = 0; i < text.size(); i++){
+        length += font->_glyph_cache[characters[i]]->_advance;
+    }
+    return length;
+}

@@ -16,6 +16,7 @@ Image::Image(){
 
 
     for(int i = 0 ;i < 18; i++) _oglvertices[i] = oglvertices[i];
+    _display_size = coor2i(0,0);
 
 }
 
@@ -232,14 +233,29 @@ bool Image::LoadFromSurface(SDL_Surface* surface){
 
 void Image::Draw(IMAGE_DRAW_FLAG flag){
 
+//    Video->PushMatrix();
+glm::mat4 matrix = Video->_modelview;
+    if(_display_size.x == 0 || _display_size.y == 0)
+        _display_size = _size;
+
+    if(_display_size.x != _size.x || _display_size.y != _size.y)
+        Video->ResizeCursor((float)_display_size.x / (float)_size.x, (float)_display_size.y / (float)_size.y);
+
     if(flag == IMAGE_DRAW_CENTERED){
         Video->Blit(_oglvaoid, _surface_id);
     }
     else if(flag == IMAGE_DRAW_FROM_TOPLEFT){
-        Video->TranslateCursor(_size.x/2, _size.y/2, 0.0);
+        Video->TranslateCursor(_display_size.x/2, _display_size.y/2, 0.0);
         Video->Blit(_oglvaoid, _surface_id);
-        Video->TranslateCursor(-_size.x/2, -_size.y/2,0.0);
     }
+//    Video->PopMatrix();
+    Video->_modelview = matrix;
+    _display_size = _size;
+}
+
+void Image::SetDisplaySize(float x, float y){
+
+    _display_size = coor2i(x, y);
 }
 
 coor2i Image::GetSize() const{
@@ -249,12 +265,12 @@ coor2i Image::GetSize() const{
 
 int Image::GetHeight() const{
 
-    return _size.x;
+    return _size.y;
 }
 
 int Image::GetWidth() const{
 
-    return _size.y;
+    return _size.x;
 }
 
 bool Image::IsValid() const{
@@ -385,6 +401,10 @@ Image* ImageManager::RegisterSurfaceAsImage(SDL_Surface* surface, string name){
 
     Image* img = new Image();
     img->LoadFromSurface(surface);
+    if(img == NULL)
+        return NULL;
+    else
+        LOG(name);
 
     _resource_holder.insert(make_pair(name, img));
     return _resource_holder.at(name);

@@ -117,7 +117,7 @@ public:
 class d_int{
 
 public:
-    d_int();
+    d_int(){}
     d_int(float X, float Y, float Z, float W, float H, float D){x=X;y=Y;z=Z;w=W;h=H;d=D;}
     ~d_int(){}
 
@@ -134,9 +134,9 @@ template <typename T> std::string to_string(const T& n){
     return stm.str() ;
 }
 
-template <class A> void Clear(std::map<std::string, A*> string_map){
+template <typename B,class A> void Clear(std::map<B, A*> _map){
 
-    for(auto it = string_map.begin(); it != string_map.end(); ++it){
+    for(auto it = _map.begin(); it != _map.end(); ++it){
         delete it->second;
     }
 }

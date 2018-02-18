@@ -45,7 +45,11 @@ MapMode::MapMode(){
     mesh->SetSolid(false);
     mesh->SetStatic(false);
     aabb->LinkMesh(mesh);
-    _state = NO_CHANGE;
+
+    _dialog_manager = new DialogManager();
+    dialogtest = _dialog_manager->AddDialog("Hey, this is a DialogBox ! That's awesome !");
+
+    _state = STATE_EXPLO;
 }
 
 MapMode::MapMode(string script_file){
@@ -54,7 +58,7 @@ MapMode::MapMode(string script_file){
     _current_map = this;
     _script_file = script_file;
     _view_manager = new MapVideoEngine();
-    _state = NO_CHANGE;
+    _state = STATE_EXPLO;
 }
 
 MapMode::~MapMode(){
@@ -66,6 +70,7 @@ MapMode::~MapMode(){
     delete _view_manager;
     delete _physics_manager;
     delete _event_manager;
+    delete _dialog_manager;
 }
 
 void MapMode::Draw(){
@@ -75,39 +80,55 @@ void MapMode::Draw(){
         _blank_bg->Draw(IMAGE_DRAW_FROM_TOPLEFT);
     }
     _view_manager->Draw();
-    Video->SetCursorPos(150, 10.5, 999);
-    Text->Write("Place the Block on the Mark", "default_font");
+    Video->SetCursorPos(150, 100.5, 998);
+    _dialog_manager->Draw();
 
+//    Time->ExitGame();
 }
 
 void MapMode::Update(){
+//    ERR("lopp");
 
     coor3f pos = GetActorEntity("ginka")->GetPos();
     GetObjectEntity("aabb")->GetMesh()->SetPos(pos.x-4, pos.y, pos.z-4);
-
     /*** Controls (to be moved away) ***/
 
     if(Input->Press(SDLK_ESCAPE))
         Mode->Pop();
 
-    if(Input->State(SDLK_d)){
+    if(_state == STATE_EXPLO){
 
-        GetActorEntity("ginka")->Walk(EAST);
-    }
-    else if(Input->State(SDLK_q)){
+        if(Input->State(SDLK_d)){
 
-        GetActorEntity("ginka")->Walk(WEST);
-    }
-    else if(Input->State(SDLK_z)){
+            GetActorEntity("ginka")->Walk(EAST);
+        }
+        else if(Input->State(SDLK_q)){
 
-        GetActorEntity("ginka")->Walk(NORTH);
-    }
-    else if(Input->State(SDLK_s)){
+            GetActorEntity("ginka")->Walk(WEST);
+        }
+        else if(Input->State(SDLK_z)){
 
-        GetActorEntity("ginka")->Walk(SOUTH);
+            GetActorEntity("ginka")->Walk(NORTH);
+        }
+        else if(Input->State(SDLK_s)){
+
+            GetActorEntity("ginka")->Walk(SOUTH);
+        }
+        if(Input->Press(SDLK_i)){
+            Mode->Push(new TestMode());
+        }
+        if(Input->Press(SDLK_e)){
+            _dialog_manager->Play(dialogtest, "object_scarecrow");
+            _state = STATE_DIALOG;
+        }
+
     }
-    if(Input->Press(SDLK_i)){
-        Mode->Push(new TestMode());
+    else if(_state == STATE_DIALOG){
+
+        if(Input->Press(SDLK_e)){
+            _dialog_manager->Play(0,"");
+            _state = STATE_EXPLO;
+        }
     }
 
     /** Update the Physics and manage the collisions **/
@@ -148,7 +169,6 @@ void MapMode::Reset(){
 void MapMode::ChangeMap(string path){
 
     _script_file = path;
-    _state = CHANGE;
 }
 
 

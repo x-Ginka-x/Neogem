@@ -60,6 +60,7 @@ private:
     GLuint _surface_id;
 
     coor2i _size;
+    coor2i _display_size;
 
     bool _is_valid;
 
@@ -83,6 +84,7 @@ public:
 
     void Draw(IMAGE_DRAW_FLAG flag = IMAGE_DRAW_CENTERED);
 
+    void SetDisplaySize(float, float);
     coor2i GetSize() const;
     int GetHeight() const;
     int GetWidth() const;

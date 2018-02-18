@@ -131,6 +131,11 @@ void neo::VideoEngine::TranslateCursor(float x, float y, float z){
     _modelview = glm::translate(_modelview,glm::vec3(x,y,z));
 }
 
+void neo::VideoEngine::ResizeCursor(float x, float y){
+
+    _modelview = glm::scale(_modelview, x, y, 1.0f);
+}
+
 void neo::VideoEngine::SetCamPos(float x, float y, float z){
 
     _modelview = glm::lookAt(glm::vec3(x,y,z),glm::vec3(0.0,0.0,0.0),glm::vec3(0,1,0));
@@ -144,4 +149,14 @@ void neo::VideoEngine::SaveMatrix(){
 void neo::VideoEngine::ResetMatrix(){
 
     _modelview = _modelview_save;
+}
+
+void neo::VideoEngine::PushMatrix(){
+    _matrices.push_back(glm::mat4());
+    _matrices.back() = _modelview;
+}
+
+void neo::VideoEngine::PopMatrix(){
+    _matrices.pop_back();
+    _modelview = _matrices.back();
 }

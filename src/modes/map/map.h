@@ -5,6 +5,8 @@
 #include "../../engines/input.h"
 #include "../../engines/time.h"
 #include "../../engines/text.h"
+#include "../../engines/text_box.h"
+#include "map_dialog.h"
 #include "map_physics.h"
 #include "map_entity.h"
 
@@ -20,8 +22,8 @@ extern bool MAP_DEBUG;
 
 enum MAP_STATE{
 
-    NO_CHANGE,
-    CHANGE
+    STATE_EXPLO,
+    STATE_DIALOG
 };
 
 /** \class MapMode
@@ -98,6 +100,7 @@ private:
     MapVideoEngine* _view_manager;
     PhysicsEngine* _physics_manager;
     EventManager* _event_manager;
+    DialogManager* _dialog_manager;
 
 
     template<class A> void _UpdateEntities(A&);
@@ -105,7 +108,7 @@ private:
     /** Temporary **/
     Image* _blank_bg;
     ObjectEntity* aabb;
-
+    int dialogtest;
 
 };//class MapMode
 

@@ -32,6 +32,11 @@ animation
     new anim_switch_open
         frame switch<f<0,0,70,92 1
 
+    new anim_ground
+        frame green 100
+    new anim_ground2
+        frame green2 100
+
 -------GINKA ANIMATIONS
 
     new anim_g1 --STANDING_SOUTH
@@ -110,91 +115,96 @@ map_texture
     new tex_switch
         animation anim_switch_open DEFAULT
 
+    new tex_ground
+        animation anim_ground
+    new tex_ground2
+        animation anim_ground2
+
 end
 
 mesh
 
     new mesh_crate_n1
-        pos 50 0 150
+        pos 50 0 50
         size 16 32 16
 
     new mesh_crate_n2
-        pos 66 0 150
+        pos 66 0 50
         size 16 32 16
 
     new mesh_crate_n3
-        pos 82 0 150
+        pos 82 0 50
         size 16 32 16
 
     new mesh_crate_e1
-        pos 82 0 166
+        pos 82 0 66
         size 16 32 16
 
     new mesh_crate_s1
-        pos 50 0 196
+        pos 50 0 96
         size 16 32 16
 
     new mesh_crate_s2
-        pos 66 0 196
+        pos 66 0 96
         size 16 32 16
 
     new mesh_crate_s3
-        pos 82 0 196
+        pos 82 0 96
         size 16 32 16
 
     new mesh_crate_w1
-        pos 34 0 166
+        pos 34 0 66
         size 16 32 16
 
     new mesh_crate_w2
-        pos 34 0 182
+        pos 34 0 82
         size 16 32 16
 
     new mesh_table
-        pos 82 0 214
+        pos 82 0 114
         size 16 24 16
 
     new mesh_panel
-        pos 50 0 166
-        size 8 32 16
+        pos 50 0 66
+        size 16 32 16
 
     new mesh_block
-        pos 400 0 50
+        pos 130 0 50
         size 16 16 16
         mass 50
         static 1
 
     new mesh_ground1
-        pos 0 -8 0
-        size 500 8 500
+        pos 0 -20 0
+        size 160 20 160
     new mesh_ground2
-        pos 400 -8 500
-        size 100 8 150
+        pos 80 -20 160
+        size 160 15 160
     new mesh_ground3
-        pos 250 -8 650
-        size 400 8 150
+        pos 0 -20 320
+        size 160 20 160
 
     new mesh_rock
-        pos 82 0 182
+        pos 82 0 82
         size 16 32 16
         static 1
 
     new mesh_switchmark
-        pos 400 0 70
+        pos 130 0 65
         size 15 1 15
         solid 0
 
     new mesh_scarecrow
-        pos 260 0 670
+        pos 20 0 325
         size 16 32 16
 
     new mesh_switch
-        pos 66 0 224
+        pos 66 0 114
         size 16 32 16
         mass 1000
 
     new mesh_ginka
-        pos 32 150 0
+        pos 100 0 20
         size 8 16 8
 
 end
@@ -246,9 +256,6 @@ staticentity
         texture tex_table
         mesh mesh_table
 
-    new static_panel
-        texture tex_panel
-        mesh mesh_panel
 
     new switch_mark
         mesh mesh_switchmark
@@ -256,13 +263,17 @@ staticentity
 
     new ground1
         mesh mesh_ground1
+        texture tex_ground
     new ground2
         mesh mesh_ground2
-        texture tex_crate
+        texture tex_ground2
     new ground3
         mesh mesh_ground3
-        texture tex_crate
+        texture tex_ground
 
+    new static_panel
+        texture tex_panel
+        mesh mesh_panel
 
 end
 
@@ -276,9 +287,7 @@ event
     new ev_str_switch2
         push activateswitch switch1 toggle
 
-    new ev_str_switch3
-        push hidereveal ground2 4
-        condition 4 switch1 0
+
 
     new ev_str_scarecrow
         push setstatic object_block 0
@@ -303,7 +312,6 @@ objectentity
         mesh mesh_switch
         passive ev_str_switch
         active ev_str_switch2
-        passive ev_str_switch3
 
 
     new object_scarecrow

@@ -278,6 +278,20 @@ public:
     ~SetStatic(){}
 };
 
+class Dialog : public MapEvent{
+
+public:
+
+    Dialog(std::string text, std::string target){_text = text; _target = target;}
+    ~Dialog(){}
+
+private:
+
+    void _Update();
+    std::string _text;
+    std::string _target;
+
+};
 //class ReflectMovement : public MapEvent{
 //
 //};

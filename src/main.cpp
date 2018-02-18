@@ -18,18 +18,25 @@
 .TextManager - Add color choice when loading or writing glyphs
 .TextManager - add support for texture batching
 .Image manager - add a _loaded_surfaces map
+.Image - add a resizing function
 .Overall - Access to different attributes (in Entity for example) is too easy
 .ActorEntity - change ActorEntity::Update()
 .MapMode - add a GetNearestObject function to decide what active event should be played
 
 ***/
 
-/**TODO NOW :
+/*** TODO in a future major rework
 
-    Sat 0211 -> Sun 0212 - Add content to test map
+.Mesh - Rework how collisions are resolved (maybe bring back class KineticForceObject)
+.MapVideoEngine - Replace multimap by a custom container for Texture sorting
+
+
+**TODO NOW :
+
     Mon 0213 -> Sun 0219 - Dialog Manager
-    Sun 0219 - 0.11-alpha.0 release
+    Sun 0219 - 0.2-alpha.0 release
 
+    .Text->write(Textbox)
 
 **/
 

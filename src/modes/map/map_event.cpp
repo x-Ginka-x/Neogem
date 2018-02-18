@@ -482,6 +482,12 @@ void SetStatic::_Update(){
 }
 
 
+void event::Dialog::_Update(){
+
+    if(_is_playing){
+
+    }
+}
 
 void neo::MapEventDescriptor(ScriptObject* Script){
 
@@ -557,3 +563,5 @@ void neo::MapEventDescriptor(ScriptObject* Script){
 
     }
 }
+
+

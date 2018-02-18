@@ -1,15 +1,13 @@
 #ifndef TEXT_H_INCLUDED
 #define TEXT_H_INCLUDED
 
-#include "SDL_ttf.h"
-#include <string>
-#include <map>
 
 #include "../defs.h"
 #include "../utils.h"
 
 #include "video.h"
 #include "image.h"
+#include "text_font.h"
 //
 namespace neo{
 
@@ -77,39 +75,6 @@ namespace neo{
 ////
 //
 
-class FontGlyph{
-
-public:
-    FontGlyph();
-    ~FontGlyph();
-
-    int _miny, _maxy;
-    int _minx, _maxx;
-    int _advance;
-    Image* _texture;
-};
-
-class Font{
-
-public:
-    Font(TTF_Font*,std::string);
-    ~Font();
-
-    int _height;
-    int _ascent,_descent;
-    int _line_skip;
-
-    bool IsLoaded() const {return _is_loaded;}
-
-    std::map<Uint16, FontGlyph*> _glyph_cache;
-
-private:
-    std::string _name;
-    bool _is_loaded;
-    bool _LoadGlyphs(TTF_Font*);
-};
-
-
 class TextEngine{
 
 public:
@@ -117,12 +82,15 @@ public:
     TextEngine();
     ~TextEngine();
 
-    bool LoadFont(std::string, int, std::string);
+    Font* LoadFont(std::string, int, std::string);
     void FreeFont(std::string);
+    Font* GetFont(std::string);
 
 //    void RenderText(std::string, TextStyle*, int aligned, int speed, int);
-    void Write(std::string, std::string);
+    void Write(std::string text, Font* font);
     SDL_Surface* RenderText(std::string, std::string);
+
+    int CalculateLength(std::string, Font*);
 
 private:
 

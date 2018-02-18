@@ -12,8 +12,6 @@
 
 namespace neo{
 
-
-
 class MapVideoEngine{
 
 public:

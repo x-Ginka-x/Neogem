@@ -4,6 +4,8 @@
 using namespace std;
 using namespace neo;
 
+
+
 MapVideoEngine::MapVideoEngine(){
 
     if(MAP_DEBUG) LOG(".MAP_DEBUG : create map video");
@@ -14,7 +16,7 @@ MapVideoEngine::MapVideoEngine(){
 
 MapVideoEngine::~MapVideoEngine(){
     if(MAP_DEBUG) LOG(".MAP_DEBUG : destroy map video");
-//    Clear(_texture_objects);
+    Clear(_texture_objects);
 
 }//Destructor
 
@@ -113,7 +115,6 @@ void MapVideoEngine::RegisterTextureForSorting(Image* tex, coor3f pos, coor3f si
     }
 
     /**-------------**/
-
     d_int depth(pos.x,pos.y,pos.z,siz.x,siz.y,siz.z);
     _ordered_textures.insert(make_pair(depth, tex));
 }

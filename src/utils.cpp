@@ -15,14 +15,12 @@ void LOG(std::string message){
     std::cout << message << "\n";
 }
 
-
 float sqart(float A, float root) {
     const double e = 2.71828182846;
     return pow(e,(std::pow(10.0,9.0)/root)*(1.0-(std::pow(A,-std::pow(10.0,-9.0)))));
 }
 
 bool d_int::operator <(d_int const& other) const{
-
     bool isabove = false;
     bool centerisbehind = false;
     bool wholeobjectisbehind = false;
@@ -30,26 +28,25 @@ bool d_int::operator <(d_int const& other) const{
 
     if(x+z+w+d <= other.x + other.z)
         wholeobjectisbehind = true;
-    if(x+z+(w+d)/2 <= other.x+other.z+(other.w+other.d)/2)
+    if(x+z+(w+d)/2.0f <= other.x+other.z+(other.w+other.d)/2.0f)
         centerisbehind = true;
     if(y >= other.y + other.h)
         baseisabovewholeobject = true;
     if(y + h > other.y+1)
         isabove = true;
-
+    bool finalb=true;
     if(centerisbehind && !baseisabovewholeobject)
-        return true;
+        finalb = true;
 
     else if(centerisbehind && baseisabovewholeobject && !wholeobjectisbehind)
-        return false;
+        finalb = false;
 
     else if(!centerisbehind && isabove)
-        return false;
+        finalb = false;
 
     else if(!centerisbehind && !isabove)
-        return true;
-
-    return true;
+        finalb = true;
+    return finalb;
 }
 
 
