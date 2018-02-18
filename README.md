@@ -30,6 +30,7 @@ The main mode being the exploration, I already have made quite a job for it, so 
 
 
 The current release is 0.2.0.
+
 0.2 will be centered around DialogManager.
 
 As mentioned before, it's not my goal to make it an open-source/moddable game in the future, but if you want to help this project, you can send me a mail at ginka-neogem@hotmail.com
