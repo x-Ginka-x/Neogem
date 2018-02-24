@@ -77,6 +77,7 @@ public:
     MapVideoEngine* GetViewManager() {return _view_manager;}
     PhysicsEngine* GetPhysicsManager() {return _physics_manager;}
     EventManager* GetEventManager() {return _event_manager;}
+    DialogManager* GetDialogManager() {return _dialog_manager;}
 
     StaticEntity* CreateStaticEntity(std::string);
     ObjectEntity* CreateObjectEntity(std::string);
@@ -85,6 +86,8 @@ public:
     StaticEntity* GetStaticEntity(std::string);
     ObjectEntity* GetObjectEntity(std::string);
     ActorEntity* GetActorEntity(std::string);
+
+
 
 
 private:
@@ -109,6 +112,9 @@ private:
     Image* _blank_bg;
     ObjectEntity* aabb;
     int dialogtest;
+
+
+    void _CheckControls();
 
 };//class MapMode
 

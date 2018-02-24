@@ -48,6 +48,16 @@ MapMode::MapMode(){
 
     _dialog_manager = new DialogManager();
     dialogtest = _dialog_manager->AddDialog("Hey, this is a DialogBox ! That's awesome !");
+    _dialog_manager->AddChoice("Yes");
+    _dialog_manager->AddChoice("No");
+    int dialogtest2 = _dialog_manager->AddDialog("And it's a second DialogBox ! I can't get enough of 'em !!!");
+
+
+    MapEventString* dialog_ev = _event_manager->CreateEventString();
+    dialog_ev->PushEvent(new event::Dialog(dialogtest, "object_block"));
+    dialog_ev->PushEvent(new event::Dialog(dialogtest2, "object_block"));
+
+    GetObjectEntity("object_block")->AddActiveEvent(dialog_ev);
 
     _state = STATE_EXPLO;
 }
@@ -76,11 +86,9 @@ MapMode::~MapMode(){
 void MapMode::Draw(){
 
     for(int i = 0; i < 4; i++){
-        Video->SetCursorPos((i%2)*640, (i/2)*360, 0.5);
-        _blank_bg->Draw(IMAGE_DRAW_FROM_TOPLEFT);
+        _blank_bg->Draw((i%2)*640, (i/2)*360, 1, IMAGE_DRAW_FROM_TOPLEFT);
     }
     _view_manager->Draw();
-    Video->SetCursorPos(150, 100.5, 998);
     _dialog_manager->Draw();
 
 //    Time->ExitGame();
@@ -96,40 +104,19 @@ void MapMode::Update(){
     if(Input->Press(SDLK_ESCAPE))
         Mode->Pop();
 
-    if(_state == STATE_EXPLO){
+    if(_dialog_manager->IsPlaying())
+        _state = STATE_DIALOG;
+    else
+        _state = STATE_EXPLO;
 
-        if(Input->State(SDLK_d)){
+    if(_state == STATE_EXPLO)
+        _CheckControls();
 
-            GetActorEntity("ginka")->Walk(EAST);
-        }
-        else if(Input->State(SDLK_q)){
+    else if(_state == STATE_DIALOG)
+        _dialog_manager->CheckControls();
 
-            GetActorEntity("ginka")->Walk(WEST);
-        }
-        else if(Input->State(SDLK_z)){
 
-            GetActorEntity("ginka")->Walk(NORTH);
-        }
-        else if(Input->State(SDLK_s)){
-
-            GetActorEntity("ginka")->Walk(SOUTH);
-        }
-        if(Input->Press(SDLK_i)){
-            Mode->Push(new TestMode());
-        }
-        if(Input->Press(SDLK_e)){
-            _dialog_manager->Play(dialogtest, "object_scarecrow");
-            _state = STATE_DIALOG;
-        }
-
-    }
-    else if(_state == STATE_DIALOG){
-
-        if(Input->Press(SDLK_e)){
-            _dialog_manager->Play(0,"");
-            _state = STATE_EXPLO;
-        }
-    }
+    _dialog_manager->Update();
 
     /** Update the Physics and manage the collisions **/
 
@@ -242,10 +229,35 @@ template<class A> void MapMode::_UpdateEntities(A& entities){
             coor3f size = it->second->GetMesh()->GetSize();
             _view_manager->RegisterTextureForSorting(img, pos, size);
 
-            if(GetObjectEntity("aabb")->IsColliding(it->second) && Input->Press(SDLK_e)){
+            if(GetObjectEntity("aabb")->IsColliding(it->second) && Input->Press(SDLK_e) && _state == STATE_EXPLO){
                 it->second->PlayActive();
             }
             it->second->PlayPassive();
         }
+    }
+}
+
+
+void MapMode::_CheckControls(){
+
+    if(Input->State(SDLK_d)){
+
+        GetActorEntity("ginka")->Walk(EAST);
+    }
+    else if(Input->State(SDLK_q)){
+
+        GetActorEntity("ginka")->Walk(WEST);
+    }
+    else if(Input->State(SDLK_z)){
+
+        GetActorEntity("ginka")->Walk(NORTH);
+    }
+    else if(Input->State(SDLK_s)){
+
+        GetActorEntity("ginka")->Walk(SOUTH);
+    }
+    if(Input->Press(SDLK_i)){
+
+        Mode->Push(new TestMode());
     }
 }

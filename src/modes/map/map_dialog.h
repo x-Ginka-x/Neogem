@@ -2,6 +2,7 @@
 #define MAP_DIALOG_H_INCLUDED
 
 #include <string>
+#include <queue>
 
 #include "../../engines/text_box.h"
 
@@ -57,11 +58,16 @@ public:
     DialogBox(std::string, Image*);
     ~DialogBox();
 
-    void Draw();
+    void Draw(int,int,int);
     void Update();
 
     bool FinishedDrawing();
     int GetHeight(){return _height;}
+
+    void AddChoice(std::string choice){_choices.push_back(choice);}
+    unsigned int GetChoice();
+    void IncrementChoice();
+    void DecrementChoice();
 
 private:
 
@@ -71,6 +77,8 @@ private:
     Image* _bubble;
     TextBox _textbox;
     std::string _text;
+    unsigned int _choice_id;
+    std::vector<std::string> _choices;
 
 };//DialogBox
 
@@ -91,15 +99,22 @@ public:
     bool DialogEnd();
     Image* GetDialogBubble(){return _bubble;}
 
-    int AddDialog(std::string);
+    bool IsPlaying(){return _is_playing;}
 
+    int AddDialog(std::string);
+    void AddChoice(std::string);
+
+    void CheckControls();
 private:
 
     std::map<int, DialogBox*> _dialog_index;
     Image* _bubble;
-    int _dialog_id;
+    int _dialog_id_buffer;
     int _current_dialog_id;
     std::string _target;
+    std::queue<std::pair<int,std::string> > _dialog_queue;
+
+    bool _is_playing;
 };
 
 }//namespace

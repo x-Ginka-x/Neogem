@@ -58,7 +58,7 @@ Font* TextEngine::GetFont(std::string font){
 }
 
 
-void TextEngine::Write(std::string text, Font* font){
+void TextEngine::Write(int x, int y, int z, std::string text, Font* font){
 
 //    if(_loaded_fonts.find(fontname) == _loaded_fonts.end()){
 //        ERR("-text.cpp : Trying to write with non-existing font !");
@@ -77,8 +77,8 @@ void TextEngine::Write(std::string text, Font* font){
         for(unsigned int i = 0; i < text.size(); ++i){
 
             FontGlyph* glyph = font->_glyph_cache[characters[i]];
-            glyph->_texture->Draw(IMAGE_DRAW_FROM_TOPLEFT);
-            Video->TranslateCursor((float)glyph->_advance,0.0,0.0);
+            glyph->_texture->Draw(x, y, z, IMAGE_DRAW_FROM_TOPLEFT);
+            x += glyph->_advance;
 
         }
 //    }

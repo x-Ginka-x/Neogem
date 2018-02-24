@@ -23,6 +23,9 @@
 .ActorEntity - change ActorEntity::Update()
 .MapMode - add a GetNearestObject function to decide what active event should be played
 
+.MapMode - Separate controls (dialog + explo)
+.DialogManager - Add Stop, improve link to events
+
 ***/
 
 /*** TODO in a future major rework

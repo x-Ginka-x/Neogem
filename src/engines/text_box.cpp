@@ -37,9 +37,9 @@ void TextBox::Load(string text, Font* font){
     old_position = 0;
 
     while(position != text.npos){
-        position = text.find(" ", old_position);
+        position = text.find_first_of(" \n", old_position);
         word = text.substr(old_position, position - old_position) + " ";
-        LOG(word);
+//        LOG(word);
         length = Text->CalculateLength(word, font);
         old_position = position + 1;
         if(total_length + length <= _size.x){
@@ -57,26 +57,24 @@ void TextBox::Load(string text, Font* font){
     _formated_text = new_string;
     _font = font;
     _size.y = height;
-    ERR("good");
-    ERR(new_string);
 }
 
 
 
-void TextBox::Draw(){
+void TextBox::Draw(int x, int y, int z){
 
     size_t position, oldposition;
     oldposition = 0;
     std::string str;
-    int length;
     int lineskip = _font->_line_skip;
-    Video->TranslateCursor(-_size.x/2, -_size.y/2,0);
+    x -= _size.x/2;
+    y -= _size.y/2;
     while (position != _formated_text.npos){
+
         position = _formated_text.find("\n", oldposition);
         str = _formated_text.substr(oldposition, position - oldposition);
         oldposition = position + 1;
-        Text->Write(str, _font);
-        length = Text->CalculateLength(str, _font);
-        Video->TranslateCursor(-length, lineskip, 0);
+        Text->Write(x, y, z, str, _font);
+        y += lineskip;
     }
 }

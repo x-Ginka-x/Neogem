@@ -35,6 +35,7 @@ public:
     int _type;
     std::string _variable;
     int _value;
+    bool _pass;
 
 };//event::Condition
 
@@ -60,7 +61,7 @@ public:
 
     bool PushEvent(MapEvent* event);
     void PopEvent(){_events.pop_back();}
-    void SetCondition(int, std::string, int);
+    void SetCondition(int, std::string, int,bool pass= false);
 
     void Update();
     void Play();
@@ -99,7 +100,7 @@ public:
     virtual ~MapEvent();
 
     std::string GetName() const {return _name;}
-    void AddCondition(int, std::string, int);
+    void AddCondition(int, std::string, int,bool pass = false);
 
     void Play() {_is_playing = true; _is_done = false;}
     void Stop() {_is_playing = false;}
@@ -282,14 +283,15 @@ class Dialog : public MapEvent{
 
 public:
 
-    Dialog(std::string text, std::string target){_text = text; _target = target;}
+    Dialog(int text, std::string target){_text = text; _target = target;_initialized = false;}
     ~Dialog(){}
 
 private:
 
     void _Update();
-    std::string _text;
+    int _text;
     std::string _target;
+    bool _initialized;
 
 };
 //class ReflectMovement : public MapEvent{

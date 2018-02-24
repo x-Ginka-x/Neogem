@@ -231,10 +231,12 @@ bool Image::LoadFromSurface(SDL_Surface* surface){
 }
 
 
-void Image::Draw(IMAGE_DRAW_FLAG flag){
+void Image::Draw(int x, int y, int z, IMAGE_DRAW_FLAG flag){
 
 //    Video->PushMatrix();
-glm::mat4 matrix = Video->_modelview;
+    glm::mat4 matrix = Video->_modelview;
+    Video->SetCursorPos(x, y, z);
+
     if(_display_size.x == 0 || _display_size.y == 0)
         _display_size = _size;
 

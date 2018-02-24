@@ -87,7 +87,7 @@ public:
     Font* GetFont(std::string);
 
 //    void RenderText(std::string, TextStyle*, int aligned, int speed, int);
-    void Write(std::string text, Font* font);
+    void Write(int, int,int, std::string text, Font* font);
     SDL_Surface* RenderText(std::string, std::string);
 
     int CalculateLength(std::string, Font*);

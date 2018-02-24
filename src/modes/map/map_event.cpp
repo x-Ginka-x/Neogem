@@ -68,9 +68,9 @@ void MapEventString::Update(){
     }
 }
 
-void MapEventString::SetCondition(int type, std::string var, int value){
+void MapEventString::SetCondition(int type, std::string var, int value, bool pass){
 
-    _events.back()->AddCondition(type, var, value);
+    _events.back()->AddCondition(type, var, value, pass);
 }
 
 MapEvent::MapEvent(){
@@ -101,12 +101,13 @@ Entity* MapEvent::GetEntity(string name){
 
 
 
-void MapEvent::AddCondition(int type, string variable, int value){
+void MapEvent::AddCondition(int type, string variable, int value, bool pass){
 
     event::Condition condition = event::Condition();
     condition._type = type;
     condition._variable = variable;
     condition._value = value;
+    condition._pass = pass;
     _conditions.push_back(condition);
 }
 
@@ -485,7 +486,16 @@ void SetStatic::_Update(){
 void event::Dialog::_Update(){
 
     if(_is_playing){
-
+        if(_initialized == false){
+            MapMode::_current_map->GetDialogManager()->Play(_text, _target);
+            _initialized = true;
+        }
+        else{
+            if(MapMode::_current_map->GetDialogManager()->IsPlaying() == false){
+                _is_done = true;
+                _initialized = false;
+            }
+        }
     }
 }
 

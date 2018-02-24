@@ -76,7 +76,7 @@ bool neo::VideoEngine::Initialize(){
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     SDL_GL_SetSwapInterval(1);
 
-    _projection = glm::ortho(0.0f, (float)neo::SCREEN_WIDTH,(float)neo::SCREEN_HEIGHT,0.0f, 0.0f, 1000.0f);
+    _projection = glm::ortho(0.0f, 640.0f,360.0f,0.0f, 0.0f, 1000.0f);
     _modelview = glm::lookAt(glm::vec3(0.0,0.0,1000.0),glm::vec3(0.0,0.0,0.0),glm::vec3(0,1,0));
 
     _texture_shader = Shader("src/shaders/texture.vert", "src/shaders/texture.frag");

@@ -15,7 +15,7 @@ public:
     ~TextBox();
 
     void Load(std::string, Font* font);
-    void Draw();
+    void Draw(int,int,int);
 
     void SetFont(Font* font){_font = font;}
     void SetSize(int, int);
