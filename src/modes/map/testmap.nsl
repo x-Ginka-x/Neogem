@@ -40,40 +40,28 @@ animation
 -------GINKA ANIMATIONS
 
     new anim_g1 --STANDING_SOUTH
-        frame Marche[1]<f<69,76,19,32 5
+        frame ginka21 5
         times 0
     new anim_g2 --STANDING_EAST
-        frame Marche[1]<f<69,34,19,32 5
+        frame ginka2 5
         times 0
     new anim_g3 --STANDING_WEST
-        frame Marche[1]<f<69,180,19,32 5
+        frame ginka21 5
         times 0
     new anim_g4 --STANDING_NORTH
-        frame Marche[1]<f<69,130,19,32 5
+        frame ginka2 5
         times 0
     new anim_g5 --WALKING_EAST
-        frame Marche[1]<f<50,34,19,32 100
-        frame Marche[1]<f<69,34,19,32 100
-        frame Marche[1]<f<88,34,19,32 100
-        frame Marche[1]<f<69,34,19,32 100
+        frame ginka2 5
         times 1
     new anim_g6 --WALKING_SOUTH
-        frame Marche[1]<f<50,76,19,32 100
-        frame Marche[1]<f<69,76,19,32 100
-        frame Marche[1]<f<88,76,19,32 100
-        frame Marche[1]<f<69,76,19,32 100
+        frame ginka21 5
         times 0
     new anim_g7 --WALKING_WEST
-        frame Marche[1]<f<50,180,19,32 100
-        frame Marche[1]<f<69,180,19,32 100
-        frame Marche[1]<f<88,180,19,32 100
-        frame Marche[1]<f<69,180,19,32 100
+        frame ginka21 5
         times 0
     new anim_g8 --WALKING_NORTH
-        frame Marche[1]<f<50,130,19,32 100
-        frame Marche[1]<f<69,130,19,32 100
-        frame Marche[1]<f<88,130,19,32 100
-        frame Marche[1]<f<69,130,19,32 100
+        frame ginka2 5
         times 0
 
 end

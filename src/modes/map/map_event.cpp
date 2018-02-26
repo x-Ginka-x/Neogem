@@ -499,6 +499,27 @@ void event::Dialog::_Update(){
     }
 }
 
+
+
+
+void event::Choice::_Update(){
+
+     if(_is_playing){
+        if(_initialized == false){
+            MapMode::_current_map->GetDialogManager()->Play(_choice_id, _target);
+            _initialized = true;
+        }
+        else{
+            if(MapMode::_current_map->GetDialogManager()->IsPlaying() == false){
+                _is_done = true;
+                _initialized = false;
+               _event_manager->SetVar(_var, MapMode::_current_map->GetDialogManager()->GetChoiceResult(_choice_id));
+            }
+        }
+    }
+}
+
+
 void neo::MapEventDescriptor(ScriptObject* Script){
 
     std::string instruction = s_text;

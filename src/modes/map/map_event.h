@@ -294,6 +294,24 @@ private:
     bool _initialized;
 
 };
+
+class Choice : public MapEvent{
+
+public:
+
+    Choice(int choice_id, std::string target, std::string var){_choice_id = choice_id; _target = target; _initialized = false; _var = var;}
+    ~Choice(){}
+
+private:
+
+    void _Update();
+    int _choice_id;
+    std::string _target;
+    bool _initialized;
+    int _result;
+    std::string _var;
+
+};
 //class ReflectMovement : public MapEvent{
 //
 //};

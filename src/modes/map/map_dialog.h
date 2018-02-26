@@ -66,6 +66,7 @@ public:
 
     void AddChoice(std::string choice){_choices.push_back(choice);}
     unsigned int GetChoice();
+    void SetChoice(unsigned int val){_choice_id = val;}
     void IncrementChoice();
     void DecrementChoice();
 
@@ -81,6 +82,7 @@ private:
     std::vector<std::string> _choices;
 
 };//DialogBox
+
 
 class DialogManager{
 
@@ -101,8 +103,10 @@ public:
 
     bool IsPlaying(){return _is_playing;}
 
-    int AddDialog(std::string);
+    int AddDialog(std::string,int choice_nb = 0, ...);
+    int AddDialog(std::string, int choice_nb, va_list);
     void AddChoice(std::string);
+    int GetChoiceResult(int);
 
     void CheckControls();
 private:

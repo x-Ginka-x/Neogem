@@ -35,22 +35,42 @@ void TextBox::Load(string text, Font* font){
     int lineskip = font->_line_skip;
     int height = lineskip;
     old_position = 0;
+    bool _return = false;
 
     while(position != text.npos){
+
         position = text.find_first_of(" \n", old_position);
-        word = text.substr(old_position, position - old_position) + " ";
-//        LOG(word);
+        word = text.substr(old_position, position - old_position + 1);
+
+        if(word.find("\n") == word.npos)
+            _return = false;
+        else
+            _return = true;
+
+        if(position != text.npos)
+            word.pop_back();
+
+        if(!_return)
+            word += " ";
+
         length = Text->CalculateLength(word, font);
         old_position = position + 1;
+
         if(total_length + length <= _size.x){
             new_string += word;
             total_length += length;
         }
         else{
-            new_string += "\n";
+            if(_return == false) new_string += "\n";
             new_string += word;
             total_length = length;
             height += lineskip;
+        }
+
+        if(_return){
+            new_string += "\n";
+            height += lineskip;
+            total_length = 0;
         }
 
     }

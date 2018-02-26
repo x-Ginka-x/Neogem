@@ -1,6 +1,7 @@
 #include "map_dialog.h"
 #include "../../engines/text.h"
 #include "map.h"
+#include <cstdarg>
 
 using namespace neo;
 using namespace std;
@@ -17,6 +18,7 @@ DialogBox::DialogBox(std::string text, Image* bubble){
     _textbox.Load(text, Text->GetFont("default_font"));
     _height = 10*_textbox.GetSize().y/9;
     _bubble = bubble;
+
 }
 
 DialogBox::~DialogBox(){
@@ -44,10 +46,20 @@ void DialogBox::Draw(int x, int y, int z){
         std::string text;
 
         while(i < _choices.size()){
-            int i_length = Text->CalculateLength(_choices.at(i) + " ", Text->GetFont("default_font"));
+
+            /** Calculate Length of the word **/
+            int i_length = Text->CalculateLength(_choices.at(i) + ">    ", Text->GetFont("default_font"));
+            /** if it's greater than previous length, set as new length **/
             length = i_length > length ? i_length : length;
-            text += i > 0 ? "\n" : "";
+
+            /** display the arrow if it's the current choice **/
+            if(i == _choice_id) text += ">";
+
+            /** display choice text **/
             text += _choices.at(i);
+
+
+            if(i < _choices.size()-1) text += "\n";
             i++;
         }
 
@@ -73,10 +85,10 @@ void DialogBox::IncrementChoice(){
     if(_choices.empty()){
         return;
     }
-    unsigned int max_choice = _choices.size();
+
     _choice_id ++;
-    if(_choice_id > max_choice)
-        _choice_id = 1;
+    if(_choice_id >= _choices.size())
+        _choice_id = 0;
 }
 
 void DialogBox::DecrementChoice(){
@@ -84,10 +96,10 @@ void DialogBox::DecrementChoice(){
     if(_choices.empty()){
         return;
     }
-    unsigned int max_choice = _choices.size();
-    _choice_id --;
-    if(_choice_id < 1)
-        _choice_id = max_choice;
+    if(_choice_id == 0)
+        _choice_id = _choices.size();
+    else
+        _choice_id --;
 }
 
 DialogManager::DialogManager(){
@@ -104,14 +116,37 @@ DialogManager::~DialogManager(){
 
 }
 
-int DialogManager::AddDialog(std::string text){
+int DialogManager::AddDialog(std::string text,int choice_nb...){
 
     _dialog_id_buffer ++;
     DialogBox* db = new DialogBox(text, _bubble);
     _dialog_index.insert(make_pair(_dialog_id_buffer, db));
 
+    va_list args;
+    va_start(args, choice_nb);
+    for(int i = 0; i < choice_nb; i++){
+        db->AddChoice(va_arg(args, const char*));
+    }
+    va_end(args);
+
     return _dialog_id_buffer;
 }
+
+
+
+int DialogManager::AddDialog(std::string text, int choice_nb, va_list args){
+
+    _dialog_id_buffer ++;
+    DialogBox* db = new DialogBox(text, _bubble);
+    _dialog_index.insert(make_pair(_dialog_id_buffer, db));
+
+    for(int i = 0; i < choice_nb; i++){
+        db->AddChoice(va_arg(args, const char*));
+    }
+
+    return _dialog_id_buffer;
+}
+
 
 void DialogManager::AddChoice(std::string choice){
 
@@ -123,6 +158,7 @@ void DialogManager::AddChoice(std::string choice){
 void DialogManager::Play(int dialog_id, std::string target){
 
     _dialog_queue.push(make_pair(dialog_id, target));
+    _dialog_index[dialog_id]->SetChoice(0);
 }
 
 void DialogManager::Draw(){
@@ -174,4 +210,9 @@ void DialogManager::CheckControls(){
     if(Input->Press(SDLK_UP)){
         _dialog_index[_current_dialog_id]->DecrementChoice();
     }
+}
+
+int DialogManager::GetChoiceResult(int choice_id){
+
+    return _dialog_index[choice_id]->GetChoice();
 }
