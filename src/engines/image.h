@@ -60,7 +60,7 @@ private:
     GLuint _surface_id;
 
     coor2i _size;
-    coor2i _display_size;
+    coor3f _display_size;
 
     bool _is_valid;
 
@@ -82,7 +82,7 @@ public:
         .IMAGE_DRAW_FROM_TOPLEFT -> 'standard' 2D blitting from top left corner (like SDL_Blit)
     **/
 
-    void Draw(int,int,int,IMAGE_DRAW_FLAG flag = IMAGE_DRAW_CENTERED);
+    void Draw(float,float,float,IMAGE_DRAW_FLAG flag = IMAGE_DRAW_CENTERED);
 
     void SetDisplaySize(float, float);
     coor2i GetSize() const;

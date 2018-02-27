@@ -47,7 +47,7 @@ MapMode::MapMode(){
     aabb->LinkMesh(mesh);
 
     _dialog_manager = new DialogManager();
-    dialogtest = _dialog_manager->AddDialog("Hey, this is a DialogBox ! That's awesome !", 4, "Yes", "No", "Maybe", "Cancel");
+    dialogtest = _dialog_manager->AddDialog("Hey, this is a dialog box ! That's awesome !", 2, "Hell yeah !", "Meh...");
     int dialogtest2 = _dialog_manager->AddDialog("And it's a second DialogBox ! I can't get enough of 'em !!!");
 
 
@@ -55,7 +55,7 @@ MapMode::MapMode(){
     _event_manager->AddVar("var_choicetest", 0);
     dialog_ev->PushEvent(new event::Choice(dialogtest, "object_block", "var_choicetest"));
     dialog_ev->PushEvent(new event::Dialog(dialogtest2, "object_block"));
-    dialog_ev->SetCondition(VARIABLE_EQUALS, "var_choicetest", 2);
+    dialog_ev->SetCondition(VARIABLE_EQUALS, "var_choicetest", 0);
 
     GetObjectEntity("object_block")->AddActiveEvent(dialog_ev);
 
@@ -85,9 +85,9 @@ MapMode::~MapMode(){
 
 void MapMode::Draw(){
 
-    for(int i = 0; i < 4; i++){
-        _blank_bg->Draw((i%2)*640, (i/2)*360, 1, IMAGE_DRAW_FROM_TOPLEFT);
-    }
+
+    _blank_bg->SetDisplaySize(640, 360);
+    _blank_bg->Draw(0,0,1,IMAGE_DRAW_FROM_TOPLEFT);
     _view_manager->Draw();
     _dialog_manager->Draw();
 

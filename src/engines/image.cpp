@@ -16,7 +16,7 @@ Image::Image(){
 
 
     for(int i = 0 ;i < 18; i++) _oglvertices[i] = oglvertices[i];
-    _display_size = coor2i(0,0);
+    _display_size = coor3f(0,0,0);
 
 }
 
@@ -231,14 +231,16 @@ bool Image::LoadFromSurface(SDL_Surface* surface){
 }
 
 
-void Image::Draw(int x, int y, int z, IMAGE_DRAW_FLAG flag){
+void Image::Draw(float x, float y, float z, IMAGE_DRAW_FLAG flag){
 
 //    Video->PushMatrix();
     glm::mat4 matrix = Video->_modelview;
     Video->SetCursorPos(x, y, z);
 
-    if(_display_size.x == 0 || _display_size.y == 0)
-        _display_size = _size;
+    if(_display_size.x == 0 || _display_size.y == 0){
+        _display_size.x = _size.x;
+        _display_size.y = _size.y;
+    }
 
     if(_display_size.x != _size.x || _display_size.y != _size.y)
         Video->ResizeCursor((float)_display_size.x / (float)_size.x, (float)_display_size.y / (float)_size.y);
@@ -247,17 +249,18 @@ void Image::Draw(int x, int y, int z, IMAGE_DRAW_FLAG flag){
         Video->Blit(_oglvaoid, _surface_id);
     }
     else if(flag == IMAGE_DRAW_FROM_TOPLEFT){
-        Video->TranslateCursor(_display_size.x/2, _display_size.y/2, 0.0);
+        Video->TranslateCursor(_display_size.x/2.0f, _display_size.y/2.0f, 0.0);
         Video->Blit(_oglvaoid, _surface_id);
     }
 //    Video->PopMatrix();
     Video->_modelview = matrix;
-    _display_size = _size;
+    _display_size.x = _size.x;
+    _display_size.y = _size.y;
 }
 
 void Image::SetDisplaySize(float x, float y){
 
-    _display_size = coor2i(x, y);
+    _display_size = coor3f(x, y, 0.0f);
 }
 
 coor2i Image::GetSize() const{

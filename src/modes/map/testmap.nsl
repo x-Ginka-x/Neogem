@@ -34,8 +34,6 @@ animation
 
     new anim_ground
         frame green 100
-    new anim_ground2
-        frame green2 100
 
 -------GINKA ANIMATIONS
 
@@ -105,8 +103,6 @@ map_texture
 
     new tex_ground
         animation anim_ground
-    new tex_ground2
-        animation anim_ground2
 
 end
 
@@ -165,9 +161,6 @@ mesh
     new mesh_ground1
         pos 0 -20 0
         size 160 20 160
-    new mesh_ground2
-        pos 80 -20 160
-        size 160 15 160
     new mesh_ground3
         pos 0 -20 320
         size 160 20 160
@@ -252,9 +245,6 @@ staticentity
     new ground1
         mesh mesh_ground1
         texture tex_ground
-    new ground2
-        mesh mesh_ground2
-        texture tex_ground2
     new ground3
         mesh mesh_ground3
         texture tex_ground
@@ -266,16 +256,6 @@ staticentity
 end
 
 event
-
-
-    new ev_str_switch
-        push hidereveal ground2 5
-        condition 4 switch1 1
-
-    new ev_str_switch2
-        push activateswitch switch1 toggle
-
-
 
     new ev_str_scarecrow
         push setstatic object_block 0
@@ -298,8 +278,6 @@ objectentity
     new object_switch
         texture tex_switch
         mesh mesh_switch
-        passive ev_str_switch
-        active ev_str_switch2
 
 
     new object_scarecrow

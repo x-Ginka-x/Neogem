@@ -11,7 +11,7 @@ DialogBox::DialogBox(std::string text, Image* bubble){
     _text = text;
     int length = Text->CalculateLength(text, Text->GetFont("default_font"));
 
-    _width = length / 3;
+    _width = length / 2;
     _twidth = 9*_width/10;
 
     _textbox.SetSize(_twidth, 0);
@@ -48,7 +48,7 @@ void DialogBox::Draw(int x, int y, int z){
         while(i < _choices.size()){
 
             /** Calculate Length of the word **/
-            int i_length = Text->CalculateLength(_choices.at(i) + ">    ", Text->GetFont("default_font"));
+            int i_length = Text->CalculateLength(_choices.at(i) + "> ", Text->GetFont("default_font"));
             /** if it's greater than previous length, set as new length **/
             length = i_length > length ? i_length : length;
 

@@ -11,7 +11,7 @@ TextEngine* neo::Text = NULL;
 TextEngine::TextEngine(){
 
     if(TTF_Init()<0 && VIDEO_DEBUG) ERR(".VIDEO_DEBUG : Error while initializing TTF library");
-    LoadFont("default_font", 20, "default_font");
+    LoadFont("default_font", 16, "default_font");
 }
 
 TextEngine::~TextEngine(){
@@ -78,7 +78,7 @@ void TextEngine::Write(int x, int y, int z, std::string text, Font* font){
 
             FontGlyph* glyph = font->_glyph_cache[characters[i]];
             glyph->_texture->Draw(x, y, z, IMAGE_DRAW_FROM_TOPLEFT);
-            x += glyph->_advance;
+            x += glyph->_advance+1;
 
         }
 //    }
@@ -91,7 +91,7 @@ int TextEngine::CalculateLength(string text, Font* font){
     const char* characters = text.c_str();
 
     for(unsigned int i = 0; i < text.size(); i++){
-        length += font->_glyph_cache[characters[i]]->_advance;
+        length += font->_glyph_cache[characters[i]]->_advance+1;
     }
     return length;
 }

@@ -393,7 +393,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         if(_has_the_right_to_push_other_meshes)
             mesh->ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2, true);
-        _kinetic_energy.at(WEST) -= k;
+        _kinetic_energy.at(WEST) = 0;
     }
 
     else if(mesh->IsColliding(_hot_right)){
@@ -407,7 +407,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         if(_has_the_right_to_push_other_meshes)
             mesh->ApplyForce(EAST, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(WEST, ENERGY_TYPE_JOULE, k/2, true);
-        _kinetic_energy.at(EAST) -= k;
+        _kinetic_energy.at(EAST) = 0;
     }
 
 
@@ -437,7 +437,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         if(_has_the_right_to_push_other_meshes)
             mesh->ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2, true);
-        _kinetic_energy.at(SOUTH) -= k;
+        _kinetic_energy.at(SOUTH) = 0;
     }
 
 
@@ -452,7 +452,7 @@ void Mesh::ResolveCollision(Mesh* mesh){
         if(_has_the_right_to_push_other_meshes)
             mesh->ApplyForce(NORTH, ENERGY_TYPE_JOULE, k/2.0f, true);
 //        ApplyForce(SOUTH, ENERGY_TYPE_JOULE, k/2, true);
-        _kinetic_energy.at(NORTH) -= k;
+        _kinetic_energy.at(NORTH) = 0;
     }
 
     _CalculatePosition();
