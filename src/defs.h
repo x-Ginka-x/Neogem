@@ -71,6 +71,9 @@ namespace neo{
                 class ObjectEntity;
                 class ActorEntity;
 
+            class DialogManager;
+            class PhysicsEngine;
+
             namespace event{
 
                 class Condition;

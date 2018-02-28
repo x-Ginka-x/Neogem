@@ -8,6 +8,8 @@ using namespace neo;
 
 EventManager* neo::event::current_event_manager = NULL;
 
+event::MapAccessor MapEvent::_map = {NULL,NULL,NULL,NULL,NULL};
+
 MapEventString::MapEventString(){
 
     _current_event = NULL;
@@ -27,7 +29,7 @@ bool MapEventString::PushEvent(MapEvent* event){
 
     else{
         _events.push_back(event);
-        event::current_event_manager->RegisterEvent(event);
+        MapMode::_current_map->GetEventManager()->RegisterEvent(event);
     }
 
     return true;
@@ -75,7 +77,6 @@ void MapEventString::SetCondition(int type, std::string var, int value, bool pas
 
 MapEvent::MapEvent(){
 
-    _event_manager = event::current_event_manager;
     _is_playing = false;
     _is_done = false;
 }
@@ -90,12 +91,12 @@ Entity* MapEvent::GetEntity(string name){
 //    else if(_event_manager->GetCurrentMap()->_actors.find(name) != neo_map::_current_map->_actors.end())
 //
 //        return neo_map::_current_map->_actors.at(name);
-    if(MapMode::_current_map->GetObjectEntity(name) != NULL)
-        return MapMode::_current_map->GetObjectEntity(name);
-    else if(MapMode::_current_map->GetActorEntity(name) != NULL)
-        return MapMode::_current_map->GetActorEntity(name);
-    else if(MapMode::_current_map->GetStaticEntity(name) != NULL)
-        return MapMode::_current_map->GetStaticEntity(name);
+    if(_map.global->GetObjectEntity(name) != NULL)
+        return _map.global->GetObjectEntity(name);
+    else if(_map.global->GetActorEntity(name) != NULL)
+        return _map.global->GetActorEntity(name);
+    else if(_map.global->GetStaticEntity(name) != NULL)
+        return _map.global->GetStaticEntity(name);
     else return NULL;
 }
 
@@ -136,13 +137,13 @@ bool MapEvent::_AssertCondition(event::Condition condition){
     if(type == NO_CONDITION)
         return true;
     else if(type == VARIABLE_EQUALS)
-        return (_event_manager->GetVar(var) == value);
+        return (_map.event->GetVar(var) == value);
     else if(type == VARIABLE_IS_LESSER_THAN)
-        return (_event_manager->GetVar(var) <= value);
+        return (_map.event->GetVar(var) <= value);
     else if(type == VARIABLE_IS_GREATER_THAN)
-        return (_event_manager->GetVar(var) >= value);
+        return (_map.event->GetVar(var) >= value);
     else if(type == SWITCH_IS_ON)
-        return (_event_manager->GetSwitch(var) == (value == 1 ? true : false));
+        return (_map.event->GetSwitch(var) == (value == 1 ? true : false));
     else{
         ERR("-map_event.cpp : Called AssertCondition() with unknown type !");
         ERR("  >_variable = " + var);
@@ -168,9 +169,8 @@ bool MapEvent::_AssertConditions(){
 
 EventManager::EventManager(){
 
-    _current_map = MapMode::_current_map;
-    neo::event::current_event_manager = this;
 }
+
 
 EventManager::~EventManager(){
 
@@ -325,7 +325,7 @@ ModifyVariable::~ModifyVariable(){
 
 void ModifyVariable::_Update(){
 
-    int value = _event_manager->GetVar(_variable);
+    int value = _map.event->GetVar(_variable);
 
     if(_modifier == EQUALS)
         value = _value;
@@ -344,7 +344,7 @@ void ModifyVariable::_Update(){
     }
 
 
-    _event_manager->SetVar(_variable, value);
+    _map.event->SetVar(_variable, value);
     _is_done = true;
 }
 
@@ -362,14 +362,14 @@ ActivateSwitch::~ActivateSwitch(){
 void ActivateSwitch::_Update(){
 
     if(_mode == "on")
-        _event_manager->TurnOn(_name);
+        _map.event->TurnOn(_name);
     else if(_mode == "off")
-        _event_manager->TurnOff(_name);
+        _map.event->TurnOff(_name);
     else if(_mode == "toggle"){
-        if(_event_manager->GetSwitch(_name) == true)
-            _event_manager->TurnOff(_name);
+        if(_map.event->GetSwitch(_name) == true)
+            _map.event->TurnOff(_name);
         else
-            _event_manager->TurnOn(_name);
+            _map.event->TurnOn(_name);
     }
     else{
         _is_playing = false;
@@ -458,9 +458,9 @@ void ListenPosition::_Update(){
     y = _entity->GetPos().y;
     z = _entity->GetPos().z;
 
-    event::current_event_manager->SetVar(xvar, x);
-    event::current_event_manager->SetVar(yvar, y);
-    event::current_event_manager->SetVar(zvar, z);
+    _map.event->SetVar(xvar, x);
+    _map.event->SetVar(yvar, y);
+    _map.event->SetVar(zvar, z);
 
     _is_done = true;
 }
@@ -487,11 +487,11 @@ void event::Dialog::_Update(){
 
     if(_is_playing){
         if(_initialized == false){
-            MapMode::_current_map->GetDialogManager()->Play(_text, _target);
+            _map.dialog->Play(_text, _target);
             _initialized = true;
         }
         else{
-            if(MapMode::_current_map->GetDialogManager()->IsPlaying() == false){
+            if(_map.dialog->IsPlaying() == false){
                 _is_done = true;
                 _initialized = false;
             }
@@ -506,14 +506,14 @@ void event::Choice::_Update(){
 
      if(_is_playing){
         if(_initialized == false){
-            MapMode::_current_map->GetDialogManager()->Play(_choice_id, _target);
+            _map.dialog->Play(_choice_id, _target);
             _initialized = true;
         }
         else{
-            if(MapMode::_current_map->GetDialogManager()->IsPlaying() == false){
+            if(_map.dialog->IsPlaying() == false){
                 _is_done = true;
                 _initialized = false;
-               _event_manager->SetVar(_var, MapMode::_current_map->GetDialogManager()->GetChoiceResult(_choice_id));
+               _map.event->SetVar(_var, _map.dialog->GetChoiceResult(_choice_id));
             }
         }
     }
@@ -527,12 +527,12 @@ void neo::MapEventDescriptor(ScriptObject* Script){
     if(instruction == "setvar"){
         std::string name = s_text;
         int value = s_int;
-        event::current_event_manager->SetVar(name, value);
+        MapMode::_current_map->GetEventManager()->SetVar(name, value);
     }
 
     if(instruction == "new"){
         std::string name = s_text;
-        MapEventString* ev_str = event::current_event_manager->CreateEventString();
+        MapEventString* ev_str = MapMode::_current_map->GetEventManager()->CreateEventString();
         s_register(name, ev_str);
     }
     else if(instruction == "push"){

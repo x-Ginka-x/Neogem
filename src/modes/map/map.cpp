@@ -16,6 +16,12 @@ MapMode::MapMode(){
     _view_manager = new MapVideoEngine();
     _physics_manager = new PhysicsEngine();
     _event_manager = new EventManager();
+    _dialog_manager = new DialogManager();
+    MapEvent::_map.dialog = _dialog_manager;
+    MapEvent::_map.event = _event_manager;
+    MapEvent::_map.physics = _physics_manager;
+    MapEvent::_map.global = this;
+    MapEvent::_map.view = _view_manager;
 
     ScriptObject* script = new ScriptObject();
 
@@ -33,7 +39,6 @@ MapMode::MapMode(){
     delete script;
 
     _physics_manager->SetUpdateZone(-1000,-500,2000,1000);
-
     _blank_bg = ImgManager->GetImage("crate2");
 
     _view_manager->Follow(coor3f(0,0,0));
@@ -46,7 +51,6 @@ MapMode::MapMode(){
     mesh->SetStatic(false);
     aabb->LinkMesh(mesh);
 
-    _dialog_manager = new DialogManager();
     dialogtest = _dialog_manager->AddDialog("Hey, this is a dialog box ! That's awesome !", 2, "Hell yeah !", "Meh...");
     int dialogtest2 = _dialog_manager->AddDialog("And it's a second DialogBox ! I can't get enough of 'em !!!");
 

@@ -50,6 +50,16 @@ enum VARIABLE_MODIFIER{
 };
 
 
+struct MapAccessor{
+
+    MapMode* global;
+    DialogManager* dialog;
+    PhysicsEngine* physics;
+    MapVideoEngine* view;
+    EventManager* event;
+
+};
+
 
 }//namespace event
 
@@ -88,7 +98,6 @@ protected:
     bool _is_done;
     std::vector<event::Condition> _conditions;
 
-    EventManager* _event_manager;
 
     virtual void _Update(){};
     bool _AssertCondition(event::Condition);
@@ -96,6 +105,8 @@ protected:
     Entity* GetEntity(std::string name);
 
 public:
+
+    static event::MapAccessor _map;
 
     virtual ~MapEvent();
 
@@ -126,8 +137,6 @@ private:
     std::map<std::string, bool> _switches;
     std::map<std::string, int> _variables;
 
-    MapMode* _current_map;
-
 public:
 
     EventManager();
@@ -146,8 +155,6 @@ public:
     int GetVar(std::string);
     void SetVar(std::string, int);
     void AddVar(std::string, int);
-
-    MapMode* GetCurrentMap() {return _current_map;}
 
     void Update();
 
